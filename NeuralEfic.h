@@ -25,7 +25,7 @@ class NeuralEfic : public Efic {
 
 	public:
 
-	NeuralEfic(TChain *&NeuralChain, TTree *&NeuralfillingTree);
+	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree);
 
         CODE exec();
         CODE drawNetAns();

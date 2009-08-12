@@ -1,7 +1,7 @@
 #include "NeuralEfic.h"
 #include "NeuralEficConfig.h"
 
-NeuralEfic::NeuralEfic(TChain *&NeuralChain, TTree *&NeuralFillingTree):
+NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree):
 Efic(NeuralChain, NeuralFillingTree){
 
         rings           =       new vector<float>;
