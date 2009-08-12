@@ -20,28 +20,15 @@ class Efic {
 
 	vector<float>	*lvl2_eta;
 	vector<float>	*lvl2_phi;
-//	vector<float>	*lvl1_id;
 	vector<int>	*decision;
 	vector<float>	*et;
-//	vector<float>	*roi_id;
 
         TTree   *eficFillingTree;
         TChain  *eficReadingChain;
 
 	public:
 
-	Efic(TChain *outsideChain, TTree *outsideFillingTree){
-
-                eficReadingChain = outsideChain;
-
-                eficFillingTree = outsideFillingTree;
-
-		lvl2_eta	= 	new vector<float>;
-		lvl2_phi	= 	new vector<float>;
-//		lvl1_id		= 	new vector<float>;
-		decision	= 	new vector<int>;
-		et      	= 	new vector<float>;
-//		roi_id		= 	new vector<float>;
+	Efic(){
 
 
 	}
@@ -59,13 +46,6 @@ class Efic {
 	CODE ordenateRoi(const vector<float> *eta, const vector<float> *phi);
 
 	~Efic(){ 
-
-		delete lvl2_eta;
-		delete lvl2_phi;
-//		delete lvl1_id;
-		delete decision;
-		delete et;
-//		delete roi_id;
 
 	}
 

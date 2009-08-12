@@ -1,37 +1,21 @@
 #include "NeuralEfic.h"
 #include "NeuralEficConfig.h"
 
-NeuralEfic::NeuralEfic(TChain *&NeuralChain, TTree *&NeuralFillingTree):
-Efic(NeuralChain, NeuralFillingTree){
+NeuralEfic::NeuralEfic(const char *fileName){
 
         rings           =       new vector<float>;
         neuralAns       =       new vector<float>;
 
         fillConfigVectors();
 
-     
         neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
-        eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
+        readFile = new ifstream(fileName, ios::in | ios::binary );
 
-
-        eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
-	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
-
-
-	eficFillingTree->		Branch("RingerOut",	&neuralAns);
-	eficFillingTree->		Branch("RingerDec",	&decision);
-//	eficFillingTree->		Branch("RingerLvl1Id",	&lvl1_id);
-//	eficFillingTree->		Branch("RingerRoiId",	&roi_id);
-	eficFillingTree->		Branch("RingerEta",	&lvl2_eta);
-	eficFillingTree->		Branch("RingerPhi",	&lvl2_phi);
-	eficFillingTree->		Branch("RingerET",	&et);
-
+        if (!readFile) {
+                cout<<"Cannot open file"<<endl;
+                exit(1);
+        }
 
 }
 
@@ -54,19 +38,28 @@ Efic::CODE NeuralEfic::fillConfigVectors(){
 
 Efic::CODE NeuralEfic::exec(){
 
-        for(size_t j=0; j<lvl2_eta->size(); ++j){
+        while (!readFile->eof()){
+                float temp;
+                readFile->read( (char *) &temp, sizeof(float) );
+                rings->push_back(temp);
+        }
+
+        cout<<"Rings size"<<rings->size()<<endl;
+        cout<<"Number of ROIs"<<rings->size()/100<<endl;
+        
+        
+        for(size_t j=0; j < (rings->size()/100) ; ++j){
 
                 vector<float> roiInput;
 
-                for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k){
+                for(size_t k=0; k<100; ++k){
 
-                        roiInput.push_back(rings->at(k));
+                        roiInput.push_back(rings->front());
+                        rings->erase(rings->begin());
 
                 }
 
                 float roiAns = neuralRinger->propagate(roiInput);
-
-                neuralAns->push_back(roiAns);
 
                 fillDecision(roiAns);          
 
@@ -194,9 +187,5 @@ Efic::CODE NeuralEfic::clearVectors(){
 
 NeuralEfic::~NeuralEfic(){
 
-
-        delete rings;
-        delete neuralAns;
-        delete neuralRinger;
-
+        delete readFile;
 }

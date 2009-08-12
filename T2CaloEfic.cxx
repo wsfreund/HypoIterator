@@ -21,9 +21,6 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchStatus("T2CaEmES1", 	        true);
 	eficReadingChain->SetBranchStatus("T2CaEmE", 		true);
 	eficReadingChain->SetBranchStatus("T2CaHadES0", 	true);
-//	eficReadingChain->SetBranchStatus("L1Em_eta", 		true);
-//	eficReadingChain->SetBranchStatus("L1Em_phi", 		true);
-//	eficReadingChain->SetBranchStatus("LVL1ID",	        true);
 
 
 	eficReadingChain->SetBranchAddress("T2CaEta", 		&lvl2_eta);
@@ -33,16 +30,10 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
 	eficReadingChain->SetBranchAddress("T2CaEmE", 		&energy);
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
-//	eficReadingChain->SetBranchAddress("L1Em_eta", 	        &eta0);
-//	eficReadingChain->SetBranchAddress("L1Em_phi", 	        &phi0);
-//	eficReadingChain->SetBranchAddress("LVL1ID",	        &lvl1_id);
-
 
 
 	eficFillingTree->		Branch("T2CaOut",	&t2CaAns);
 	eficFillingTree->		Branch("T2CaDec",	&decision);
-//	eficFillingTree->		Branch("T2Calvl1_id",	&lvl1_id);
-//	eficFillingTree->		Branch("T2CaRoi_id",	&roi_id);
 	eficFillingTree->		Branch("T2CaEta",	&lvl2_eta);
 	eficFillingTree->		Branch("T2CaPhi",	&lvl2_phi);
 	eficFillingTree->		Branch("T2CaET",	&et);
@@ -56,8 +47,6 @@ Efic::CODE T2CaloEfic::exec(){
 
 	for(size_t j=0; j<lvl2_eta->size(); ++j){
                 
-		//unsigned int rMatchingPair	=	findMatchingRoi(lvl2_eta->at(j), lvl2_phi->at(j), eta0 ,phi0);//this is not needed anymore since T2Calo dont apply appears to do not apply cuts on deta and dphi.
-
                 float dummyeta0, dummyphi0;//temporary fix
 
                 dummyeta0 = dummyphi0 = 0;

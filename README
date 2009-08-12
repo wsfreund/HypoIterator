@@ -1,4 +1,0 @@
-To compile do on root:
-.x execGenData.C
-To load do on root:
-.x loadGenData.C 

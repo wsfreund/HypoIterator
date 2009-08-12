@@ -1,9 +1,10 @@
 #include "Efic.h"
 #include "Neural.h"  
+#include <fstream>
 
 #ifndef NEURAL_EFIC
 #define NEURAL_EFIC
-
+#define ROISIZE = 100
 
 class NeuralEfic : public Efic {
 
@@ -13,6 +14,8 @@ class NeuralEfic : public Efic {
         vector<unsigned int> nodesVector;
         vector<float> weightVector;
         vector<float> biasVector;
+
+        ifstream *readFile;
 
         static const float threshold;
 
@@ -25,7 +28,7 @@ class NeuralEfic : public Efic {
 
 	public:
 
-	NeuralEfic(TChain *&NeuralChain, TTree *&NeuralfillingTree);
+	NeuralEfic(const char *filename);
 
         CODE exec();
         CODE drawNetAns();
