@@ -61,12 +61,13 @@ Efic::CODE NeuralEfic::exec(){
 
                 cout<<"Passou o Loop2"<<endl;
                 cout<<"Tamanho de roiInput = "<<roiInput.size()<<endl;
+                cout<<"Tamanho de rings = "<<rings->size()<<endl;
                 float roiAns = neuralRinger->propagate(roiInput);
-
+                cout<<"Passou o propagate"<<endl;
                 fillDecision(roiAns);          
 
                 roiInput.clear();
-
+                cout<<"Passou o clear e o fillDecision"<<endl;
         }
 
         cout<<"Passou o Loop"<<endl;
