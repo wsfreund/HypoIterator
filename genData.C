@@ -168,9 +168,7 @@ int drawNetAns(NeuralEfic* neural){
         vector<float> *netAns   =       neural->getNeuralAns();
 
 	size_t totalData = netAns->size();
-	cout<<totalData<<endl;
         for(size_t i=0; i<totalData;++i){
-		cout<<"Entrou no loop com valor de i = "<<i<<endl;
 		hNans->Fill(netAns->front());
 		netAns->erase(netAns->begin());
 
@@ -179,7 +177,6 @@ int drawNetAns(NeuralEfic* neural){
 
         hNans->Draw();
 
-	cout<<"Passou o draw"<<endl;
         delete netAns;
 
         return 0;
