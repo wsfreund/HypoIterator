@@ -177,8 +177,6 @@ int drawNetAns(NeuralEfic* neural){
 
         }
 
-	gPad->SetLogy();
-
         hNans->Draw();
 
         delete netAns;
