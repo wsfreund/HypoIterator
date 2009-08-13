@@ -58,6 +58,7 @@ Efic::CODE NeuralEfic::exec(){
                 }
 
                 float roiAns = neuralRinger->propagate(roiInput);
+                neuralAns->push_back(roiAns);
                 fillDecision(roiAns);          
 
                 roiInput.clear();

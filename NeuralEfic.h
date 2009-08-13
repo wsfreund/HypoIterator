@@ -4,7 +4,6 @@
 
 #ifndef NEURAL_EFIC
 #define NEURAL_EFIC
-#define ROISIZE = 100
 
 class NeuralEfic : public Efic {
 
@@ -30,7 +29,7 @@ class NeuralEfic : public Efic {
 
 	NeuralEfic(const char *filename);
         
-        vector<int>* const &getDecision(){return decision;}
+        vector<float>* const &getNeuralAns(){return neuralAns;}
 
         CODE exec();
         CODE drawNetAns();

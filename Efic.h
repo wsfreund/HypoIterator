@@ -38,6 +38,7 @@ class Efic {
         const vector<float> *getPhi(){  return lvl2_phi; }
         const vector<int>   *getDec(){  return decision; }
         const vector<float> *getEt() {  return et;       }
+        vector<int>* const &getDecision(){return decision;}
 
         virtual CODE clearVectors() = 0;
         virtual CODE exec() = 0;

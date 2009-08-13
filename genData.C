@@ -17,6 +17,8 @@ int calcEfic(float &detNeural, NeuralEfic* Neural);
 
 int scatterPlot(TTree *tree);
 
+int drawNetAns(NeuralEfic* neural);
+
 int genData(const char *inPut){
 
 	NeuralEfic	*myNeural;
@@ -35,6 +37,8 @@ int genData(const char *inPut){
 
         canvas->Update();
 
+	TCanvas *canvas2 = new TCanvas("Neural Output", "Neural Output");
+	drawNetAns(myNeural);
         cout<<"Ringer electron eficiency "<<elcRateNeural<<endl;
 
 
@@ -151,6 +155,30 @@ int calcEfic(float &detNeural, NeuralEfic* Neural){
         pt->SetLabel("Hypos Comparison v1.0");
 
         pt->Draw();
+
+        return 0;
+
+}
+
+int drawNetAns(NeuralEfic* neural){
+
+
+        TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 250, -1.0, 1.0);
+
+        hNans -> GetXaxis() -> SetTitle("OutPut Neuron Value");
+
+        vector<float> *netAns   =       neural->getNeuralAns();
+
+        for(int i=0; i<netAns->size();++i){
+
+		hNans->Fill(netAns->front());
+		netAns->erase(netAns->begin());
+
+        }
+
+        hNans->Draw();
+
+        delete netAns;
 
         return 0;
 
