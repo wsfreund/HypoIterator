@@ -38,7 +38,7 @@ Efic::CODE NeuralEfic::fillConfigVectors(){
 
 Efic::CODE NeuralEfic::exec(){
 
-        for (ios::iostate i = readFile->rdstate(); i!=ios::eofbit;){
+        while (!readFile->eof()){
                 float temp;
                 readFile->read( (char *) &temp, sizeof(float) );
                 rings->push_back(temp);
@@ -52,13 +52,14 @@ Efic::CODE NeuralEfic::exec(){
         for(size_t j=0; j < (rings->size()/100) ; ++j){
 
                 vector<float> roiInput;
-
+                cout<<"Entrou no loop"<<endl;
                 for(size_t k=0; k<100; ++k){
-
+                        cout<<"Entrou no loop2"<<endl;
                         roiInput.push_back(rings->front());
                         rings->erase(rings->begin());
-
                 }
+
+                cout<<"Passou o Loop2"<<endl;
 
                 float roiAns = neuralRinger->propagate(roiInput);
 
@@ -68,7 +69,7 @@ Efic::CODE NeuralEfic::exec(){
 
         }
 
-
+        cout<<"Passou o Loop"<<endl;
 	return Efic::OK;
 
 }
