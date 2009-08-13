@@ -61,8 +61,9 @@ Efic::CODE NeuralEfic::exec(){
                 for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k){
 
                         roiInput.push_back(rings->at(k));
-
                 }
+
+		writeMatlabTxt(roiInput);
 
                 float roiAns = neuralRinger->propagate(roiInput);
 
@@ -79,6 +80,12 @@ Efic::CODE NeuralEfic::exec(){
 
 }
 
+Efic::CODE NeuralEfic::writeMatlabTxt(const &vector<float>){
+
+	ofstream *matlabFile = new ofstream("roiData.txt", ios::out);
+
+	matlabFile->write(roiInput->	
+	
 Efic::CODE NeuralEfic::drawNetAns(){
 
 
