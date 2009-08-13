@@ -38,7 +38,6 @@ int genData(const char *inPut){
 
 	TCanvas *canvas2 = new TCanvas("Neural Output", "Neural Output");
 	drawNetAns(myNeural);
-        cout<<"Ringer electron eficiency "<<elcRateNeural<<endl;
 
 
 	delete myNeural;
@@ -176,9 +175,10 @@ int drawNetAns(NeuralEfic* neural){
 		netAns->erase(netAns->begin());
 
         }
-
+	cout<<"Passou o Fill"<<endl;
         hNans->Draw();
 
+	cout<<"Passou o draw"<<endl;
         delete netAns;
 
         return 0;
