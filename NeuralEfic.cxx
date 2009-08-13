@@ -58,6 +58,7 @@ Efic::CODE NeuralEfic::exec(){
                 }
 
                 float roiAns = neuralRinger->propagate(roiInput);
+                cout<<"Para Roi "<<j<<"foi dada a saida neural"<<roiAns<<endl;
                 fillDecision(roiAns);          
 
                 roiInput.clear();
@@ -108,11 +109,13 @@ Efic::CODE NeuralEfic::fillDecision(const float entry){
 
         if (entry>threshold) {
                 decision->push_back(Efic::ELECTRON);
+                cout<<"E a decisão Eletron"<<endl;
         }
         else {
                 decision->push_back(Efic::JET);
+                cout<<"E a decisão Jato"<<endl;
         }
-
+ 
         return Efic::OK;
 
 }
