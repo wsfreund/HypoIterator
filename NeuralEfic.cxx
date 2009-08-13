@@ -80,12 +80,22 @@ Efic::CODE NeuralEfic::exec(){
 
 }
 
-Efic::CODE NeuralEfic::writeMatlabTxt(const &vector<float>){
+Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 
 	ofstream *matlabFile = new ofstream("roiData.txt", ios::out);
+	for(size_t i=0; i<roiInput->size()/ROISIZE;++i){
+		for(size_t j=0; j<ROISIZE; j++){
 
-	matlabFile->write(roiInput->	
+			matlabFile>>roiInput->at(j+ROISIZE*i)>>" ";
+		}
+		matlabFile>>";";
+	}	
 	
+	matlabFile>>"];";
+	return Efic::OK;
+
+}
+
 Efic::CODE NeuralEfic::drawNetAns(){
 
 
