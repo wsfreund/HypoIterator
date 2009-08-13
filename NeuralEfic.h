@@ -29,6 +29,8 @@ class NeuralEfic : public Efic {
 	public:
 
 	NeuralEfic(const char *filename);
+        
+        vector<int>* const &getDecision(){return decision;}
 
         CODE exec();
         CODE drawNetAns();

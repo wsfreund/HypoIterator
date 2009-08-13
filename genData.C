@@ -13,7 +13,7 @@ using namespace std;
 
 float productSP(const float eDetRatio, const float jDetRatio);
 
-int calcEfic(float &detNeural);
+int calcEfic(float &detNeural, NeuralEfic* Neural);
 
 int scatterPlot(TTree *tree);
 
@@ -30,7 +30,7 @@ int genData(const char *inPut){
 
         TCanvas *canvas = new TCanvas("Analysis Graphics", "Analysis Graphics");
 
-        calcEfic(elcRateNeural);
+        calcEfic(elcRateNeural, myNeural);
         gPad->SetEditable(kFALSE);
 
         canvas->Update();
@@ -107,12 +107,12 @@ int scatterPlot(TTree *tree){
         return 0;
 }
 
-int calcEfic(float &detNeural){
+int calcEfic(float &detNeural, NeuralEfic* Neural){
 
         float neuralElc, totalData, neuralJet, t2CaJet, t2CaElc;
         neuralElc = neuralJet = t2CaElc = t2CaJet = totalData = 0;
 
-	vector<int> *ringerDec	=	new vector<int>;
+	vector<int> *ringerDec	= Neural->getDecision();
 
 	for(size_t j=0; j<ringerDec->size();++j){
                 if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
