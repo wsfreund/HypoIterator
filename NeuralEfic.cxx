@@ -40,7 +40,7 @@ Efic::CODE NeuralEfic::exec(){
 
         while (!readFile->eof()){
                 float temp;
-                readFile->getline( (char *) &temp, sizeof(float) );
+                readFile->read( (char *) &temp, sizeof(float) );
                 rings->push_back(temp);
         }
 
