@@ -54,23 +54,16 @@ Efic::CODE NeuralEfic::exec(){
                 vector<float> roiInput;
                 cout<<"Entrou no loop"<<endl;
                 for(size_t k=0; k<100; ++k){
-                        cout<<"Entrou no loop2"<<endl;
                         roiInput.push_back(rings->front());
                         rings->erase(rings->begin());
                 }
 
-                cout<<"Passou o Loop2"<<endl;
-                cout<<"Tamanho de roiInput = "<<roiInput.size()<<endl;
-                cout<<"Tamanho de rings = "<<rings->size()<<endl;
                 float roiAns = neuralRinger->propagate(roiInput);
-                cout<<"Passou o propagate"<<endl;
                 fillDecision(roiAns);          
 
                 roiInput.clear();
-                cout<<"Passou o clear e o fillDecision"<<endl;
         }
-
-        cout<<"Passou o Loop"<<endl;
+        cout<<"Rings size"<<rings->size()<<endl;
 	return Efic::OK;
 
 }
