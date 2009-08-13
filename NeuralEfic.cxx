@@ -54,8 +54,8 @@ Efic::CODE NeuralEfic::fillConfigVectors(){
 
 Efic::CODE NeuralEfic::exec(){
 
-        ofstream matlabFile("roiData.txt", ios::out);
-
+        ofstream matlabFile("roiData.txt", ios::out | ios::ap);
+	file<<"roiInput = [";
         for(size_t j=0; j<lvl2_eta->size(); ++j){
 
                 vector<float> roiInput;
@@ -84,16 +84,15 @@ Efic::CODE NeuralEfic::exec(){
 
 Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput, ofstream &file){
 
-	file<<"roiInput = [";
 	for(size_t i=0; i<roiInput.size()/ROISIZE;++i){
 		for(size_t j=0; j<ROISIZE; j++){
 
 			file<<roiInput.at(j+ROISIZE*i)<<" ";
 		}
-		file<<";";
+		if (i!=roiInput.size()-1) file<<";";
+		else file<<"];";
 	}	
 	
-	file<<"];";
 	return Efic::OK;
 }
 
