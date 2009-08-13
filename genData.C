@@ -170,12 +170,13 @@ int drawNetAns(NeuralEfic* neural){
 	size_t totalData = netAns->size();
 	cout<<totalData<<endl;
         for(size_t i=0; totalData;++i){
-
+		cout<<"Entrou no loop com valor de i = "<<i<<endl;
 		hNans->Fill(netAns->front());
 		netAns->erase(netAns->begin());
 
         }
 	cout<<"Passou o Fill"<<endl;
+
         hNans->Draw();
 
 	cout<<"Passou o draw"<<endl;
