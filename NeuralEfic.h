@@ -23,7 +23,7 @@ class NeuralEfic : public Efic {
 
         CODE fillDecision(const float);
 
-	CODE writeMatlabTxt(const vector<float>&);
+	CODE writeMatlabTxt(const vector<float> &roiInput, ofstream &file);
 
 	public:
 
