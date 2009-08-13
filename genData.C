@@ -169,8 +169,8 @@ int drawNetAns(NeuralEfic* neural){
         vector<float> *netAns   =       neural->getNeuralAns();
 
 	size_t totalData = netAns->size();
-
-        for(unsigned i=0; totalData;++i){
+	cout<<totalData<<endl;
+        for(size_t i=0; totalData;++i){
 
 		hNans->Fill(netAns->front());
 		netAns->erase(netAns->begin());
