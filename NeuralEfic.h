@@ -1,9 +1,10 @@
 #include "Efic.h"
 #include "Neural.h"  
+#include <fstream>
 
 #ifndef NEURAL_EFIC
 #define NEURAL_EFIC
-
+#define ROISIZE 100
 
 class NeuralEfic : public Efic {
 
@@ -22,7 +23,7 @@ class NeuralEfic : public Efic {
 
         CODE fillDecision(const float);
 
-	CODE writeMatlabTxt(const &vector<float>);
+	CODE writeMatlabTxt(const vector<float>&);
 
 	public:
 
