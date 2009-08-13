@@ -45,11 +45,11 @@ Efic::CODE NeuralEfic::exec(){
         }
 
 
+        size_t totalRoi = rings->size()/100;
         cout<<"Rings size"<<rings->size()<<endl;
-        cout<<"Number of ROIs"<<rings->size()/100<<endl;
+        cout<<"Number of ROIs"<<totalRoi<<endl;
         
-        
-        for(size_t j=0; j < (rings->size()/100) ; ++j){
+        for(size_t j=0; j < totalRoi ; ++j){
 
                 vector<float> roiInput;
                 for(size_t k=0; k<100; ++k){
