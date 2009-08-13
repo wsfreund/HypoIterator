@@ -178,6 +178,8 @@ int drawNetAns(NeuralEfic* neural){
 
         }
 
+	gPad->SetLogx();
+
         hNans->Draw();
 
         delete netAns;
