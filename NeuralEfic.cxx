@@ -10,7 +10,7 @@ NeuralEfic::NeuralEfic(const char *fileName){
 
         neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
-        readFile = new ifstream(fileName);
+        readFile = new ifstream(fileName, ios::in | ios::binary);
 
         if (!readFile) {
                 cout<<"Cannot open file"<<endl;
