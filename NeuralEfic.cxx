@@ -52,7 +52,6 @@ Efic::CODE NeuralEfic::exec(){
         for(size_t j=0; j < (rings->size()/100) ; ++j){
 
                 vector<float> roiInput;
-                cout<<"Entrou no loop"<<endl;
                 for(size_t k=0; k<100; ++k){
                         roiInput.push_back(rings->front());
                         rings->erase(rings->begin());
