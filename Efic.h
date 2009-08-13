@@ -30,6 +30,7 @@ class Efic {
 
 	Efic(){
 
+                decision = new vector<int>;
 
 	}
 
@@ -47,6 +48,7 @@ class Efic {
 
 	~Efic(){ 
 
+                delete decision;
 	}
 
 };
