@@ -10,8 +10,6 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	energy			=	new vector<float>;
 	ehad1			=	new vector<float>;
 	energyS1		=	new vector<float>;
-	eta0			=	new vector<float>;
-	phi0			=	new vector<float>;
 	t2CaAns		        =	new vector<int>;
 
 	eficReadingChain->SetBranchStatus("T2CaEta", 		true);
@@ -21,8 +19,6 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchStatus("T2CaEmES1", 	        true);
 	eficReadingChain->SetBranchStatus("T2CaEmE", 		true);
 	eficReadingChain->SetBranchStatus("T2CaHadES0", 	true);
-//	eficReadingChain->SetBranchStatus("L1Em_eta", 		true);
-//	eficReadingChain->SetBranchStatus("L1Em_phi", 		true);
 //	eficReadingChain->SetBranchStatus("LVL1ID",	        true);
 
 
@@ -33,8 +29,6 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
 	eficReadingChain->SetBranchAddress("T2CaEmE", 		&energy);
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
-//	eficReadingChain->SetBranchAddress("L1Em_eta", 	        &eta0);
-//	eficReadingChain->SetBranchAddress("L1Em_phi", 	        &phi0);
 //	eficReadingChain->SetBranchAddress("LVL1ID",	        &lvl1_id);
 
 
@@ -56,15 +50,9 @@ Efic::CODE T2CaloEfic::exec(){
 
 	for(size_t j=0; j<lvl2_eta->size(); ++j){
                 
-		//unsigned int rMatchingPair	=	findMatchingRoi(lvl2_eta->at(j), lvl2_phi->at(j), eta0 ,phi0);//this is not needed anymore since T2Calo dont apply appears to do not apply cuts on deta and dphi.
-
-                float dummyeta0, dummyphi0;//temporary fix
-
-                dummyeta0 = dummyphi0 = 0;
-
 		calcTransverseFraction(j);//calculate the Transverse Energy and Energy Fraction F1 for it ROI j;
 
-		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , lvl2_phi->at(j), /*eta0->at(rMatchingPair)*/ dummyeta0, /*phi0->at(rMatchingPair)*/dummyphi0 , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
+		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , lvl2_phi->at(j), rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
 
 		t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
 
@@ -109,24 +97,13 @@ Efic::CODE T2CaloEfic::fillDecision(T2CaloEfic::PCUTS	entry){
 
 }
 
-T2CaloEfic::PCUTS T2CaloEfic::applyCuts(const float eta, const float phi, const float eta0, const float phi0, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
-
-	float dummy = eta0;
-	dummy = phi;
-	dummy = phi0;
-/*
-	float 	etaRef	 = eta0;
-	float 	phiRef	 = phi0;
-	if 	( fabs(phiRef) > M_PI ) phiRef -= 2*3.14159265;
-*/	
+T2CaloEfic::PCUTS T2CaloEfic::applyCuts(const float eta, const float phi, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
+	
 	size_t	etaBin = 0;
 	for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
 		if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
 	}
-/*
-	float 	dEta 	 = fabs ( eta - etaRef );
-	float 	dPhi 	 = fabs ( phi - phiRef );
-*/
+
 	//Corte Eta
 	//if (cutEta(dEta)) return T2CaloEfic::dETA;
  
@@ -374,8 +351,6 @@ T2CaloEfic::~T2CaloEfic(){
 	delete	energy;
 	delete	ehad1;
 	delete	energyS1;
-	delete	eta0;
-	delete	phi0;
 	delete	t2CaAns;
 
 }
