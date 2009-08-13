@@ -38,7 +38,7 @@ Efic::CODE NeuralEfic::fillConfigVectors(){
 
 Efic::CODE NeuralEfic::exec(){
 
-        while (!readFile->eof()){
+        for (ios:iostate i = readFile->rdstate(); i!=ios::eofbit;){
                 float temp;
                 readFile->read( (char *) &temp, sizeof(float) );
                 rings->push_back(temp);
