@@ -60,7 +60,7 @@ Efic::CODE NeuralEfic::exec(){
                 }
 
                 cout<<"Passou o Loop2"<<endl;
-
+                cout<<"Tamanho de roiInput = "<<roiInput.size()<<endl;
                 float roiAns = neuralRinger->propagate(roiInput);
 
                 fillDecision(roiAns);          
