@@ -33,7 +33,6 @@ int genData(const char *inPut){
         TCanvas *canvas = new TCanvas("Analysis Graphics", "Analysis Graphics");
 
         calcEfic(elcRateNeural, myNeural);
-        gPad->SetEditable(kFALSE);
 
         canvas->Update();
 
