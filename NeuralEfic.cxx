@@ -10,7 +10,7 @@ NeuralEfic::NeuralEfic(const char *fileName){
 
         neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
-        readFile = new ifstream(fileName, ios::in | ios::binary );
+        readFile = new ifstream(fileName);
 
         if (!readFile) {
                 cout<<"Cannot open file"<<endl;
@@ -40,9 +40,10 @@ Efic::CODE NeuralEfic::exec(){
 
         while (!readFile->eof()){
                 float temp;
-                readFile->read( (char *) &temp, sizeof(float) );
+                readFile->getline( (char *) &temp, sizeof(float) );
                 rings->push_back(temp);
         }
+
 
         cout<<"Rings size"<<rings->size()<<endl;
         cout<<"Number of ROIs"<<rings->size()/100<<endl;
