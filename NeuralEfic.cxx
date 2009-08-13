@@ -84,16 +84,16 @@ Efic::CODE NeuralEfic::exec(){
 
 Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput, ofstream &file){
 
-	matlabFile<<"roiInput = [";
+	file<<"roiInput = [";
 	for(size_t i=0; i<roiInput.size()/ROISIZE;++i){
 		for(size_t j=0; j<ROISIZE; j++){
 
-			matlabFile<<roiInput.at(j+ROISIZE*i)<<" ";
+			file<<roiInput.at(j+ROISIZE*i)<<" ";
 		}
-		matlabFile<<";";
+		file<<";";
 	}	
 	
-	matlabFile<<"];";
+	file<<"];";
 	return Efic::OK;
 }
 
