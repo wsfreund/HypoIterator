@@ -13,6 +13,7 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	t2CaAns		        =	new vector<int>;
 
 	eficReadingChain->SetBranchStatus("T2CaEta", 		true);
+	eficReadingChain->SetBranchStatus("T2CaPhi",		true);
 	eficReadingChain->SetBranchStatus("T2CaRcore", 	        true);
 	eficReadingChain->SetBranchStatus("T2CaEratio",	        true);
 	eficReadingChain->SetBranchStatus("T2CaEmES1", 	        true);
@@ -22,6 +23,7 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 
 
 	eficReadingChain->SetBranchAddress("T2CaEta", 		&lvl2_eta);
+	eficReadingChain->SetBranchAddress("T2CaPhi",		&lvl2_phi);
 	eficReadingChain->SetBranchAddress("T2CaRcore", 	&rCore);
 	eficReadingChain->SetBranchAddress("T2CaEratio",	&energyRatio);
 	eficReadingChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
@@ -50,7 +52,7 @@ Efic::CODE T2CaloEfic::exec(){
                 
 		calcTransverseFraction(j);//calculate the Transverse Energy and Energy Fraction F1 for it ROI j;
 
-		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j), rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
+		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
 
 		t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
 
