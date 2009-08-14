@@ -24,18 +24,18 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
 
 
-	eficFillingTree->		Branch("RingerOut",	&neuralAns);
-	eficFillingTree->		Branch("RingerDec",	&decision);
-//	eficFillingTree->		Branch("RingerLvl1Id",	&lvl1_id);
-//	eficFillingTree->		Branch("RingerRoiId",	&roi_id);
-	eficFillingTree->		Branch("RingerEta",	&lvl2_eta);
-	eficFillingTree->		Branch("RingerPhi",	&lvl2_phi);
-	eficFillingTree->		Branch("RingerET",	&et);
+	eficFillingTree->Branch("RingerOut",	&neuralAns);
+	eficFillingTree->Branch("RingerDec",	&decision);
+//	eficFillingTree->Branch("RingerLvl1Id",	&lvl1_id);
+//	eficFillingTree->Branch("RingerRoiId",	&roi_id);
+	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
+	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
+	eficFillingTree->Branch("RingerET",	&et);
 
 
 }
 
-NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ofstream *file):
+NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ostream *file):
 Efic(NeuralChain, NeuralFillingTree){
 
         rings           =       new vector<float>;
@@ -59,13 +59,13 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
 
 
-	eficFillingTree->		Branch("RingerOut",	&neuralAns);
-	eficFillingTree->		Branch("RingerDec",	&decision);
-//	eficFillingTree->		Branch("RingerLvl1Id",	&lvl1_id);
-//	eficFillingTree->		Branch("RingerRoiId",	&roi_id);
-	eficFillingTree->		Branch("RingerEta",	&lvl2_eta);
-	eficFillingTree->		Branch("RingerPhi",	&lvl2_phi);
-	eficFillingTree->		Branch("RingerET",	&et);
+	eficFillingTree->Branch("RingerOut",	&neuralAns);
+	eficFillingTree->Branch("RingerDec",	&decision);
+//	eficFillingTree->Branch("RingerLvl1Id",	&lvl1_id);
+//	eficFillingTree->Branch("RingerRoiId",	&roi_id);
+	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
+	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
+	eficFillingTree->Branch("RingerET",	&et);
 
 
 }
