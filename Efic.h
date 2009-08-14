@@ -15,9 +15,6 @@ class Efic {
 
 	protected:
 
-	enum DECISION {JET = -1, ELECTRON = 1};
-	enum CODE {ERROR=0, OK};
-
 	vector<float>	*lvl2_eta;
 	vector<float>	*lvl2_phi;
 //	vector<float>	*lvl1_id;
@@ -29,6 +26,9 @@ class Efic {
         TChain  *eficReadingChain;
 
 	public:
+
+	enum DECISION {JET = -1, ELECTRON = 1};
+	enum CODE {ERROR=0, OK};
 
 	Efic(TChain *outsideChain, TTree *outsideFillingTree){
 
