@@ -131,7 +131,7 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 	myNeural        = new NeuralEfic(chainAnalysis, generateData, &matlabFile);
 	myT2Calo	= new T2CaloEfic(chainAnalysis, generateData);
 
-	matlabFile<<"roiInput = [";
+	matlabFile<<txtFile<<" = [";
 
 	for(int i = 0; i<nEvents; ++i){
 
