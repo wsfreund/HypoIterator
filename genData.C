@@ -150,7 +150,7 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 	}//for i
 
         matlabFile.seekp(-1, ios::cur);
-        matlabFile<<"]";
+        matlabFile<<"];";
 
 	generateData->Write(); //Gera arquivo .root
 
