@@ -35,6 +35,41 @@ Efic(NeuralChain, NeuralFillingTree){
 
 }
 
+NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ofstream *file):
+Efic(NeuralChain, NeuralFillingTree){
+
+        rings           =       new vector<float>;
+        neuralAns       =       new vector<float>;
+
+        fillConfigVectors();
+
+        neuralFile      =       file;
+
+        neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
+
+        eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 		true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",		true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
+
+
+        eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
+        eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
+        eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
+	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
+
+
+	eficFillingTree->		Branch("RingerOut",	&neuralAns);
+	eficFillingTree->		Branch("RingerDec",	&decision);
+//	eficFillingTree->		Branch("RingerLvl1Id",	&lvl1_id);
+//	eficFillingTree->		Branch("RingerRoiId",	&roi_id);
+	eficFillingTree->		Branch("RingerEta",	&lvl2_eta);
+	eficFillingTree->		Branch("RingerPhi",	&lvl2_phi);
+	eficFillingTree->		Branch("RingerET",	&et);
+
+
+}
+
 
 Efic::CODE NeuralEfic::fillConfigVectors(){
 
@@ -54,8 +89,6 @@ Efic::CODE NeuralEfic::fillConfigVectors(){
 
 Efic::CODE NeuralEfic::exec(){
 
-	ofstream matlabFile("roiData.txt", ios::out | ios::app);
-	matlabFile<<"roiInput = [";
         for(size_t j=0; j<lvl2_eta->size(); ++j){
 
                 vector<float> roiInput;
@@ -65,7 +98,7 @@ Efic::CODE NeuralEfic::exec(){
                         roiInput.push_back(rings->at(k));
                 }
 
-		writeMatlabTxt(roiInput, matlabFile);
+		if (neuralFile!=NULL) writeMatlabTxt(roiInput);
 
                 float roiAns = neuralRinger->propagate(roiInput);
 
@@ -77,20 +110,18 @@ Efic::CODE NeuralEfic::exec(){
 
         }
 
-        matlabFile.close();
 	return Efic::OK;
 
 }
 
-Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput, ofstream &file){
+Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 
 	for(size_t i=0; i<roiInput.size()/ROISIZE;++i){
 		for(size_t j=0; j<ROISIZE; j++){
 
-			file<<roiInput.at(j+ROISIZE*i)<<" ";
+			*neuralFile<<roiInput.at(j+ROISIZE*i)<<" ";
 		}
-		if (i!=roiInput.size()-1) file<<";";
-		else file<<"];";
+		*neuralFile<<";";
 	}	
 	
 	return Efic::OK;

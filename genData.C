@@ -1,3 +1,5 @@
+#include <fstream>
+#include <iostream>
 #include <TFile.h>
 #include <TChain.h>
 #include <TH2I.h>
@@ -10,6 +12,7 @@
 #include "NeuralEfic.h"
 #include "T2CaloEfic.h"
 using namespace std;
+
 
 float productSP(const float eDetRatio, const float jDetRatio);
 
@@ -92,6 +95,99 @@ int genData(const char *inPut, const char *outPut){
         cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
 
 
+
+	delete chainAnalysis;
+	delete generateData;
+        delete myT2Calo;
+	delete myNeural;
+//	delete file;
+
+	return 0;
+
+
+}
+
+int genData(const char *inPut, const char *outPut, const char *txtFile){
+
+	TFile 		*file;
+	TChain		*chainAnalysis;
+	TTree		*generateData;
+	NeuralEfic	*myNeural;
+	T2CaloEfic	*myT2Calo;
+
+	ofstream matlabFile(txtFile, ios::out | ios::app);
+
+	chainAnalysis 	= new TChain("CollectionTree");
+	chainAnalysis->	Add(inPut);
+	chainAnalysis->	SetBranchStatus("*",	false);
+
+
+	int nEvents	= static_cast<int>(chainAnalysis->GetEntries());
+	
+	file		= new TFile(outPut,"recreate");
+
+	generateData	= new TTree("HypoData", "Tree with Hypo data");
+
+	myNeural        = new NeuralEfic(chainAnalysis, generateData, &matlabFile);
+	myT2Calo	= new T2CaloEfic(chainAnalysis, generateData);
+
+	matlabFile<<"roiInput = [";
+
+	for(int i = 0; i<nEvents; ++i){
+
+		chainAnalysis->GetEntry(i);
+
+		myNeural->exec();
+		myT2Calo->exec();
+
+                myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
+
+                generateData->Fill();
+
+                myNeural->clearVectors();
+                myT2Calo->clearVectors();
+
+	}//for i
+
+        matlabFile.seekp(-1, ios::cur);
+        matlabFile<<"]";
+
+	generateData->Write(); //Gera arquivo .root
+
+        float elcRateNeural;
+        float elcRateT2Ca;
+
+        TCanvas *canvas = new TCanvas("Analysis Graphics", "Analysis Graphics");
+
+        canvas->Divide(2,2);
+        canvas->cd(1);
+
+        myNeural->drawNetAns();
+        gPad->SetEditable(kFALSE);
+
+        canvas->cd(2);
+        scatterPlot(generateData);
+        gPad->SetEditable(kFALSE);
+
+        canvas->cd(3);
+	myT2Calo->drawCutCounter();
+        gPad->SetEditable(kFALSE);
+
+        canvas->cd(4);
+        calcEfic(generateData, elcRateNeural, elcRateT2Ca);
+        gPad->SetEditable(kFALSE);
+
+        canvas->cd();
+
+
+
+        canvas->Update();
+
+        cout<<"Ringer electron eficiency "<<elcRateNeural<<endl;
+
+        cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
+
+        matlabFile.close();
 
 	delete chainAnalysis;
 	delete generateData;

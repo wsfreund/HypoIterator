@@ -4,6 +4,7 @@
 
 #ifndef NEURAL_EFIC
 #define NEURAL_EFIC
+
 #define ROISIZE 100
 
 class NeuralEfic : public Efic {
@@ -17,18 +18,20 @@ class NeuralEfic : public Efic {
 
         static const float threshold;
 
+        ofstream *neuralFile;
+
         Neural *neuralRinger;
 
         CODE fillConfigVectors();
 
         CODE fillDecision(const float);
 
-	CODE writeMatlabTxt(const vector<float> &roiInput, ofstream &file);
+	CODE writeMatlabTxt(const vector<float> &roiInput);
 
 	public:
 
 	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree);
-
+	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree, ofstream *file);
         CODE exec();
         CODE drawNetAns();
         CODE clearVectors();
