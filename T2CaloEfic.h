@@ -30,7 +30,7 @@ class T2CaloEfic : public Efic {
 	CODE fillDecision(PCUTS	entry);
 
 	//Corte
-	PCUTS applyCuts(const float eta, const float phi, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
+	PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
 
 	bool cutEta(const float dEta);
 	bool cutPhi(const float dPhi);
