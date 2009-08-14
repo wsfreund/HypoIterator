@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <cstring>
 #include <TFile.h>
 #include <TChain.h>
 #include <TH2I.h>
@@ -131,7 +132,9 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 	myNeural        = new NeuralEfic(chainAnalysis, generateData, &matlabFile);
 	myT2Calo	= new T2CaloEfic(chainAnalysis, generateData);
 
-	matlabFile<<txtFile<<"Var = [";
+	matlabFile<<txtFile;
+        matlabFile.seekp(-2, ios::cur);
+        matlabFile<<"Var = [";
 
 	for(int i = 0; i<nEvents; ++i){
 
