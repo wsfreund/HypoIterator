@@ -115,7 +115,7 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 	NeuralEfic	*myNeural;
 	T2CaloEfic	*myT2Calo;
 
-	ofstream matlabFile(txtFile, ios::out ios::trunc);
+	ofstream matlabFile(txtFile, ios::out | ios::trunc);
 
 	chainAnalysis 	= new TChain("CollectionTree");
 	chainAnalysis->	Add(inPut);
