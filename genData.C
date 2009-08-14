@@ -1,5 +1,5 @@
 #include <fstream>
-#include <iostream>
+#include <iofstream>
 #include <TFile.h>
 #include <TChain.h>
 #include <TH2I.h>
@@ -115,7 +115,7 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 	NeuralEfic	*myNeural;
 	T2CaloEfic	*myT2Calo;
 
-	ostream matlabFile(txtFile, ios::out | ios::app);
+	ofstream matlabFile(txtFile, ios::out | ios::app);
 
 	chainAnalysis 	= new TChain("CollectionTree");
 	chainAnalysis->	Add(inPut);
