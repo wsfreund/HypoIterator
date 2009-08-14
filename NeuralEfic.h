@@ -31,7 +31,7 @@ class NeuralEfic : public Efic {
 	public:
 
 	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree);
-	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree, ostream *file);
+	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree, ofstream *file);
         CODE exec();
         CODE drawNetAns();
         CODE clearVectors();

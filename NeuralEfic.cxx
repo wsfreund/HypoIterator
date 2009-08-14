@@ -35,7 +35,7 @@ Efic(NeuralChain, NeuralFillingTree){
 
 }
 
-NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ostream *file):
+NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ofstream' *file):
 Efic(NeuralChain, NeuralFillingTree){
 
         rings           =       new vector<float>;
