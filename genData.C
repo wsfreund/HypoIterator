@@ -51,12 +51,12 @@ int genData(const char *inPut, const char *outPut){
 		myNeural->exec();
 		myT2Calo->exec();
 
-                myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
+        myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
 
-                generateData->Fill();
+        generateData->Fill();
 
-                myNeural->clearVectors();
-                myT2Calo->clearVectors();
+        myNeural->clearVectors();
+        myT2Calo->clearVectors();
 
 	}//for i
 
@@ -78,7 +78,7 @@ int genData(const char *inPut, const char *outPut){
         gPad->SetEditable(kFALSE);
 
         canvas->cd(3);
-	myT2Calo->drawCutCounter();
+	    myT2Calo->drawCutCounter();
         gPad->SetEditable(kFALSE);
 
         canvas->cd(4);
@@ -194,7 +194,7 @@ int genData(const char *inPut, const char *outPut, const char *txtFile){
 
 	delete chainAnalysis;
 	delete generateData;
-        delete myT2Calo;
+    delete myT2Calo;
 	delete myNeural;
 //	delete file;
 
@@ -336,7 +336,7 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
         pt->SetFillColor(30);
         pt->SetTextAlign(12);
 
-        pt->SetLabel("Hypos Comparison v1.0");
+        pt->SetLabel("Hypos Comparison v1.1.2");
 
         pt->Draw();
 
