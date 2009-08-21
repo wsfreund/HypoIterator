@@ -4,23 +4,23 @@
 NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree):
 Efic(NeuralChain, NeuralFillingTree){
 
-        rings           =       new vector<float>;
-        neuralAns       =       new vector<float>;
+    rings           =       new vector<float>;
+    neuralAns       =       new vector<float>;
 
-        fillConfigVectors();
+    fillConfigVectors();
 
-     
-        neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
+    neuralFile      =       NULL;
+    neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
-        eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",		true);
+    eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 	true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",    true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
 
 
-        eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
+    eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
+    eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
+    eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
 
 
@@ -30,7 +30,7 @@ Efic(NeuralChain, NeuralFillingTree){
 //	eficFillingTree->Branch("RingerRoiId",	&roi_id);
 	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
 	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
-	eficFillingTree->Branch("RingerET",	&et);
+	eficFillingTree->Branch("RingerET",	    &et);
 
 
 }
@@ -38,24 +38,24 @@ Efic(NeuralChain, NeuralFillingTree){
 NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ofstream *file):
 Efic(NeuralChain, NeuralFillingTree){
 
-        rings           =       new vector<float>;
-        neuralAns       =       new vector<float>;
+    rings           =       new vector<float>;
+    neuralAns       =       new vector<float>;
 
-        fillConfigVectors();
+    fillConfigVectors();
 
-        neuralFile      =       file;
+    neuralFile      =       file;
 
-        neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
+    neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
-        eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
+    eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 		true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",		true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
 
 
-        eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
-        eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
+    eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
+    eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
+    eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
 
 
@@ -65,7 +65,7 @@ Efic(NeuralChain, NeuralFillingTree){
 //	eficFillingTree->Branch("RingerRoiId",	&roi_id);
 	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
 	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
-	eficFillingTree->Branch("RingerET",	&et);
+	eficFillingTree->Branch("RingerET",    	&et);
 
 
 }
@@ -73,42 +73,42 @@ Efic(NeuralChain, NeuralFillingTree){
 
 Efic::CODE NeuralEfic::fillConfigVectors(){
 
-        for(unsigned int i=0;i<(sizeof(NODESVECTOR)/sizeof(unsigned int));++i){
-                nodesVector.push_back(NODESVECTOR[i]);
-        }
-        for(unsigned int i=0;i<(sizeof(WEIGHTVECTOR)/sizeof(float));++i){
-                weightVector.push_back(WEIGHTVECTOR[i]);
-        }
-        for(unsigned int i=0;i<(sizeof(BIASVECTOR)/sizeof(float));++i){
-                biasVector.push_back(BIASVECTOR[i]);
-        }
+    for(unsigned int i=0;i<(sizeof(NODESVECTOR)/sizeof(unsigned int));++i){
+            nodesVector.push_back(NODESVECTOR[i]);
+    }
+    for(unsigned int i=0;i<(sizeof(WEIGHTVECTOR)/sizeof(float));++i){
+            weightVector.push_back(WEIGHTVECTOR[i]);
+    }
+    for(unsigned int i=0;i<(sizeof(BIASVECTOR)/sizeof(float));++i){
+            biasVector.push_back(BIASVECTOR[i]);
+    }
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 
 Efic::CODE NeuralEfic::exec(){
 
-        for(size_t j=0; j<lvl2_eta->size(); ++j){
+    for(size_t j=0; j<lvl2_eta->size(); ++j){
 
-                vector<float> roiInput;
+        vector<float> roiInput;
 
-                for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k){
+        for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k){
 
-                        roiInput.push_back(rings->at(k));
-                }
-
-		if (neuralFile!=NULL) writeMatlabTxt(roiInput);
-
-                float roiAns = neuralRinger->propagate(roiInput);
-
-                neuralAns->push_back(roiAns);
-
-                fillDecision(roiAns);          
-
-                roiInput.clear();
-
+                roiInput.push_back(rings->at(k));
         }
+
+	if (neuralFile!=NULL) writeMatlabTxt(roiInput);
+
+        float roiAns = neuralRinger->propagate(roiInput);
+
+        neuralAns->push_back(roiAns);
+
+        fillDecision(roiAns);          
+
+        roiInput.clear();
+
+    }
 
 	return Efic::OK;
 
@@ -130,13 +130,13 @@ Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 Efic::CODE NeuralEfic::drawNetAns(){
 
 
-        TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
+    TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
 
-        hNans -> GetXaxis() -> SetTitle("OutPut Neuron Value");
+    hNans -> GetXaxis() -> SetTitle("OutPut Neuron Value");
 
-        vector<float> *netAns   =       new vector<float>;
+    vector<float> *netAns   =       new vector<float>;
 
-        int nEntries            =       static_cast<int>(eficFillingTree->GetEntries());
+    int nEntries            =       static_cast<int>(eficFillingTree->GetEntries());
 
 	eficFillingTree->SetBranchStatus("RingerOut",	true);
 	eficFillingTree->SetBranchAddress("RingerOut",	&netAns);
@@ -153,13 +153,13 @@ Efic::CODE NeuralEfic::drawNetAns(){
 
         }
 
-        hNans->Draw();
+    hNans->Draw();
 
-        delete netAns;
+    delete netAns;
 
-        return Efic::OK;
+    return Efic::OK;
 
-        eficFillingTree->ResetBranchAddresses();
+    eficFillingTree->ResetBranchAddresses();
 
 }
 
@@ -241,9 +241,9 @@ Efic::CODE NeuralEfic::clearVectors(){
 
 NeuralEfic::~NeuralEfic(){
 
-
-        delete rings;
-        delete neuralAns;
-        delete neuralRinger;
+    delete neuralFile;
+    delete rings;
+    delete neuralAns;
+    delete neuralRinger;
 
 }
