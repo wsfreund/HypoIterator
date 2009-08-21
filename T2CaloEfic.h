@@ -3,7 +3,7 @@
 #ifndef T2CALO_EFIC
 #define T2CALO_EFIC
 
-class T2CaloEfic : public Efic {
+export class T2CaloEfic : public Efic {
 
 
         //Variables

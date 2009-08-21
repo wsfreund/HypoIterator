@@ -11,14 +11,14 @@
 
 using namespace std;
 
-class Efic {
+export class Efic {
 
 	protected:
 
 	vector<float>	*lvl2_eta;
 	vector<float>	*lvl2_phi;
 //	vector<float>	*lvl1_id;
-	vector<int>	*decision;
+	vector<int>	    *decision;
 	vector<float>	*et;
 //	vector<float>	*roi_id;
 

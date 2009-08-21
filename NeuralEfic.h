@@ -7,7 +7,7 @@
 
 #define ROISIZE 100
 
-class NeuralEfic : public Efic {
+export class NeuralEfic : public Efic {
 
         vector<float> *rings;
         vector<float> *neuralAns;
@@ -32,14 +32,14 @@ class NeuralEfic : public Efic {
 
 	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree);
 	NeuralEfic(TChain *NeuralChain, TTree *NeuralfillingTree, ofstream *file);
-        CODE exec();
-        CODE drawNetAns();
-        CODE clearVectors();
-        CODE swapVectors(const size_t index1, const size_t index2);
-        CODE eraseVectors(const size_t index);
+    CODE exec();
+    CODE drawNetAns();
+    CODE clearVectors();
+    CODE swapVectors(const size_t index1, const size_t index2);
+    CODE eraseVectors(const size_t index);
 
 
-        ~NeuralEfic();
+    ~NeuralEfic();
 
 };
 
