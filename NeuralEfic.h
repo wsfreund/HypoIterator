@@ -7,7 +7,7 @@
 
 #define ROISIZE 100
 
-export class NeuralEfic : public Efic {
+class NeuralEfic : public Efic {
 
         vector<float> *rings;
         vector<float> *neuralAns;

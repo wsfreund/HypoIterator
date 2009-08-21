@@ -11,7 +11,7 @@
 
 using namespace std;
 
-export class Efic {
+class Efic {
 
 	protected:
 
