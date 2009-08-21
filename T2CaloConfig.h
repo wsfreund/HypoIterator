@@ -7,6 +7,6 @@ const float 	T2CaloEfic::m_hadeT2thr[]	=	{999.0e3, 999.0e3, 999.0e3, 999.0e3, 99
 const float 	T2CaloEfic::m_etabin[]		=	{0., 0.75, 1.37, 1.52, 1.8, 2.0, 2.35, 2.5};
 const float 	T2CaloEfic::m_carcorethr[]	=	{0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85};
 const float 	T2CaloEfic::m_caeratiothr[]	=	{0.60,0.60, 0.60, 0.60, 0.60, 0.60, 0.60};
-const float 	T2CaloEfic::m_F1thr		=	(0.005);
+const float 	T2CaloEfic::m_F1thr		    =	(0.005);
 const float 	T2CaloEfic::m_detacluster	=	(0.1);
 const float 	T2CaloEfic::m_dphicluster	=	(0.1);

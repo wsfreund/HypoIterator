@@ -3,20 +3,20 @@
 
 T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaChain, T2CaFillingTree){
 
-	hadET_T2Calo		=	new vector<float>;
+	hadET_T2Calo	=	new vector<float>;
 	rCore			=	new vector<float>;
 	energyRatio		=	new vector<float>;
-	F1			=	new vector<float>;
+	F1			    =	new vector<float>;
 	energy			=	new vector<float>;
 	ehad1			=	new vector<float>;
 	energyS1		=	new vector<float>;
-	t2CaAns		        =	new vector<int>;
+	t2CaAns		    =	new vector<int>;
 
 	eficReadingChain->SetBranchStatus("T2CaEta", 		true);
 	eficReadingChain->SetBranchStatus("T2CaPhi",		true);
-	eficReadingChain->SetBranchStatus("T2CaRcore", 	        true);
-	eficReadingChain->SetBranchStatus("T2CaEratio",	        true);
-	eficReadingChain->SetBranchStatus("T2CaEmES1", 	        true);
+	eficReadingChain->SetBranchStatus("T2CaRcore", 	    true);
+	eficReadingChain->SetBranchStatus("T2CaEratio",	    true);
+	eficReadingChain->SetBranchStatus("T2CaEmES1", 	    true);
 	eficReadingChain->SetBranchStatus("T2CaEmE", 		true);
 	eficReadingChain->SetBranchStatus("T2CaHadES0", 	true);
 //	eficReadingChain->SetBranchStatus("LVL1ID",	        true);
@@ -29,7 +29,7 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
 	eficReadingChain->SetBranchAddress("T2CaEmE", 		&energy);
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
-//	eficReadingChain->SetBranchAddress("LVL1ID",	        &lvl1_id);
+//	eficReadingChain->SetBranchAddress("LVL1ID",	    &lvl1_id);
 
 
 
