@@ -9,22 +9,22 @@
 
 class NeuralEfic : public Efic {
 
-        vector<float> *rings;
-        vector<float> *neuralAns;
+    vector<float> *rings;
+    vector<float> *neuralAns;
 
-        vector<unsigned int> nodesVector;
-        vector<float> weightVector;
-        vector<float> biasVector;
+    vector<unsigned int> nodesVector;
+    vector<float> weightVector;
+    vector<float> biasVector;
 
-        static const float threshold;
+    static const float threshold;
 
-        ofstream *neuralFile;
+    ofstream *neuralFile;
 
-        Neural *neuralRinger;
+    Neural *neuralRinger;
 
-        CODE fillConfigVectors();
+    CODE fillConfigVectors();
 
-        CODE fillDecision(const float);
+    CODE fillDecision(const float);
 
 	CODE writeMatlabTxt(const vector<float> &roiInput);
 

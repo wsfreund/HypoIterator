@@ -22,8 +22,8 @@ class Efic {
 	vector<float>	*et;
 //	vector<float>	*roi_id;
 
-        TTree   *eficFillingTree;
-        TChain  *eficReadingChain;
+    TTree   *eficFillingTree;
+    TChain  *eficReadingChain;
 
 	public:
 
@@ -32,29 +32,29 @@ class Efic {
 
 	Efic(TChain *outsideChain, TTree *outsideFillingTree){
 
-                eficReadingChain = outsideChain;
+    eficReadingChain = outsideChain;
 
-                eficFillingTree = outsideFillingTree;
+    eficFillingTree = outsideFillingTree;
 
-		lvl2_eta	= 	new vector<float>;
-		lvl2_phi	= 	new vector<float>;
-//		lvl1_id		= 	new vector<float>;
-		decision	= 	new vector<int>;
-		et      	= 	new vector<float>;
-//		roi_id		= 	new vector<float>;
+	lvl2_eta	= 	new vector<float>;
+	lvl2_phi	= 	new vector<float>;
+//  lvl1_id		= 	new vector<float>;
+	decision	= 	new vector<int>;
+	et      	= 	new vector<float>;
+//	roi_id		= 	new vector<float>;
 
 
 	}
 
-        const vector<float> *getEta(){  return lvl2_eta; }
-        const vector<float> *getPhi(){  return lvl2_phi; }
-        const vector<int>   *getDec(){  return decision; }
-        const vector<float> *getEt() {  return et;       }
+    const vector<float> *getEta(){  return lvl2_eta; }
+    const vector<float> *getPhi(){  return lvl2_phi; }
+    const vector<int>   *getDec(){  return decision; }
+    const vector<float> *getEt() {  return et;       }
 
-        virtual CODE clearVectors() = 0;
-        virtual CODE exec() = 0;
-        virtual CODE swapVectors(const size_t index1, const size_t index2) = 0;
-        virtual CODE eraseVectors(const size_t index) = 0;
+    virtual CODE clearVectors() = 0;
+    virtual CODE exec() = 0;
+    virtual CODE swapVectors(const size_t index1, const size_t index2) = 0;
+    virtual CODE eraseVectors(const size_t index) = 0;
 
 	CODE ordenateRoi(const vector<float> *eta, const vector<float> *phi);
 

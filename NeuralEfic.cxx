@@ -48,8 +48,8 @@ Efic(NeuralChain, NeuralFillingTree){
     neuralRinger    =       new Neural( nodesVector, weightVector, biasVector);
 
     eficReadingChain->SetBranchStatus("Ringer_Rings", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",		true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta",   	true);
+	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",    true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
 
 
@@ -165,68 +165,68 @@ Efic::CODE NeuralEfic::drawNetAns(){
 
 Efic::CODE NeuralEfic::fillDecision(const float entry){
 
-        if (entry>threshold) {
-                decision->push_back(Efic::ELECTRON);
-        }
-        else {
-                decision->push_back(Efic::JET);
-        }
+    if (entry>threshold) {
+            decision->push_back(Efic::ELECTRON);
+    }
+    else {
+            decision->push_back(Efic::JET);
+    }
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 
 Efic::CODE NeuralEfic::eraseVectors(const size_t index){
 
-        vector<float>::iterator p;
-        vector<int>::iterator p2;
-        size_t j;
+    vector<float>::iterator p;
+    vector<int>::iterator p2;
+    size_t j;
 
-        for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
-        lvl2_eta->erase(p,lvl2_eta->end());
+    for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
+    lvl2_eta->erase(p,lvl2_eta->end());
 
-        for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
-        lvl2_phi->erase(p,lvl2_phi->end());
+    for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
+    lvl2_phi->erase(p,lvl2_phi->end());
 
-        for( j=0, p = et->begin(); j<index; ++j, ++p) {};
-        et->erase(p,et->end());
+    for( j=0, p = et->begin(); j<index; ++j, ++p) {};
+    et->erase(p,et->end());
 
-        for( j=0, p = neuralAns->begin(); j<index; ++j, ++p) {};
-        neuralAns->erase(p,neuralAns->end());
+    for( j=0, p = neuralAns->begin(); j<index; ++j, ++p) {};
+    neuralAns->erase(p,neuralAns->end());
 
-        for( j=0, p2 = decision->begin(); j<index; ++j, ++p2) {};
-        decision->erase(p2,decision->end());
+    for( j=0, p2 = decision->begin(); j<index; ++j, ++p2) {};
+    decision->erase(p2,decision->end());
 
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 
 Efic::CODE NeuralEfic::swapVectors(const size_t index1, const size_t index2){
 
-        float temp;
-        temp=lvl2_eta->at(index1);
-        lvl2_eta->at(index1)=lvl2_eta->at(index2);
-        lvl2_eta->at(index2)=temp;
+    float temp;
+    temp=lvl2_eta->at(index1);
+    lvl2_eta->at(index1)=lvl2_eta->at(index2);
+    lvl2_eta->at(index2)=temp;
 
-        temp=lvl2_phi->at(index1);
-        lvl2_phi->at(index1)=lvl2_phi->at(index2);
-        lvl2_phi->at(index2)=temp;
+    temp=lvl2_phi->at(index1);
+    lvl2_phi->at(index1)=lvl2_phi->at(index2);
+    lvl2_phi->at(index2)=temp;
 
-        temp=et->at(index1);
-        et->at(index1)=et->at(index2);
-        et->at(index2)=temp;
+    temp=et->at(index1);
+    et->at(index1)=et->at(index2);
+    et->at(index2)=temp;
 
-        temp=neuralAns->at(index1);
-        neuralAns->at(index1)=neuralAns->at(index2);
-        neuralAns->at(index2)=temp;
+    temp=neuralAns->at(index1);
+    neuralAns->at(index1)=neuralAns->at(index2);
+    neuralAns->at(index2)=temp;
 
-        int temp2;
-        temp2=decision->at(index1);
-        decision->at(index1)=decision->at(index2);
-        decision->at(index2)=temp;
+    int temp2;
+    temp2=decision->at(index1);
+    decision->at(index1)=decision->at(index2);
+    decision->at(index2)=temp;
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 

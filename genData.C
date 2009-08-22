@@ -30,17 +30,17 @@ int genData(const char *inPut, const char *outPut){
 	T2CaloEfic	*myT2Calo;
 
 	chainAnalysis 	= new TChain("CollectionTree");
-	chainAnalysis->	Add(inPut);
-	chainAnalysis->	SetBranchStatus("*",	false);
+	chainAnalysis->Add(inPut);
+	chainAnalysis->SetBranchStatus("*",	false);
 
 
 	int nEvents	= static_cast<int>(chainAnalysis->GetEntries());
 	
 	file		= new TFile(outPut,"recreate");
 
-	generateData	= new TTree("HypoData", "Tree with Hypo data");
+	generateData= new TTree("HypoData", "Tree with Hypo data");
 
-	myNeural        = new NeuralEfic(chainAnalysis, generateData);
+	myNeural    = new NeuralEfic(chainAnalysis, generateData);
 	myT2Calo	= new T2CaloEfic(chainAnalysis, generateData);
 
 
@@ -143,12 +143,12 @@ int genData(const char *inPut, const char *outPut, const char txtFile[]){
 		myNeural->exec();
 		myT2Calo->exec();
 
-                myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
+        myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
 
-                generateData->Fill();
+        generateData->Fill();
 
-                myNeural->clearVectors();
-                myT2Calo->clearVectors();
+        myNeural->clearVectors();
+        myT2Calo->clearVectors();
 
 	}//for i
 
@@ -205,9 +205,9 @@ int scatterPlot(TTree *tree){
 
 	int nEntries	        =       static_cast<int>(tree->GetEntries());
 
-        TH2I *scatterPlot = new TH2I("ScatterPlot", "eGammaHyppo x Ringer; T2Calo; Ringer; Log Scale", 2, -2, 2, 2, -2, 2);
+    TH2I *scatterPlot = new TH2I("ScatterPlot", "eGammaHyppo x Ringer; T2Calo; Ringer; Log Scale", 2, -2, 2, 2, -2, 2);
 
-        scatterPlot->SetOption("lego1 cg(1)");
+    scatterPlot->SetOption("lego1 cg(1)");
 
 	vector<int> *ringerDec	=	new vector<int>;
 
@@ -231,7 +231,7 @@ int scatterPlot(TTree *tree){
 
         scatterPlot->GetXaxis()->SetBinLabel(1,"Jets");
 
-	scatterPlot->GetXaxis()->SetBinLabel(2,"Electrons");
+	    scatterPlot->GetXaxis()->SetBinLabel(2,"Electrons");
         
         scatterPlot->GetXaxis()->CenterTitle();
 
@@ -264,8 +264,8 @@ int scatterPlot(TTree *tree){
 
 int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 
-        float neuralElc, totalData, neuralJet, t2CaJet, t2CaElc;
-        neuralElc = neuralJet = t2CaElc = t2CaJet = totalData = 0;
+    float neuralElc, totalData, neuralJet, t2CaJet, t2CaElc;
+    neuralElc = neuralJet = t2CaElc = t2CaJet = totalData = 0;
 
 	vector<int> *ringerDec	=	new vector<int>;
 
@@ -282,65 +282,65 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 	int nEntries	        =       static_cast<int>(tree->GetEntries());
 
 	for(int i=0; i<nEntries;++i){
-		tree->GetEntry(i);
-		for(size_t j=0; j<t2CaDec->size();++j){
-                        if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
-                        else ++neuralJet;
-                        if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
-                        else ++t2CaJet;
-                        ++totalData;                 
-                }
-        }
+	tree->GetEntry(i);
+	for(size_t j=0; j<t2CaDec->size();++j){
+                    if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
+                    else ++neuralJet;
+                    if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
+                    else ++t2CaJet;
+                    ++totalData;                 
+            }
+    }
 
-        cout<<"Total Data "<<totalData<<endl;
-        cout<<"Neural Electrons "<<neuralElc<<endl;
-        cout<<"Neural Jets "<<neuralJet<<endl;
-        cout<<"T2Calo Electrons "<<t2CaElc<<endl;
-        cout<<"T2Calo Jets "<<t2CaJet<<endl;
+    cout<<"Total Data "<<totalData<<endl;
+    cout<<"Neural Electrons "<<neuralElc<<endl;
+    cout<<"Neural Jets "<<neuralJet<<endl;
+    cout<<"T2Calo Electrons "<<t2CaElc<<endl;
+    cout<<"T2Calo Jets "<<t2CaJet<<endl;
 
 
 
-        detNeural = neuralElc*100./totalData;
-        detT2Calo = t2CaElc*100./totalData;
+    detNeural = neuralElc*100./totalData;
+    detT2Calo = t2CaElc*100./totalData;
 
-        TPaveText *pt = new TPaveText(.05,.05,.95,.95);
-        TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
+    TPaveText *pt = new TPaveText(.05,.05,.95,.95);
+    TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
 
-        line1.Form("Total Data = %.0f",totalData);
-        line2.Form("Neural Ringer Detected Electrons = %.0f", neuralElc);
-        line3.Form("Neural Ringer Detected Jets = %.0f", neuralJet);
-        line4.Form("T2Calo Detected Electrons = %.0f", t2CaElc);
-        line5.Form("T2Calo Detected Jets = %.0f", t2CaJet);
-        line6.Form("Neural Ringer Electrons Rate = %.4f", detNeural);
-        line7.Form("Neural Ringer Jets Rate = %.4f", 100.-detNeural);
-        line8.Form("T2Calo Electrons Rate = %.4f", detT2Calo);
-        line9.Form("T2Calo Jets Rate = %.4f", 100.-detT2Calo);
+    line1.Form("Total Data = %.0f",totalData);
+    line2.Form("Neural Ringer Detected Electrons = %.0f", neuralElc);
+    line3.Form("Neural Ringer Detected Jets = %.0f", neuralJet);
+    line4.Form("T2Calo Detected Electrons = %.0f", t2CaElc);
+    line5.Form("T2Calo Detected Jets = %.0f", t2CaJet);
+    line6.Form("Neural Ringer Electrons Rate = %.4f", detNeural);
+    line7.Form("Neural Ringer Jets Rate = %.4f", 100.-detNeural);
+    line8.Form("T2Calo Electrons Rate = %.4f", detT2Calo);
+    line9.Form("T2Calo Jets Rate = %.4f", 100.-detT2Calo);
 
-        pt->AddText("");
-        pt->AddText(line1);
-        pt->AddText("");
-        pt->AddText(line2);
-        pt->AddText(line3);
-        pt->AddText("");
-        pt->AddText(line4);
-        pt->AddText(line5);
-        pt->AddText("");
-        pt->AddText(line6);
-        pt->AddText(line7);
-        pt->AddText("");
-        pt->AddText(line8);
-        pt->AddText(line9);
+    pt->AddText("");
+    pt->AddText(line1);
+    pt->AddText("");
+    pt->AddText(line2);
+    pt->AddText(line3);
+    pt->AddText("");
+    pt->AddText(line4);
+    pt->AddText(line5);
+    pt->AddText("");
+    pt->AddText(line6);
+    pt->AddText(line7);
+    pt->AddText("");
+    pt->AddText(line8);
+    pt->AddText(line9);
 
-        pt->SetFillColor(30);
-        pt->SetTextAlign(12);
+    pt->SetFillColor(30);
+    pt->SetTextAlign(12);
 
-        pt->SetLabel("Hypos Comparison v1.1.2");
+    pt->SetLabel("Hypos Comparison v1.1.3");
 
-        pt->Draw();
+    pt->Draw();
 
-        tree->ResetBranchAddresses();
+    tree->ResetBranchAddresses();
 
-        return 0;
+    return 0;
 
 }
 
