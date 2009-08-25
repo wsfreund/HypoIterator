@@ -50,7 +50,7 @@ Efic::CODE T2CaloEfic::exec(){
 
 	for(size_t j=0; j<lvl2_eta->size(); ++j){
                 
-		calcTransverseFraction(j);//calculate the Transverse Energy and Energy Fraction F1 for it ROI j;
+		calcTransverseFraction(j);//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
 
 		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
 

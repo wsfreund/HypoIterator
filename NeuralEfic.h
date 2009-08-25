@@ -9,6 +9,7 @@
 
 class NeuralEfic : public Efic {
 
+    enum normalizations {sequential = 0};
     vector<float> *rings;
     vector<float> *neuralAns;
 
@@ -37,6 +38,7 @@ class NeuralEfic : public Efic {
     CODE clearVectors();
     CODE swapVectors(const size_t index1, const size_t index2);
     CODE eraseVectors(const size_t index);
+    CODE normalize(const char *method);
 
 
     ~NeuralEfic();

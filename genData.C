@@ -21,7 +21,7 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo);
 
 int scatterPlot(TTree *tree);
 
-int genData(const char *inPut, const char *outPut){
+int genCompData(const char *inPut, const char *outPut){
 
 	TFile 		*file;
 	TChain		*chainAnalysis;
@@ -108,7 +108,7 @@ int genData(const char *inPut, const char *outPut){
 
 }
 
-int genData(const char *inPut, const char *outPut, const char txtFile[]){
+int genCompData(const char *inPut, const char *outPut, const char *txtFile){
 
 	TFile 		*file;
 	TChain		*chainAnalysis;
@@ -227,37 +227,37 @@ int scatterPlot(TTree *tree){
 		for(size_t j=0; j<ringerDec->size();++j){
                         scatterPlot->Fill(t2CaDec->at(j), ringerDec->at(j));                        
                 }
-        }
+    }
 
-        scatterPlot->GetXaxis()->SetBinLabel(1,"Jets");
+    scatterPlot->GetXaxis()->SetBinLabel(1,"Jets");
 
-	    scatterPlot->GetXaxis()->SetBinLabel(2,"Electrons");
-        
-        scatterPlot->GetXaxis()->CenterTitle();
+    scatterPlot->GetXaxis()->SetBinLabel(2,"Electrons");
+    
+    scatterPlot->GetXaxis()->CenterTitle();
 
-        scatterPlot->GetYaxis()->SetBinLabel(1,"Jets");
+    scatterPlot->GetYaxis()->SetBinLabel(1,"Jets");
 
-        scatterPlot->GetYaxis()->SetBinLabel(2,"Electrons");
+    scatterPlot->GetYaxis()->SetBinLabel(2,"Electrons");
 
-        scatterPlot->GetYaxis()->CenterTitle();
+    scatterPlot->GetYaxis()->CenterTitle();
 
-        scatterPlot->SetFillColor(41);
+    scatterPlot->SetFillColor(41);
 
-        gPad->SetLogz();
+    gPad->SetLogz();
 
-        if (scatterPlot->GetBinContent(1,1)>scatterPlot->GetBinContent(2,2)) {
-                gPad->SetTheta(10);
-                gPad->SetPhi(-150);
-        } else {
-                gPad->SetTheta(10);
-                gPad->SetPhi(30);
-        }
+    if (scatterPlot->GetBinContent(1,1)>scatterPlot->GetBinContent(2,2)) {
+            gPad->SetTheta(10);
+            gPad->SetPhi(-150);
+    } else {
+            gPad->SetTheta(10);
+            gPad->SetPhi(30);
+    }
 
-        scatterPlot->SetStats(kFALSE);
-       
-        scatterPlot->Draw();
+    scatterPlot->SetStats(kFALSE);
+   
+    scatterPlot->Draw();
 
-        tree->ResetBranchAddresses();
+    tree->ResetBranchAddresses();
 
         return 0;
 }

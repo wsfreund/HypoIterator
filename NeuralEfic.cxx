@@ -113,6 +113,8 @@ Efic::CODE NeuralEfic::exec(){
 	return Efic::OK;
 
 }
+            
+        
 
 Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 
