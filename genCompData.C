@@ -29,7 +29,7 @@ int genCompData(const char *inPut, const char *outPut){
 	NeuralEfic	*myNeural;
 	T2CaloEfic	*myT2Calo;
 
-	chainAnalysis 	= new TChain("CollectionTree");
+	chainAnalysis = new TChain("CollectionTree");
 	chainAnalysis->Add(inPut);
 	chainAnalysis->SetBranchStatus("*",	false);
 
@@ -246,11 +246,11 @@ int scatterPlot(TTree *tree){
     gPad->SetLogz();
 
     if (scatterPlot->GetBinContent(1,1)>scatterPlot->GetBinContent(2,2)) {
-            gPad->SetTheta(10);
-            gPad->SetPhi(-150);
+        gPad->SetTheta(10);
+        gPad->SetPhi(-150);
     } else {
-            gPad->SetTheta(10);
-            gPad->SetPhi(30);
+        gPad->SetTheta(10);
+        gPad->SetPhi(30);
     }
 
     scatterPlot->SetStats(kFALSE);
@@ -282,14 +282,14 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 	int nEntries	        =       static_cast<int>(tree->GetEntries());
 
 	for(int i=0; i<nEntries;++i){
-	tree->GetEntry(i);
-	for(size_t j=0; j<t2CaDec->size();++j){
-                    if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
-                    else ++neuralJet;
-                    if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
-                    else ++t2CaJet;
-                    ++totalData;                 
-            }
+	    tree->GetEntry(i);
+	    for(size_t j=0; j<t2CaDec->size();++j){
+            if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
+            else ++neuralJet;
+            if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
+            else ++t2CaJet;
+            ++totalData;                 
+        }
     }
 
     cout<<"Total Data "<<totalData<<endl;
@@ -345,6 +345,6 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 }
 
 
-float productSP(const float eDetRatio, const float jDetRatio){
+inline float productSP(const float eDetRatio, const float jDetRatio){
 	return ((eDetRatio/100.+jDetRatio/100.)/2.)*sqrt(eDetRatio/100.*jDetRatio/100.);
 }
