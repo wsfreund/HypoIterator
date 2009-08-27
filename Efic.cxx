@@ -25,7 +25,7 @@ Efic::CODE Efic::ordenateRoi(const vector<float> *eta, const vector<float> *phi)
         }
 
         else {
-//                eraseVectors(j);
+                eraseVectors(j);
                 break;
         }
 
