@@ -23,7 +23,7 @@ class T2CaloEfic : public Efic {
 	//Vector with T2Calo Cuts;
 	vector<int>	*t2CaAns;
 
-        //Functions
+    //Functions
 
 	CODE calcTransverseFraction(const size_t j);
 
@@ -58,13 +58,13 @@ class T2CaloEfic : public Efic {
 
 	T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree);
 
-        const vector<int> *getT2CaAns() { return t2CaAns; }
+    const vector<int> *getT2CaAns() { return t2CaAns; }
 
 	CODE exec();
 	CODE drawCutCounter();
 	CODE clearVectors();
-        CODE swapVectors(const size_t index1, const size_t index2);
-        CODE eraseVectors(const size_t index);
+    CODE swapVectors(const size_t index1, const size_t index2);
+    CODE eraseVectors(const size_t index);
 
 
 	~T2CaloEfic();
