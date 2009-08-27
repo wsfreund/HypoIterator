@@ -61,6 +61,7 @@ int genCompData(const char *inPut, const char *outPut){
 	}//for i
 
 	generateData->Write(); //Gera arquivo .root
+    file->Close();
 
     float elcRateNeural;
     float elcRateT2Ca;
@@ -101,7 +102,7 @@ int genCompData(const char *inPut, const char *outPut){
 	delete generateData;
     delete myT2Calo;
 	delete myNeural;
-//	delete file;
+	delete file;
 
 	return 0;
 
