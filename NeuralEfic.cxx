@@ -26,8 +26,6 @@ Efic(NeuralChain, NeuralFillingTree){
 
 	eficFillingTree->Branch("RingerOut",	&neuralAns);
 	eficFillingTree->Branch("RingerDec",	&decision);
-//	eficFillingTree->Branch("RingerLvl1Id",	&lvl1_id);
-//	eficFillingTree->Branch("RingerRoiId",	&roi_id);
 	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
 	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
 	eficFillingTree->Branch("RingerET",	    &et);
@@ -61,8 +59,6 @@ Efic(NeuralChain, NeuralFillingTree){
 
 	eficFillingTree->Branch("RingerOut",	&neuralAns);
 	eficFillingTree->Branch("RingerDec",	&decision);
-//	eficFillingTree->Branch("RingerLvl1Id",	&lvl1_id);
-//	eficFillingTree->Branch("RingerRoiId",	&roi_id);
 	eficFillingTree->Branch("RingerEta",	&lvl2_eta);
 	eficFillingTree->Branch("RingerPhi",	&lvl2_phi);
 	eficFillingTree->Branch("RingerET",    	&et);
@@ -93,21 +89,16 @@ Efic::CODE NeuralEfic::exec(){
 
         vector<float> roiInput;
 
-        for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k){
-
-                roiInput.push_back(rings->at(k));
-        }
-
+        for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k)
+            roiInput.push_back(rings->at(k));
+        
 	if (neuralFile!=NULL) writeMatlabTxt(roiInput);
 
         float roiAns = neuralRinger->propagate(roiInput);
 
         neuralAns->push_back(roiAns);
-
         fillDecision(roiAns);          
-
         roiInput.clear();
-
     }
 
 	return Efic::OK;
@@ -119,10 +110,8 @@ Efic::CODE NeuralEfic::exec(){
 Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 
 	for(size_t i=0; i<roiInput.size()/ROISIZE;++i){
-		for(size_t j=0; j<ROISIZE; j++){
-
+		for(size_t j=0; j<ROISIZE; j++)
 			*neuralFile<<roiInput.at(j+ROISIZE*i)<<" ";
-		}
 		*neuralFile<<";";
 	}	
 	
@@ -131,29 +120,20 @@ Efic::CODE NeuralEfic::writeMatlabTxt(const vector<float> &roiInput){
 
 Efic::CODE NeuralEfic::drawNetAns(){
 
-
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
-
     hNans -> GetXaxis() -> SetTitle("OutPut Neuron Value");
 
     vector<float> *netAns   =       new vector<float>;
-
     int nEntries            =       static_cast<int>(eficFillingTree->GetEntries());
 
 	eficFillingTree->SetBranchStatus("RingerOut",	true);
 	eficFillingTree->SetBranchAddress("RingerOut",	&netAns);
 
 	for(int i=0; i<nEntries;++i){
-
-		eficFillingTree->GetEntry(i);
-
-		for(size_t j=0; j<netAns->size();++j){
-
-                        hNans->Fill(netAns->at(j));
-
-                }
-
-        }
+	    eficFillingTree->GetEntry(i);
+	    for(size_t j=0; j<netAns->size();++j)
+            hNans->Fill(netAns->at(j));
+    }
 
     hNans->Draw();
 
@@ -180,25 +160,11 @@ Efic::CODE NeuralEfic::fillDecision(const float entry){
 
 Efic::CODE NeuralEfic::eraseVectors(const size_t index){
 
-    vector<float>::iterator p;
-    vector<int>::iterator p2;
-    size_t j;
-
-    for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
-    lvl2_eta->erase(p,lvl2_eta->end());
-
-    for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
-    lvl2_phi->erase(p,lvl2_phi->end());
-
-    for( j=0, p = et->begin(); j<index; ++j, ++p) {};
-    et->erase(p,et->end());
-
-    for( j=0, p = neuralAns->begin(); j<index; ++j, ++p) {};
-    neuralAns->erase(p,neuralAns->end());
-
-    for( j=0, p2 = decision->begin(); j<index; ++j, ++p2) {};
-    decision->erase(p2,decision->end());
-
+    lvl2_eta->erase(lvl2_eta->begin() + index,lvl2_eta->end());
+    lvl2_phi->erase( lvl2_phi->begin() + index ,lvl2_phi->end());
+    et->erase(et->begin()+index,et->end());
+    neuralAns->erase(neuralAns->begin()+index,neuralAns->end());
+    decision->erase(decision->begin()+index,decision->end());
 
     return Efic::OK;
 
@@ -243,7 +209,7 @@ Efic::CODE NeuralEfic::clearVectors(){
 
 NeuralEfic::~NeuralEfic(){
 
-    delete neuralFile;
+    if (neuralFile!=NULL) delete neuralFile;
     delete rings;
     delete neuralAns;
     delete neuralRinger;
