@@ -19,7 +19,6 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchStatus("T2CaEmES1", 	    true);
 	eficReadingChain->SetBranchStatus("T2CaEmE", 		true);
 	eficReadingChain->SetBranchStatus("T2CaHadES0", 	true);
-//	eficReadingChain->SetBranchStatus("LVL1ID",	        true);
 
 
 	eficReadingChain->SetBranchAddress("T2CaEta", 		&lvl2_eta);
@@ -29,14 +28,10 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
 	eficReadingChain->SetBranchAddress("T2CaEmE", 		&energy);
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
-//	eficReadingChain->SetBranchAddress("LVL1ID",	    &lvl1_id);
-
 
 
 	eficFillingTree->		Branch("T2CaOut",	&t2CaAns);
 	eficFillingTree->		Branch("T2CaDec",	&decision);
-//	eficFillingTree->		Branch("T2Calvl1_id",	&lvl1_id);
-//	eficFillingTree->		Branch("T2CaRoi_id",	&roi_id);
 	eficFillingTree->		Branch("T2CaEta",	&lvl2_eta);
 	eficFillingTree->		Branch("T2CaPhi",	&lvl2_phi);
 	eficFillingTree->		Branch("T2CaET",	&et);
@@ -203,55 +198,55 @@ inline bool T2CaloEfic::cutF1(const float F1){
 
 Efic::CODE T2CaloEfic::eraseVectors(const size_t index){
 
-        vector<float>::iterator p;
-        vector<int>::iterator p2;
-        size_t j;
+    vector<float>::iterator p;
+    vector<int>::iterator p2;
+    size_t j;
 
-        for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
-        lvl2_eta->erase(p,lvl2_eta->end());
+    for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
+    lvl2_eta->erase(p,lvl2_eta->end());
 
-        for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
-        lvl2_phi->erase(p,lvl2_phi->end());
+    for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
+    lvl2_phi->erase(p,lvl2_phi->end());
 
-        for( j=0, p = et->begin(); j<index; ++j, ++p) {};
-        et->erase(p,et->end());
+    for( j=0, p = et->begin(); j<index; ++j, ++p) {};
+    et->erase(p,et->end());
 
-        for( j=0, p2 = t2CaAns->begin(); j<index; ++j, ++p2) {};
-        t2CaAns->erase(p2,t2CaAns->end());
+    for( j=0, p2 = t2CaAns->begin(); j<index; ++j, ++p2) {};
+    t2CaAns->erase(p2,t2CaAns->end());
 
-        for( j=0, p2 = decision->begin(); j<index; ++j, ++p2) {};
-        decision->erase(p2,decision->end());
+    for( j=0, p2 = decision->begin(); j<index; ++j, ++p2) {};
+    decision->erase(p2,decision->end());
 
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 
 Efic::CODE T2CaloEfic::swapVectors(const size_t index1, const size_t index2){
 
-        float temp;
-        temp=lvl2_eta->at(index1);
-        lvl2_eta->at(index1)=lvl2_eta->at(index2);
-        lvl2_eta->at(index2)=temp;
+    float temp;
+    temp=lvl2_eta->at(index1);
+    lvl2_eta->at(index1)=lvl2_eta->at(index2);
+    lvl2_eta->at(index2)=temp;
 
-        temp=lvl2_phi->at(index1);
-        lvl2_phi->at(index1)=lvl2_phi->at(index2);
-        lvl2_phi->at(index2)=temp;
+    temp=lvl2_phi->at(index1);
+    lvl2_phi->at(index1)=lvl2_phi->at(index2);
+    lvl2_phi->at(index2)=temp;
 
-        temp=et->at(index1);
-        et->at(index1)=et->at(index2);
-        et->at(index2)=temp;
+    temp=et->at(index1);
+    et->at(index1)=et->at(index2);
+    et->at(index2)=temp;
 
-        temp=t2CaAns->at(index1);
-        t2CaAns->at(index1)=t2CaAns->at(index2);
-        t2CaAns->at(index2)=temp;
+    temp=t2CaAns->at(index1);
+    t2CaAns->at(index1)=t2CaAns->at(index2);
+    t2CaAns->at(index2)=temp;
 
-        int temp2;
-        temp2=decision->at(index1);
-        decision->at(index1)=decision->at(index2);
-        decision->at(index2)=temp;
+    int temp2;
+    temp2=decision->at(index1);
+    decision->at(index1)=decision->at(index2);
+    decision->at(index2)=temp;
 
-        return Efic::OK;
+    return Efic::OK;
 
 }
 
@@ -334,9 +329,9 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 	hCuts->Draw();
 
-        delete readOutPut;
+    delete readOutPut;
 
-        eficFillingTree->ResetBranchAddresses();
+    eficFillingTree->ResetBranchAddresses();
 
 	return Efic::OK;
 
@@ -344,6 +339,7 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 T2CaloEfic::~T2CaloEfic(){
 
+    eficFillingTree->ResetBranchAddresses();
 	delete 	hadET_T2Calo;
 	delete	rCore;
 	delete	energyRatio;
