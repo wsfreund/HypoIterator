@@ -339,7 +339,6 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 T2CaloEfic::~T2CaloEfic(){
 
-    eficFillingTree->ResetBranchAddresses();
 	delete 	hadET_T2Calo;
 	delete	rCore;
 	delete	energyRatio;
