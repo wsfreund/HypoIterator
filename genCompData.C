@@ -196,7 +196,7 @@ int genCompData(const char *inPut, const char *outPut, const char *txtFile){
 	delete generateData;
     delete myT2Calo;
 	delete myNeural;
-	delete file;
+//	delete file;
 
 	return 0;
 
