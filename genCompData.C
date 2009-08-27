@@ -97,11 +97,12 @@ int genCompData(const char *inPut, const char *outPut){
     cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
 
 
-    file->Close();
+
 	delete chainAnalysis;
 	delete generateData;
     delete myT2Calo;
 	delete myNeural;
+    file->Close();
 	delete file;
 
 	return 0;
@@ -191,11 +192,12 @@ int genCompData(const char *inPut, const char *outPut, const char *txtFile){
 
     matlabFile.close();
 
-    file->Close();
+
 	delete chainAnalysis;
 	delete generateData;
     delete myT2Calo;
 	delete myNeural;
+    file->Close();
 //	delete file;
 
 	return 0;
@@ -261,7 +263,7 @@ int scatterPlot(TTree *tree){
 
     tree->ResetBranchAddresses();
 
-        return 0;
+    return 0;
 }
 
 int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
