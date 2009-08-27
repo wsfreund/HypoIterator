@@ -61,7 +61,7 @@ int genCompData(const char *inPut, const char *outPut){
 	}//for i
 
 	generateData->Write(); //Gera arquivo .root
-    file->Close();
+
 
     float elcRateNeural;
     float elcRateT2Ca;
@@ -97,7 +97,7 @@ int genCompData(const char *inPut, const char *outPut){
     cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
 
 
-
+    file->Close();
 	delete chainAnalysis;
 	delete generateData;
     delete myT2Calo;
@@ -191,11 +191,12 @@ int genCompData(const char *inPut, const char *outPut, const char *txtFile){
 
     matlabFile.close();
 
+    file->Close();
 	delete chainAnalysis;
 	delete generateData;
     delete myT2Calo;
 	delete myNeural;
-//	delete file;
+	delete file;
 
 	return 0;
 
