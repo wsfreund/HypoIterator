@@ -144,8 +144,8 @@ Efic::CODE NeuralEfic::drawNetAns(){
     vector<float> *netAns   =       new vector<float>;
     int nEntries            =       static_cast<int>(eficFillingTree->GetEntries());
 
-	eficFillingTree->SetBranchStatus("RingerOut",	true);
-	eficFillingTree->SetBranchAddress("RingerOut",	&netAns);
+	eficFillingTree->SetBranchStatus("Ringer_Out",	true);
+	eficFillingTree->SetBranchAddress("Ringer_Out",	&netAns);
 
 	for(int i=0; i<nEntries;++i){
 	    eficFillingTree->GetEntry(i);

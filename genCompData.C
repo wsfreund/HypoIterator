@@ -215,9 +215,9 @@ int scatterPlot(TTree *tree){
 
 	vector<int> *t2CaDec	=	new vector<int>;
 
-	tree->SetBranchStatus("RingerDec",	true);
+	tree->SetBranchStatus("Ringer_Dec",	true);
 
-	tree->SetBranchAddress("RingerDec",	&ringerDec);
+	tree->SetBranchAddress("Ringer_Dec",	&ringerDec);
 
 	tree->SetBranchStatus("T2CaDec",	true);
 
@@ -273,9 +273,9 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 
 	vector<int> *t2CaDec	=	new vector<int>;
 
-	tree->SetBranchStatus("RingerDec",	true);
+	tree->SetBranchStatus("Ringer_Dec",	true);
 
-	tree->SetBranchAddress("RingerDec",	&ringerDec);
+	tree->SetBranchAddress("Ringer_Dec",	&ringerDec);
 
 	tree->SetBranchStatus("T2CaDec",	true);
 
