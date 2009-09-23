@@ -6,8 +6,8 @@ Efic(NeuralChain, NeuralFillingTree){
 
     rings           =       new vector<float>;
     neuralAns       =       new vector<float>;
-    lvl1_id         =       new vector<float>;
-    roi_id          =       new vector<float>;
+    lvl1_id         =       new vector<int>;
+    roi_id          =       new vector<int>;
 
 
     fillConfigVectors();
@@ -48,8 +48,8 @@ Efic(NeuralChain, NeuralFillingTree){
 
     rings           =       new vector<float>;
     neuralAns       =       new vector<float>;
-    lvl1_id         =       new vector<float>;
-    roi_id          =       new vector<float>;
+    lvl1_id         =       new vector<int>;
+    roi_id          =       new vector<int>;
 
     fillConfigVectors();
 
@@ -212,6 +212,14 @@ Efic::CODE NeuralEfic::swapVectors(const size_t index1, const size_t index2){
     decision->at(index1)=decision->at(index2);
     decision->at(index2)=temp;
 
+    temp2=lvl1_id->at(index1);
+    lvl1_id->at(index1)=lvl1_id->at(index2);
+    lvl1_id->at(index2)=temp;
+
+    temp2=roi_id->at(index1);
+    roi_id->at(index1)=roi_id->at(index2);
+    roi_id->at(index2)=temp;
+
     return Efic::OK;
 
 }
@@ -220,7 +228,7 @@ Efic::CODE NeuralEfic::clearVectors(){
 
 	neuralAns->clear();
 	decision->clear();
-
+    
 	return Efic::OK;
 
 }
@@ -228,6 +236,9 @@ Efic::CODE NeuralEfic::clearVectors(){
 NeuralEfic::~NeuralEfic(){
 
     if (neuralFile!=NULL) delete neuralFile;
+
+    delete lvl1_id;
+    delete roi_id;
     delete rings;
     delete neuralAns;
     delete neuralRinger;
