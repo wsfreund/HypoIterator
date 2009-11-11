@@ -30,11 +30,11 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
 
 
-	eficFillingTree->		Branch("T2CaOut",	&t2CaAns);
-	eficFillingTree->		Branch("T2CaDec",	&decision);
-	eficFillingTree->		Branch("T2CaEta",	&lvl2_eta);
-	eficFillingTree->		Branch("T2CaPhi",	&lvl2_phi);
-	eficFillingTree->		Branch("T2CaET",	&et);
+	eficFillingTree->Branch("T2CaOut",	&t2CaAns);
+	eficFillingTree->Branch("T2CaDec",	&decision);
+	eficFillingTree->Branch("T2CaEta",	&lvl2_eta);
+	eficFillingTree->Branch("T2CaPhi",	&lvl2_phi);
+	eficFillingTree->Branch("T2CaET",	&et);
 
 
 }
@@ -51,7 +51,7 @@ Efic::CODE T2CaloEfic::exec(){
 
 		t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
 
-		fillDecision(roiAns); //Fill vector telling if the event was a electron or a jet;
+		fillDecision(roiAns); //Fill vector with event answer;
 
 	}//for j
 
