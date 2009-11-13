@@ -10,7 +10,7 @@ file=fopen(fileName,'w');
 if(mode=='p'),
 	fprintf(file, 'NodesVector=[');
 else
-	fprintf(file, 'const unsigned NodesVector[]= { ');
+	fprintf(file, 'const unsigned int NODESVECTOR[]= { ');
 end;
 
 %Getting nNodes params:
@@ -50,7 +50,7 @@ sumInputWeights=nNodes(1,1)*nNodes(2,1);
 if(mode=='p')
 	fprintf(file, 'WeightVector=[');
 else
-	fprintf(file, 'const float WeightVector[]={');
+	fprintf(file, 'const float WEIGTHVECTOR[]={');
 end;
 
 weights = reshape (net.iw{1}',1,[]);
@@ -76,7 +76,7 @@ end;
 if (mode=='p')
 	fprintf(file, 'BiasVector=[');
 else
-	fprintf(file, 'const float BiasVector[]={');
+	fprintf(file, 'const float BIASVECTOR[]={');
 end;
 	
 bias=[];
