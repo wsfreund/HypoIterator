@@ -35,7 +35,7 @@ int genCompData(const char *inPut, const char *outPut){
 
 
 	int nEvents	= static_cast<int>(chainAnalysis->GetEntries());
-	
+	cout<<nEvents<<std::endl;
 	file		= new TFile(outPut,"recreate");
 
 	generateData= new TTree("HypoData", "Tree with Hypo data");
@@ -45,7 +45,7 @@ int genCompData(const char *inPut, const char *outPut){
 
 
 	for(int i = 0; i<nEvents; ++i){
-        cout<<i<<std::entdl;
+        cout<<i<<std::endl;
 		chainAnalysis->GetEntry(i);
 
 		myNeural->exec();
