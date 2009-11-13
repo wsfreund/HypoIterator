@@ -10,7 +10,7 @@ file=fopen(fileName,'w');
 if(mode=='p'),
 	fprintf(file, 'NodesVector=[');
 else
-	fprintf(file, 'const float NodesVector[]= { ');
+	fprintf(file, 'const unsigned NodesVector[]= { ');
 end;
 
 %Getting nNodes params:
