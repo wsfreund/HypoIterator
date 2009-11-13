@@ -227,7 +227,7 @@ int scatterPlot(TTree *tree){
 	for(int i=0; i<nEntries;++i){
 		tree->GetEntry(i);
 		for(size_t j=0; j<ringerDec->size();++j){
-//        		if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
+        		if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
                         scatterPlot->Fill(t2CaDec->at(j), ringerDec->at(j));                        
                 }
     }
@@ -288,7 +288,7 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 	for(int i=0; i<nEntries;++i){
 	    tree->GetEntry(i);
 	    for(size_t j=0; j<t2CaDec->size();++j){
-//		       if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
+		       if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
             if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
             else ++neuralJet;
             if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
