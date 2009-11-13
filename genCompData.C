@@ -45,7 +45,7 @@ int genCompData(const char *inPut, const char *outPut){
 
 
 	for(int i = 0; i<nEvents; ++i){
-
+        cout<<i<<std::entdl;
 		chainAnalysis->GetEntry(i);
 
 		myNeural->exec();
