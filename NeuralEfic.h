@@ -19,7 +19,7 @@ class NeuralEfic : public Efic {
     vector<float> weightVector;
     vector<float> biasVector;
 
-    static const float threshold;
+    static const float threshold = 0;
 
     ofstream *neuralFile;
 
