@@ -60,10 +60,10 @@ for i=2:net.numLayers,
 end;
 
 %Printing weight values:
-w=size(weights);
-fprintf(file, '%.15e', weights(1,1));
+w=size(weightsTest);
+fprintf(file, '%.15e',weightsTest(1,1));
 for i=2:w(1,2),
-    fprintf(file, ',%.15e',weights(1,i));
+    fprintf(file, ',%.15e',weightsTest(1,i));
 end;
 
 if (mode=='p');
