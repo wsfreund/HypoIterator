@@ -12,8 +12,8 @@ class NeuralEfic : public Efic {
     enum normalizations {sequential = 0};
     vector<float> *rings;
     vector<float> *neuralAns;
-    vector<int> *lvl1_id;
-    vector<int> *roi_id;
+//    vector<int> *lvl1_id;
+//    vector<int> *roi_id;
 
     vector<unsigned int> nodesVector;
     vector<float> weightVector;

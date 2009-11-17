@@ -6,8 +6,8 @@ Efic(NeuralChain, NeuralFillingTree){
 
     rings           =       new vector<float>;
     neuralAns       =       new vector<float>;
-    lvl1_id         =       new vector<int>;
-    roi_id          =       new vector<int>;
+//    lvl1_id         =       new vector<int>;
+//    roi_id          =       new vector<int>;
 
 
     fillConfigVectors();
@@ -19,16 +19,16 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta", 	true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",    true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL1_Id",		true);
-	eficReadingChain->SetBranchStatus("Ringer_Roi_Id",		true);
+//	eficReadingChain->SetBranchStatus("Ringer_LVL1_Id",		true);
+//	eficReadingChain->SetBranchStatus("Ringer_Roi_Id",		true);
 
 
     eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
     eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
     eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
-	eficReadingChain->SetBranchAddress("Ringer_LVL1_Id",	&lvl1_id);
-	eficReadingChain->SetBranchAddress("Ringer_Roi_Id",	    &roi_id);
+//	eficReadingChain->SetBranchAddress("Ringer_LVL1_Id",	&lvl1_id);
+//	eficReadingChain->SetBranchAddress("Ringer_Roi_Id",	    &roi_id);
 
 
 
@@ -37,8 +37,8 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficFillingTree->Branch("Ringer_LVL2_Eta",	&lvl2_eta);
 	eficFillingTree->Branch("Ringer_LVL2_Phi",	&lvl2_phi);
 	eficFillingTree->Branch("Ringer_LVL2_Et",	&et);
-	eficFillingTree->Branch("Ringer_Roi_Id",	&roi_id);
-	eficFillingTree->Branch("Ringer_LVL1_Id",	&lvl1_id);
+//	eficFillingTree->Branch("Ringer_Roi_Id",	&roi_id);
+//	eficFillingTree->Branch("Ringer_LVL1_Id",	&lvl1_id);
 
 
 }
@@ -48,8 +48,8 @@ Efic(NeuralChain, NeuralFillingTree){
 
     rings           =       new vector<float>;
     neuralAns       =       new vector<float>;
-    lvl1_id         =       new vector<int>;
-    roi_id          =       new vector<int>;
+//    lvl1_id         =       new vector<int>;
+//    roi_id          =       new vector<int>;
 
     fillConfigVectors();
 
@@ -61,16 +61,16 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Eta",   	true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Phi",    true);
 	eficReadingChain->SetBranchStatus("Ringer_LVL2_Et",		true);
-	eficReadingChain->SetBranchStatus("Ringer_LVL1_Id",		true);
-	eficReadingChain->SetBranchStatus("Ringer_Roi_Id",		true);
+//	eficReadingChain->SetBranchStatus("Ringer_LVL1_Id",		true);
+//	eficReadingChain->SetBranchStatus("Ringer_Roi_Id",		true);
 
 
     eficReadingChain->SetBranchAddress("Ringer_Rings",      &rings);
     eficReadingChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
     eficReadingChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
 	eficReadingChain->SetBranchAddress("Ringer_LVL2_Et",	&et);
-	eficReadingChain->SetBranchAddress("Ringer_LVL1_Id",	&lvl1_id);
-	eficReadingChain->SetBranchAddress("Ringer_Roi_Id",	    &roi_id);
+//	eficReadingChain->SetBranchAddress("Ringer_LVL1_Id",	&lvl1_id);
+//	eficReadingChain->SetBranchAddress("Ringer_Roi_Id",	    &roi_id);
 
 
 	eficFillingTree->Branch("Ringer_Out",	    &neuralAns);
@@ -78,8 +78,8 @@ Efic(NeuralChain, NeuralFillingTree){
 	eficFillingTree->Branch("Ringer_LVL2_Eta",	&lvl2_eta);
 	eficFillingTree->Branch("Ringer_LVL2_Phi",	&lvl2_phi);
 	eficFillingTree->Branch("Ringer_LVL2_Et",	&et);
-	eficFillingTree->Branch("Ringer_Roi_Id",	&roi_id);
-	eficFillingTree->Branch("Ringer_LVL1_Id",	&lvl1_id);
+//	eficFillingTree->Branch("Ringer_Roi_Id",	&roi_id);
+//	eficFillingTree->Branch("Ringer_LVL1_Id",	&lvl1_id);
 
 
 }
@@ -212,13 +212,13 @@ Efic::CODE NeuralEfic::swapVectors(const size_t index1, const size_t index2){
     decision->at(index1)=decision->at(index2);
     decision->at(index2)=temp;
 
-    temp2=lvl1_id->at(index1);
-    lvl1_id->at(index1)=lvl1_id->at(index2);
-    lvl1_id->at(index2)=temp;
+//    temp2=lvl1_id->at(index1);
+//    lvl1_id->at(index1)=lvl1_id->at(index2);
+//    lvl1_id->at(index2)=temp;
 
-    temp2=roi_id->at(index1);
-    roi_id->at(index1)=roi_id->at(index2);
-    roi_id->at(index2)=temp;
+//    temp2=roi_id->at(index1);
+//    roi_id->at(index1)=roi_id->at(index2);
+//    roi_id->at(index2)=temp;
 
     return Efic::OK;
 
@@ -237,8 +237,8 @@ NeuralEfic::~NeuralEfic(){
 
     if (neuralFile!=NULL) delete neuralFile;
 
-    delete lvl1_id;
-    delete roi_id;
+//    delete lvl1_id;
+//    delete roi_id;
     delete rings;
     delete neuralAns;
     delete neuralRinger;
