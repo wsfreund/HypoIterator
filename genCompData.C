@@ -225,7 +225,7 @@ int scatterPlot(TTree *tree){
 	for(int i=0; i<nEntries;++i){
 		tree->GetEntry(i);
 		for(size_t j=0; j<ringerDec->size();++j){
-        		if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
+        		if ( (pos = (pos +1) % 2) ) continue;//Utilizando apenas conjunto de teste
                         scatterPlot->Fill(t2CaDec->at(j), ringerDec->at(j));                        
                 }
     }
@@ -286,7 +286,7 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 	for(int i=0; i<nEntries;++i){
 	    tree->GetEntry(i);
 	    for(size_t j=0; j<t2CaDec->size();++j){
-		       if ( (pos = (pos +1) % 3) ) continue;//Utilizando apenas conjunto de teste
+		       if ( (pos = (pos +1) % 2) ) continue;//Utilizando apenas conjunto de teste
             if (ringerDec->at(j)==Efic::ELECTRON) ++neuralElc;
             else ++neuralJet;
             if (t2CaDec->at(j)==Efic::ELECTRON) ++t2CaElc;
@@ -337,7 +337,7 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
     pt->SetFillColor(30);
     pt->SetTextAlign(12);
 
-    pt->SetLabel("Hypos Comparison v1.1.3");
+    pt->SetLabel("Hypos Comparison v3.0.0");
 
     pt->Draw();
 
@@ -349,5 +349,5 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 
 
 inline float productSP(const float eDetRatio, const float jDetRatio){
-	return ((eDetRatio/100.+jDetRatio/100.)/2.)*sqrt(eDetRatio/100.*jDetRatio/100.);
+	return (sqrt((eDetRatio/100.+jDetRatio/100.)/2.)*sqrt(eDetRatio/100.*jDetRatio/100.));
 }
