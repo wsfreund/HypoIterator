@@ -8,10 +8,10 @@
 #include <TCanvas.h>
 #include <TString.h>
 #include <TPaveText.h>
-#include "Efic.h"
-#include "Neural.h"
-#include "NeuralEfic.h"
-#include "T2CaloEfic.h"
+#include "../Efic.h"
+#include "../Neural.h"
+#include "../NeuralEfic.h"
+#include "../T2CaloEfic.h"
 using namespace std;
 
 

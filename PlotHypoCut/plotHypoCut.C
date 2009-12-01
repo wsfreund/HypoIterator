@@ -15,8 +15,6 @@
 using namespace std;
 
 
-float productSP(const float eDetRatio, const float jDetRatio);
-
 int calcEfic(TTree *tree, float &detNeural, float &detT2Calo);
 
 int scatterPlot(TTree *tree);
@@ -347,7 +345,3 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 
 }
 
-
-inline float productSP(const float eDetRatio, const float jDetRatio){
-	return (sqrt((eDetRatio/100.+jDetRatio/100.)/2.)*sqrt(eDetRatio/100.*jDetRatio/100.));
-}
