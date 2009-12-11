@@ -1,11 +1,11 @@
 #include "NeuralEfic.h"
-#include "NeuralEficConfig.h"
+
 
 NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree):
 Efic(NeuralChain, NeuralFillingTree){
 
-    rings           =       new vector<float>;
-    neuralAns       =       new vector<float>;
+    rings           =       new std::vector<float>;
+    neuralAns       =       new std::vector<float>;
 //    lvl1_id         =       new vector<int>;
 //    roi_id          =       new vector<int>;
 
@@ -46,8 +46,8 @@ Efic(NeuralChain, NeuralFillingTree){
 NeuralEfic::NeuralEfic(TChain *NeuralChain, TTree *NeuralFillingTree, ofstream *file):
 Efic(NeuralChain, NeuralFillingTree){
 
-    rings           =       new vector<float>;
-    neuralAns       =       new vector<float>;
+    rings           =       new std::vector<float>;
+    neuralAns       =       new std::vector<float>;
 //    lvl1_id         =       new vector<int>;
 //    roi_id          =       new vector<int>;
 
@@ -105,7 +105,7 @@ Efic::CODE NeuralEfic::exec(){
 
     for(size_t j=0; j<lvl2_eta->size(); ++j){
 
-        vector<float> roiInput;
+        std::vector<float> roiInput;
 
         for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k)
             roiInput.push_back(rings->at(k));
@@ -141,7 +141,7 @@ Efic::CODE NeuralEfic::drawNetAns(){
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
     hNans -> GetXaxis() -> SetTitle("OutPut Neuron Value");
 
-    vector<float> *netAns   =       new vector<float>;
+    vector<float> *netAns   =       new std::vector<float>;
     int nEntries            =       static_cast<int>(eficFillingTree->GetEntries());
 
 	eficFillingTree->SetBranchStatus("Ringer_Out",	true);

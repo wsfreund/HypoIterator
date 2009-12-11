@@ -8,14 +8,10 @@
 #include <TCanvas.h>
 #include <TString.h>
 #include <TPaveText.h>
-#include "../Efic.h"
+#include "Efic.h"
 #include "../Neural.h"
-#include "../NeuralEfic.h"
-#include "../T2CaloEfic.h"
-using namespace std;
-
-
-float productSP(const float eDetRatio, const float jDetRatio);
+#include "NeuralEfic.h"
+#include "T2CaloEfic.h"
 
 int calcEfic(TTree *tree, float &detNeural, float &detT2Calo);
 
@@ -90,9 +86,9 @@ int genCompData(const char *inPut, const char *outPut){
 
     canvas->Update();
 
-    cout<<"Ringer electron eficiency "<<elcRateNeural<<endl;
+    std::cout<<"Ringer electron eficiency "<<elcRateNeural<<std::endl;
 
-    cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
+    std::cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<std::endl;
 
 
 
@@ -183,9 +179,9 @@ int genCompData(const char *inPut, const char *outPut, const char *txtFile){
 
     canvas->Update();
 
-    cout<<"Ringer electron eficiency "<<elcRateNeural<<endl;
+    std::cout<<"Ringer electron eficiency "<<elcRateNeural<<std::endl;
 
-    cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<endl;
+    std::cout<<"T2Calo electron eficiency "<<elcRateT2Ca<<std::endl;
 
     matlabFile.close();
 
@@ -209,9 +205,9 @@ int scatterPlot(TTree *tree){
 
     scatterPlot->SetOption("lego1 cg(1)");
 
-	vector<int> *ringerDec	=	new vector<int>;
+	std::vector<int> *ringerDec	=	new std::vector<int>;
 
-	vector<int> *t2CaDec	=	new vector<int>;
+	std::vector<int> *t2CaDec	=	new std::vector<int>;
 
 	tree->SetBranchStatus("Ringer_Dec",	true);
 
@@ -268,9 +264,9 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
     float neuralElc, totalData, neuralJet, t2CaJet, t2CaElc;
     neuralElc = neuralJet = t2CaElc = t2CaJet = totalData = 0;
 
-	vector<int> *ringerDec	=	new vector<int>;
+	std::vector<int> *ringerDec	=	new std::vector<int>;
 
-	vector<int> *t2CaDec	=	new vector<int>;
+	std::vector<int> *t2CaDec	=	new std::vector<int>;
 
 	tree->SetBranchStatus("Ringer_Dec",	true);
 
@@ -347,7 +343,3 @@ int calcEfic(TTree *tree, float &detNeural, float &detT2Calo){
 
 }
 
-
-inline float productSP(const float eDetRatio, const float jDetRatio){
-	return (sqrt((eDetRatio/100.+jDetRatio/100.)/2.)*sqrt(eDetRatio/100.*jDetRatio/100.));
-}

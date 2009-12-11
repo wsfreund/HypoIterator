@@ -1,16 +1,16 @@
 #include "T2CaloEfic.h"
-#include "T2CaloConfig.h"
 
-T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaChain, T2CaFillingTree){
 
-	hadET_T2Calo	=	new vector<float>;
-	rCore			=	new vector<float>;
-	energyRatio		=	new vector<float>;
-	F1			    =	new vector<float>;
-	energy			=	new vector<float>;
-	ehad1			=	new vector<float>;
-	energyS1		=	new vector<float>;
-	t2CaAns		    =	new vector<int>;
+T2CaloEfic::T2CaloEfic(TChain *T2CaChain, TTree *T2CaFillingTree):Efic(T2CaChain, T2CaFillingTree){
+
+	hadET_T2Calo	=	new std::vector<float>;
+	rCore			=	new std::vector<float>;
+	energyRatio		=	new std::vector<float>;
+	F1			    =	new std::vector<float>;
+	energy			=	new std::vector<float>;
+	ehad1			=	new std::vector<float>;
+	energyS1		=	new std::vector<float>;
+	t2CaAns		    =	new std::vector<int>;
 
 	eficReadingChain->SetBranchStatus("T2CaEta", 		true);
 	eficReadingChain->SetBranchStatus("T2CaPhi",		true);
@@ -30,11 +30,11 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 	eficReadingChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
 
 
-	eficFillingTree->		Branch("T2CaOut",	&t2CaAns);
-	eficFillingTree->		Branch("T2CaDec",	&decision);
-	eficFillingTree->		Branch("T2CaEta",	&lvl2_eta);
-	eficFillingTree->		Branch("T2CaPhi",	&lvl2_phi);
-	eficFillingTree->		Branch("T2CaET",	&et);
+	eficFillingTree->Branch("T2CaOut",	&t2CaAns);
+	eficFillingTree->Branch("T2CaDec",	&decision);
+	eficFillingTree->Branch("T2CaEta",	&lvl2_eta);
+	eficFillingTree->Branch("T2CaPhi",	&lvl2_phi);
+	eficFillingTree->Branch("T2CaET",	&et);
 
 
 }
@@ -43,9 +43,10 @@ T2CaloEfic::T2CaloEfic(TChain *&T2CaChain, TTree *&T2CaFillingTree):Efic(T2CaCha
 Efic::CODE T2CaloEfic::exec(){
 
 
+	calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+
 	for(size_t j=0; j<lvl2_eta->size(); ++j){
                 
-		calcTransverseFraction(j);//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
 
 		T2CaloEfic::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
 
@@ -59,11 +60,14 @@ Efic::CODE T2CaloEfic::exec(){
 
 }
 
-inline Efic::CODE T2CaloEfic::calcTransverseFraction(const size_t j){
+inline Efic::CODE T2CaloEfic::calcTransverseFraction(){
 
-	et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
-	hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
-	F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
+
+	for(size_t j=0; j<lvl2_eta->size(); ++j){
+	    et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
+	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
+	    F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
+    }
 
 	return	Efic::OK;
 
@@ -198,8 +202,8 @@ inline bool T2CaloEfic::cutF1(const float F1){
 
 Efic::CODE T2CaloEfic::eraseVectors(const size_t index){
 
-    vector<float>::iterator p;
-    vector<int>::iterator p2;
+    std::vector<float>::iterator p;
+    std::vector<int>::iterator p2;
     size_t j;
 
     for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
@@ -268,9 +272,9 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 	TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
-	vector<int> *readOutPut	=	new vector<int>;
+	std::vector<int> *readOutPut=new std::vector<int>;
 
-	int nEntries	        =       static_cast<int>(eficFillingTree->GetEntries());
+	int nEntries	        =static_cast<int>(eficFillingTree->GetEntries());
 
 	eficFillingTree->SetBranchStatus("T2CaOut",	true);
 
