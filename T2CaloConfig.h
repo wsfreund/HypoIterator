@@ -1,7 +1,7 @@
-//e10_medium constants version : 00-
+//e10_medium constants version : 00-07-85
 namespace t2CaloConfig{
 
-//E10 Medium (é igual ao e10):
+//E10 Medium (é igual ao e10:
 
 /*
     const float 	m_eTthr[] 		=	{9.e3, 9.e3, 9.e3, 9.e3, 9.e3, 9.e3, 9.e3, 9.e3, 9.e3};
