@@ -39,7 +39,7 @@ class T2CaloEfic : public Efic {
     bool cutEta(const float dEta);
     bool cutPhi(const float dPhi);
     bool cutrCore(const float rCore, const size_t etaBin);
-    bool cuteRatio(const float eRatio, const float eta, const size_t etaBin);
+    bool cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin);
     bool cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin);
     bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
     bool cutF1(const float F1);

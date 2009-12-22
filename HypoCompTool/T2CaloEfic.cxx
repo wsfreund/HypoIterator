@@ -114,7 +114,7 @@ T2CaloEfic::PCUTS T2CaloEfic::applyCuts(const float eta, const float rCore, cons
 	if (cutrCore(rCore, etaBin)) return T2CaloEfic::rCORE;
 
 	//Corte eRatio
-	if (cuteRatio(eRatio, eta, etaBin)) return T2CaloEfic::eRATIO;
+	if (cuteRatio(eRatio, F1, eta, etaBin)) return T2CaloEfic::eRATIO;
 
 	//Corte Energia Tranversa EM
 	if (cuteT_T2Calo(eT_T2Calo, etaBin)) return T2CaloEfic::et_EM;
