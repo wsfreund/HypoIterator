@@ -1,18 +1,18 @@
 #include"T2CaloGraphs.h"
 
 
-T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath):T2CaloGraphs(){
+T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath){
 
-    float minrCore=999999.;
-    float maxrCore=-999999.;
-    float mineRatio=999999.;
-    float maxeRatio=-999999.;
-    float minEt=999999.;
-    float maxEt=-999999.;
-    float minHadE=999999.;
-    float maxHadE=-999999.;
-    float minF1=999999.;
-    float maxF1=-999999.;
+    float minrCore=999999999.;
+    float maxrCore=-999999999.;
+    float mineRatio=999999999.;
+    float maxeRatio=-999999999.;
+    float minEt=999999999.;
+    float maxEt=-999999999.;
+    float minHadE=999999999.;
+    float maxHadE=-999999999.;
+    float minF1=9999999999.;
+    float maxF1=-999999999.;
 
 	elc_hadET_T2Calo	=	new std::vector<float>;
 	elc_rCore			=	new std::vector<float>;
@@ -49,9 +49,9 @@ T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath):T2
 	elc_readChain->SetBranchAddress("T2CaHadES0",&elc_ehad1);
 
 
-	elc_readChain2 = new TChain("CollectionTree");
-	elc_readChain2->Add(jetsPath.c_str());
-	elc_readChain2->SetBranchStatus("*",	false);
+	jet_readChain = new TChain("CollectionTree");
+	jet_readChain->Add(jetsPath.c_str());
+	jet_readChain->SetBranchStatus("*",	false);
 
 
 	jet_hadET_T2Calo	=	new std::vector<float>;
@@ -97,15 +97,15 @@ T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath):T2
 
     jet_trCore = new TH1F("T2Calo_rCore Cut", "Jets", 100, 0, 0);
     jet_teRatio = new TH1F("T2Calo_eRatio Cut", "Jets", 100, 0, 0);
-    jet_tEtjet = new TH1F("T2Calo_eT Cut", "Jets", 100, 0, 0);
+    jet_tEt = new TH1F("T2Calo_eT Cut", "Jets", 100, 0, 0);
     jet_tHadECutHiEnergy = new TH1F("T2Calo_had_eT Cut", "Jets", 100, 0, 0);
     jet_tHadECutLowEnergy = new TH1F("T2Calo_had_eT Cut", "Jets", 100, 0, 0);
 
     jet_trCore->SetLineColor(kRed);
     jet_teRatio->SetLineColor(kRed);
     jet_tEt->SetLineColor(kRed);
-    jet_tHadECutHiEnergy->SetLineColor(kMangenta);
-    jet_tHadECutLowEnergy->SetLineColor(kRed);
+    jet_tHadECutHiEnergy->SetLineColor(kRed);
+    jet_tHadECutLowEnergy->SetLineColor(kMagenta);
 
 
 }
@@ -117,12 +117,12 @@ T2CaloGraphs::CODE T2CaloGraphs::exec(){
 
 	calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
 
-	for(size_t j=0; j<lvl2_eta->size(); ++j){       
-        applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j), 1 ); // apply cut for each ROI j for electrons;
+	for(size_t j=0; j<elc_lvl2_eta->size(); ++j){       
+        fill_Cuts( elc_lvl2_eta->at(j) , elc_rCore->at(j), elc_F1->at(j), elc_energyRatio->at(j), elc_et->at(j), elc_hadET_T2Calo->at(j), 1 ); // apply cut for each ROI j for electrons;
 	}//for j
 
-	for(size_t j=0; j<lvl2_eta_2->size(); ++j){       
-        applyCuts( lvl2_eta_2->at(j) , rCore_2->at(j), F1_2->at(j), energyRatio_2->at(j), et_2->at(j), hadET_T2Calo_2->at(j), 0 ); // apply cut for each ROI j for electrons;
+	for(size_t j=0; j<jet_lvl2_eta->size(); ++j){       
+        fill_Cuts( jet_lvl2_eta->at(j) , jet_rCore->at(j), jet_F1->at(j), jet_energyRatio->at(j), jet_et->at(j), jet_hadET_T2Calo->at(j), 0 ); // apply cut for each ROI j for electrons;
 	}//for j
 
 	return T2CaloGraphs::OK;
@@ -139,10 +139,10 @@ inline T2CaloGraphs::CODE T2CaloGraphs::calcTransverseFraction(){
 	    elc_F1->push_back( ( elc_energyS1->at(j) ) / ( elc_energy->at(j) ) );
     }
     //Jets
-    for(size_t j=0; j<jet_lvl2_eta_2->size(); ++j){
-	    jet_et_2->push_back( ( jet_energy_2->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta_2->at(j) ) ) ) );
-	    jet_hadET_T2Calo_2->push_back( ( jet_ehad1_2->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta_2->at(j) ) ) ) );
-	    jet_F1_2->push_back( ( jet_energyS1_2->at(j) ) / ( jet_energy_2->at(j) ) );
+    for(size_t j=0; j<jet_lvl2_eta->size(); ++j){
+	    jet_et->push_back( ( jet_energy->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta->at(j) ) ) ) );
+	    jet_hadET_T2Calo->push_back( ( jet_ehad1->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta->at(j) ) ) ) );
+	    jet_F1->push_back( ( jet_energyS1->at(j) ) / ( jet_energy->at(j) ) );
     }
 
 	return	T2CaloGraphs::OK;
@@ -184,8 +184,8 @@ T2CaloGraphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, c
 
 inline bool T2CaloGraphs::fill_rCore(const float rCore, const size_t etaBin, const int dataId){
 
-    minRcore=(minRcore>rCore)?rCore:minRcore;
-    maxRcore=(maxRcore<rCore)?rCore:maxRcore;
+    minrCore=(minrCore>rCore)?rCore:minrCore;
+    minrCore=(maxrCore<rCore)?rCore:maxrCore;
 
     if (dataId) elc_trCore->Fill(rCore);
     else jet_trCore->Fill(rCore);
@@ -239,13 +239,13 @@ inline bool T2CaloGraphs::fill_hadET_T2Calo(const float hadET_T2Calo, const floa
 
     if ( eT_T2Calo >  m_eT2thr[etaBin] ) {
         hadET_cut = m_hadeT2thr[etaBin];
-        if (dataId) elc_tHadECut1->Fill(hadET_T2Calo);
-        else jet_tHadECut1->Fill(hadET_T2Calo);
+        if (dataId) elc_tHadECutHiEnergy->Fill(hadET_T2Calo);
+        else jet_tHadECutHiEnergy->Fill(hadET_T2Calo);
     }
     else{
         hadET_cut = m_hadeTthr[etaBin];
-        if (dataId) elc_tHadECut2->Fill(hadET_T2Calo);
-        else jet_tHadECut2->Fill(hadET_T2Calo);
+        if (dataId) elc_tHadECutLowEnergy->Fill(hadET_T2Calo);
+        else jet_tHadECutLowEnergy->Fill(hadET_T2Calo);
     
     }
     if ( hadET_T2Calo > hadET_cut ) {
@@ -290,16 +290,16 @@ T2CaloGraphs::CODE T2CaloGraphs::draw_eRatio(){
 
 }
 
-T2CaloGraphs::CODE draw_et(){
+T2CaloGraphs::CODE T2CaloGraphs::draw_et(){
 
     elc_tEt->SetAxisRange(minEt,maxEt);
-    jet_eEt->SetAxisRange(minEt,maxEt);
+    jet_tEt->SetAxisRange(minEt,maxEt);
 
 
     elc_tEt->Draw();
     jet_tEt->Draw("same");
 
-    T2CaloGraphs::return T2CaloGraphs::OK;
+    return T2CaloGraphs::OK;
 
 }
 
@@ -326,7 +326,7 @@ T2CaloGraphs::CODE T2CaloGraphs::draw_F1(){
 
     elc_tF1->Draw();
     jet_tF1->Draw("same");
-    return T2CaloGraphs::OK
+    return T2CaloGraphs::OK;
 
 }
 

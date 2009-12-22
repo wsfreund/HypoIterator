@@ -1,12 +1,16 @@
 #include "../T2CaloConfig.h"
-#include "TH1F"
+#include "TH1F.h"
 #include "TChain.h"
-using namespace t2calo;
+#include <cstring>
+#include <cmath>
+using namespace t2CaloConfig;
 
 #ifndef T2CALO_GRAPHS
 #define T2CALO_GRAPHS
 
 class T2CaloGraphs{
+
+    protected:
 
 	enum CODE {ERROR=0, OK};
 
@@ -34,8 +38,8 @@ class T2CaloGraphs{
     float maxeRatio;
     float minEt;
     float maxEt;
-    float minHadE;
-    float maxHadE;
+    float minHadEt;
+    float maxHadEt;
     float minF1;
     float maxF1;
 
@@ -110,17 +114,16 @@ class T2CaloGraphs{
 
 
         //Deleting all variables created by jets Tchain:
-	    delete 	had_hadET_T2Calo;
-	    delete	had_rCore;
-	    delete	had_energyRatio;
-	    delete	had_F1;
-	    delete	had_energy;
-	    delete	had_ehad1;
-	    delete	had_energyS1;
-		delete  had_lvl2_eta;
-		delete  had_lvl2_phi;
-		delete  had_decision;
-		delete  had_et;
+	    delete 	jet_hadET_T2Calo;
+	    delete	jet_rCore;
+	    delete	jet_energyRatio;
+	    delete	jet_F1;
+	    delete	jet_energy;
+	    delete	jet_ehad1;
+	    delete	jet_energyS1;
+		delete  jet_lvl2_eta;
+		delete  jet_lvl2_phi;
+		delete  jet_et;
 
         //Deleting histograms:
         delete elc_trCore;
@@ -131,13 +134,15 @@ class T2CaloGraphs{
 
         delete jet_trCore;
         delete jet_teRatio;
-        delete jet_tEtjet;
+        delete jet_tEt;
         delete jet_tHadECutHiEnergy;
         delete jet_tHadECutLowEnergy;
 
         //Deleting TChains:
-        delete  elc_eficReadingChain;
-        delete  jet_eficReadingChain;
+        delete  elc_readChain;
+        delete  jet_readChain;
+
+    }
 
 };
 
