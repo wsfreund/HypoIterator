@@ -65,7 +65,8 @@ inline Efic::CODE T2CaloEfic::calcTransverseFraction(){
 
 	for(size_t j=0; j<lvl2_eta->size(); ++j){
 	    et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
-	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
+//	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); //Antiga implementação no T2Calo
+        hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
 	    F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
     }
 
@@ -122,7 +123,7 @@ T2CaloEfic::PCUTS T2CaloEfic::applyCuts(const float eta, const float rCore, cons
 	if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)) return T2CaloEfic::et_HAD;
 
 	//Corte Fração de energia
-	if (cutF1(F1)) return T2CaloEfic::c_F1;
+    //if (cutF1(F1)) return T2CaloEfic::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
 
 	//Chegou até aqui passou yeah
 	return T2CaloEfic::AP;
@@ -156,12 +157,14 @@ inline bool T2CaloEfic::cutrCore(const float rCore, const size_t etaBin){
 
 }
 
-inline bool T2CaloEfic::cuteRatio(const float eRatio, const float eta, const size_t etaBin){
+inline bool T2CaloEfic::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
 
 	bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
 	 
-	if ( (!inCrack) && (eRatio < m_caeratiothr[etaBin])) {
-		return true;
+	if ( (!inCrack) || ( F1 < m_F1thr) ){
+        if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
+		    return true;
+        }
 	}
  
 	return false;
