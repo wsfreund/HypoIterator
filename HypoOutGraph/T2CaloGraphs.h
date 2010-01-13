@@ -3,7 +3,8 @@
 #include "TChain.h"
 #include <cstring>
 #include <cmath>
-using namespace t2CaloConfig;
+#include <iostream>
+
 
 #ifndef T2CALO_GRAPHS
 #define T2CALO_GRAPHS
@@ -13,7 +14,7 @@ class T2CaloGraphs{
     protected:
 
 	enum CODE {ERROR=0, OK};
-
+    enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
 
     //Cut Histograms:
     TH1F *elc_trCore;
@@ -71,6 +72,9 @@ class T2CaloGraphs{
     std::vector<float>	*jet_lvl2_phi;
 	std::vector<float>	*jet_et;
 
+    //Variable used for t2calo expert monitoring histogram
+    std::vector<int> *t2CaAns;
+
     //Chain for Electrons:
     TChain  *elc_readChain;
     //Chain for Jets
@@ -78,13 +82,14 @@ class T2CaloGraphs{
 
 
     bool fill_rCore(const float rCore, const size_t etaBin, const int dataId);
-    bool fill_eRatio(const float eRatio, const float eta, const size_t etaBin, const int dataId);
+    bool fill_eRatio(const float eRatio, const float F1, const float eta, const size_t etaBin, const int dataId);
     bool fill_eT_T2Calo(const float eT_T2Calo, const size_t etaBin, const int dataId);
     bool fill_hadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin, const int dataId);
     bool fill_F1(const float F1, const int dataId);
 
     CODE calcTransverseFraction();
     CODE fill_Cuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo, const int dataId);
+    CODE drawCutCounter();
     
     public:
     T2CaloGraphs(std::string &electronsPath, std::string &jetsPath);
