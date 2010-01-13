@@ -2,7 +2,7 @@
 #include "../Neural.h"  
 #include "../NeuralConfig.h"
 #include <fstream>
-using namespace neuralConfig;
+
 
 #ifndef NEURAL_EFIC
 #define NEURAL_EFIC

@@ -1,6 +1,6 @@
 #include"Efic.h"
 #include "../T2CaloConfig.h"
-using namespace t2CaloConfig;
+
 
 #ifndef T2CALO_EFIC
 #define T2CALO_EFIC
