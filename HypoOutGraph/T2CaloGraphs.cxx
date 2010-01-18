@@ -1,7 +1,8 @@
 #include"T2CaloGraphs.h"
 
 
-T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath){
+T2CaloGraphs::T2CaloGraphs(const std::string &stringPath, const std::string &userDataLabel):
+Graphs(stringPath, userDataLabel){
 
     minrCore=999999999.;
     maxrCore=-999999999.;
@@ -14,142 +15,324 @@ T2CaloGraphs::T2CaloGraphs(std::string &electronsPath, std::string &jetsPath){
     minF1=9999999999.;
     maxF1=-999999999.;
 
-	elc_hadET_T2Calo	=	new std::vector<float>;
-	elc_rCore			=	new std::vector<float>;
-	elc_energyRatio		=	new std::vector<float>;
-	elc_F1			    =	new std::vector<float>;
-	elc_energy			=	new std::vector<float>;
-	elc_ehad1			=	new std::vector<float>;
-	elc_energyS1		=	new std::vector<float>;
-    elc_lvl2_eta	    = 	new std::vector<float>;
-    elc_lvl2_phi	    = 	new std::vector<float>;
-    elc_et      	    = 	new std::vector<float>;
+    psrCore = new TPaveStats();
+    pseRatio = new TPaveStats();
+    psEt = new TPaveStats();
+    psHiHadEt = new TPaveStats();
+    psLowHadEt = new TPaveStats();
 
 
-	elc_readChain = new TChain("CollectionTree");
-	elc_readChain->Add(electronsPath.c_str());
-	elc_readChain->SetBranchStatus("*",	false);
+	hadET_T2Calo	=	new std::vector<float>;
+	rCore			=	new std::vector<float>;
+	energyRatio		=	new std::vector<float>;
+	F1			    =	new std::vector<float>;
+	energy			=	new std::vector<float>;
+	ehad1			=	new std::vector<float>;
+	energyS1		=	new std::vector<float>;
+    lvl2_eta	    = 	new std::vector<float>;
+    lvl2_phi	    = 	new std::vector<float>;
+    et      	    = 	new std::vector<float>;
+    t2CaAns         =   new std::vector<int>;
 
 
-	elc_readChain->SetBranchStatus("T2CaEta", 	    true);
-    elc_readChain->SetBranchStatus("T2CaPhi",	    true);
-	elc_readChain->SetBranchStatus("T2CaRcore", 	true);
-	elc_readChain->SetBranchStatus("T2CaEratio",	true);
-	elc_readChain->SetBranchStatus("T2CaEmES1", 	true);
-	elc_readChain->SetBranchStatus("T2CaEmE", 	    true);
-	elc_readChain->SetBranchStatus("T2CaHadES0",    true);
+	readChain->SetBranchStatus("T2CaEta", 	    true);
+    readChain->SetBranchStatus("T2CaPhi",	    true);
+	readChain->SetBranchStatus("T2CaRcore", 	true);
+	readChain->SetBranchStatus("T2CaEratio",	true);
+	readChain->SetBranchStatus("T2CaEmES1", 	true);
+	readChain->SetBranchStatus("T2CaEmE", 	    true);
+	readChain->SetBranchStatus("T2CaHadES0",    true);
 
 
-	elc_readChain->SetBranchAddress("T2CaEta", 	 &elc_lvl2_eta);
-	elc_readChain->SetBranchAddress("T2CaPhi",	 &elc_lvl2_phi);
-	elc_readChain->SetBranchAddress("T2CaRcore", &elc_rCore);
-	elc_readChain->SetBranchAddress("T2CaEratio",&elc_energyRatio);
-	elc_readChain->SetBranchAddress("T2CaEmES1", &elc_energyS1);
-	elc_readChain->SetBranchAddress("T2CaEmE", 	 &elc_energy);
-	elc_readChain->SetBranchAddress("T2CaHadES0",&elc_ehad1);
+	readChain->SetBranchAddress("T2CaEta", 	 &lvl2_eta);
+	readChain->SetBranchAddress("T2CaPhi",	 &lvl2_phi);
+	readChain->SetBranchAddress("T2CaRcore", &rCore);
+	readChain->SetBranchAddress("T2CaEratio",&energyRatio);
+	readChain->SetBranchAddress("T2CaEmES1", &energyS1);
+	readChain->SetBranchAddress("T2CaEmE", 	 &energy);
+	readChain->SetBranchAddress("T2CaHadES0",&ehad1);
+
+    if (DEBUG) std::cout<<"Calculando limite para os histogramas"<<std::endl;
+
+	int nEvents	= static_cast<int>(readChain->GetEntries());
+
+	for(int i = 0; i<nEvents; ++i){
+  
+        if (DEBUG) std::cout<<"------------"<<std::endl;
+
+		readChain->GetEntry(i);
+ 
+        if (DEBUG) std::cout<<"Lida a entrada "<<i<<std::endl;
+
+        if (DEBUG) std::cout<<"Calculando parametros"<<std::endl;
+     
+	    calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+
+        if (DEBUG) std::cout<<"lvl2_eta size = "<<lvl2_eta->size()<<std::endl;
 
 
-	jet_readChain = new TChain("CollectionTree");
-	jet_readChain->Add(jetsPath.c_str());
-	jet_readChain->SetBranchStatus("*",	false);
+	    for(size_t j=0; j<lvl2_eta->size(); ++j){       
+            if (DEBUG) std::cout<<j<<std::endl;
+             findGraphsLimits(lvl2_eta->at(j), rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j)); // apply cut for each ROI j;
+	    }//for j
 
 
-	jet_hadET_T2Calo	=	new std::vector<float>;
-	jet_rCore			=	new std::vector<float>;
-	jet_energyRatio	    =	new std::vector<float>;
-	jet_F1		        =	new std::vector<float>;
-	jet_energy		    =	new std::vector<float>;
-	jet_ehad1			=	new std::vector<float>;
-	jet_energyS1		=	new std::vector<float>;
-    jet_lvl2_eta	    = 	new std::vector<float>;
-    jet_lvl2_phi	    = 	new std::vector<float>;
-    jet_et      	    = 	new std::vector<float>;
+        if (DEBUG) std::cout<<"Esvaziando parametros"<<std::endl;
+        clearVectors();
 
+        if (DEBUG) std::cout<<"Entrada "<<i<<" concluida com sucesso"<<std::endl;
 
-	jet_readChain->SetBranchStatus("T2CaEta", 	true);
-	jet_readChain->SetBranchStatus("T2CaPhi",	true);
-	jet_readChain->SetBranchStatus("T2CaRcore", true);
-	jet_readChain->SetBranchStatus("T2CaEratio",true);
-	jet_readChain->SetBranchStatus("T2CaEmES1", true);
-	jet_readChain->SetBranchStatus("T2CaEmE", 	true);
-	jet_readChain->SetBranchStatus("T2CaHadES0",true);
+        if (DEBUG) std::cout<<"------------"<<std::endl;
 
-
-	jet_readChain->SetBranchAddress("T2CaEta", 		&jet_lvl2_eta);
-	jet_readChain->SetBranchAddress("T2CaPhi",		&jet_lvl2_phi);
-	jet_readChain->SetBranchAddress("T2CaRcore", 	&jet_rCore);
-	jet_readChain->SetBranchAddress("T2CaEratio",	&jet_energyRatio);
-	jet_readChain->SetBranchAddress("T2CaEmES1", 	&jet_energyS1);
-	jet_readChain->SetBranchAddress("T2CaEmE", 		&jet_energy);
-	jet_readChain->SetBranchAddress("T2CaHadES0", 	&jet_ehad1);
-
-    elc_trCore = new TH1F("T2Calo_rCore Cut", "Electrons", 100, 0, 0);
-    elc_teRatio = new TH1F("T2Calo_eRatio Cut", "Electrons", 100, 0, 0);
-    elc_tEt = new TH1F("T2Calo_eT Cut", "Electrons", 100, 0, 0);
-    elc_tHadECutHiEnergy = new TH1F("T2Calo_had_eT Cut", "Electrons", 100, 0, 0);
-    elc_tHadECutLowEnergy = new TH1F("T2Calo_had_eT Cut", "Electrons", 100, 0, 0);
-
-    elc_trCore->SetLineColor(kBlue);
-    elc_teRatio->SetLineColor(kBlue);
-    elc_tEt->SetLineColor(kBlue);
-    elc_tHadECutHiEnergy->SetLineColor(kBlue);
-    elc_tHadECutLowEnergy->SetLineColor(kTeal);
-
-    jet_trCore = new TH1F("T2Calo_rCore Cut", "Jets", 100, 0, 0);
-    jet_teRatio = new TH1F("T2Calo_eRatio Cut", "Jets", 100, 0, 0);
-    jet_tEt = new TH1F("T2Calo_eT Cut", "Jets", 100, 0, 0);
-    jet_tHadECutHiEnergy = new TH1F("T2Calo_had_eT Cut", "Jets", 100, 0, 0);
-    jet_tHadECutLowEnergy = new TH1F("T2Calo_had_eT Cut", "Jets", 100, 0, 0);
-
-    jet_trCore->SetLineColor(kRed);
-    jet_teRatio->SetLineColor(kRed);
-    jet_tEt->SetLineColor(kRed);
-    jet_tHadECutHiEnergy->SetLineColor(kRed);
-    jet_tHadECutLowEnergy->SetLineColor(kMagenta);
+    }
 
 
 }
    
 
 
-T2CaloGraphs::CODE T2CaloGraphs::exec(){
+Graphs::CODE T2CaloGraphs::exec(){
+
+	int nEvents	= static_cast<int>(readChain->GetEntries());
+
+    if (DEBUG) std::cout<<"Iniciado execute"<<std::endl;
+
+    if (DEBUG) std::cout<<"nEvents = "<<nEvents<<std::endl;
+
+    if (DEBUG) std::cout<<"Preenxendo os histogramas"<<std::endl; 
+
+    if (dataLabel == "electrons") {
+
+        trCore = new TH1F("Elc rCore", "rCore Cut", 100, minrCore, maxrCore);
+        teRatio = new TH1F("Elc eRatio", "eRatio Cut", 100, mineRatio, maxeRatio);
+        tEt = new TH1F("Elc EM Et", "Et Cut", 100, minEt, maxEt);
+        tHadECutHiEnergy = new TH1F("Elc Had Hi-Et", "Had Et Cut", 100, minHadEt, maxHadEt);
+        tHadECutLowEnergy = new TH1F("Elc Had Low-Et", "Had Et Cut", 100, minHadEt, maxHadEt);
+        tF1 = new TH1F("Elc F1", "F1 Cut", 100, minF1, maxF1);
+
+        trCore->SetLineColor(kBlue);
+        teRatio->SetLineColor(kBlue);
+        tEt->SetLineColor(kBlue);
+        tHadECutHiEnergy->SetLineColor(kBlue);
+        tHadECutLowEnergy->SetLineColor(kTeal);
 
 
-	calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+    } else {
 
-	for(size_t j=0; j<elc_lvl2_eta->size(); ++j){       
-        fill_Cuts( elc_lvl2_eta->at(j) , elc_rCore->at(j), elc_F1->at(j), elc_energyRatio->at(j), elc_et->at(j), elc_hadET_T2Calo->at(j), 1 ); // apply cut for each ROI j for electrons;
-	}//for j
+        trCore = new TH1F("Jet rCore", "rCore Cut", 100, minrCore, maxrCore);
+        teRatio = new TH1F("Jet eRatio", "eRatio Cut", 100, mineRatio, maxeRatio);
+        tEt = new TH1F("Jet EM Et", "Et Cut", 100, minEt, maxEt);
+        tHadECutHiEnergy = new TH1F("Jet Had Hi-Et", "Had Et Cut", 100, minHadEt, maxHadEt);
+        tHadECutLowEnergy = new TH1F("Jet Had Low-Et", "Had Et Cut", 100, minHadEt, maxHadEt);
+        tF1 = new TH1F("Jet F1", "F1 Cut", 100, minF1, maxF1);
 
-	for(size_t j=0; j<jet_lvl2_eta->size(); ++j){       
-        fill_Cuts( jet_lvl2_eta->at(j) , jet_rCore->at(j), jet_F1->at(j), jet_energyRatio->at(j), jet_et->at(j), jet_hadET_T2Calo->at(j), 0 ); // apply cut for each ROI j for electrons;
-	}//for j
+        trCore->SetLineColor(kRed);
+        teRatio->SetLineColor(kRed);
+        tEt->SetLineColor(kRed);
+        tHadECutHiEnergy->SetLineColor(kRed);
+        tHadECutLowEnergy->SetLineColor(kMagenta);
 
-	return T2CaloGraphs::OK;
 
+    }
+
+    trCore->SetBit(TH1::kCanRebin);
+    teRatio->SetBit(TH1::kCanRebin);
+    tEt->SetBit(TH1::kCanRebin);
+    tHadECutHiEnergy->SetBit(TH1::kCanRebin);
+    tHadECutLowEnergy->SetBit(TH1::kCanRebin);
+    tF1->SetBit(TH1::kCanRebin);
+
+
+	for(int i = 0; i<nEvents; ++i){
+  
+        if (DEBUG) std::cout<<"------------"<<std::endl;
+
+		readChain->GetEntry(i);
+ 
+        if (DEBUG) std::cout<<"Lida a entrada "<<i<<std::endl;
+
+        if (DEBUG) std::cout<<"Calculando parametros"<<std::endl;
+     
+	    calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+
+        if (DEBUG) std::cout<<"lvl2_eta size = "<<lvl2_eta->size()<<std::endl;
+
+
+	    for(size_t j=0; j<lvl2_eta->size(); ++j){       
+            if (DEBUG) std::cout<<j<<std::endl;
+            fill_Cuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j)); // apply cut for each ROI j;
+	    }//for j
+
+
+        if (DEBUG) std::cout<<"Esvaziando parametros"<<std::endl;
+        clearVectors();
+
+        if (DEBUG) std::cout<<"Entrada "<<i<<" concluida com sucesso"<<std::endl;
+
+        if (DEBUG) std::cout<<"------------"<<std::endl;
+
+    }
+
+    if (DEBUG) std::cout<<"min rCore = "<<minrCore<<std::endl; 
+    if (DEBUG) std::cout<<"max rCore = "<<maxrCore<<std::endl; 
+    if (DEBUG) std::cout<<"min eRatio = "<<mineRatio<<std::endl;
+    if (DEBUG) std::cout<<"max rCore = "<<maxeRatio<<std::endl; 
+    if (DEBUG) std::cout<<"min et = "<<minEt<<std::endl; 
+    if (DEBUG) std::cout<<"max et = "<<maxEt<<std::endl; 
+    if (DEBUG) std::cout<<"min hadEt = "<<minHadEt<<std::endl; 
+    if (DEBUG) std::cout<<"max hadEt = "<<maxHadEt<<std::endl;
+    if (DEBUG) std::cout<<"min F1 = "<<minF1<<std::endl; 
+    if (DEBUG) std::cout<<"max F1 = "<<maxF1<<std::endl;  
+
+
+    if (DEBUG) std::cout<<"Execute terminado com sucesso"<<std::endl;     
+
+	return Graphs::OK;
+    
+}
+
+Graphs::CODE T2CaloGraphs::exec(const float setMinrCore, const float setMaxrCore, const float setMineRatio, const float setMaxeRatio, const float setMinEt, const float setMaxEt, const float setMinHadEt, const float setMaxHadEt){
+
+	int nEvents	= static_cast<int>(readChain->GetEntries());
+
+    if (DEBUG) std::cout<<"Iniciado execute"<<std::endl;
+
+    if (DEBUG) std::cout<<"nEvents = "<<nEvents<<std::endl;
+
+    if (DEBUG) std::cout<<"Preenxendo os histogramas"<<std::endl; 
+
+    if (dataLabel == "electrons") {
+
+        trCore = new TH1F("Elc rCore", "rCore Cut", 100, setMinrCore, setMaxrCore);
+        teRatio = new TH1F("Elc eRatio", "eRatio Cut", 100, setMineRatio, setMaxeRatio);
+        tEt = new TH1F("Elc EM Et", "Et Cut", 100, setMinEt, setMaxEt);
+        tHadECutHiEnergy = new TH1F("Elc Had Hi-Et", "Had Et Cut", 100, setMinHadEt, setMaxHadEt);
+        tHadECutLowEnergy = new TH1F("Elc Had Low-Et", "Had Et Cut", 100, setMinHadEt, setMaxHadEt);
+        tF1 = new TH1F("Elc F1", "F1 Cut", 100, minF1, maxF1);
+
+        trCore->SetLineColor(kBlue);
+        teRatio->SetLineColor(kBlue);
+        tEt->SetLineColor(kBlue);
+        tHadECutHiEnergy->SetLineColor(kBlue);
+        tHadECutLowEnergy->SetLineColor(kTeal);
+
+
+    } else {
+
+        trCore = new TH1F("Jet rCore", "rCore Cut", 100, setMinrCore, setMaxrCore);
+        teRatio = new TH1F("Jet eRatio", "eRatio Cut", 100, setMineRatio, setMaxeRatio);
+        tEt = new TH1F("Jet EM Et", "Et Cut", 100, setMinEt, setMaxEt);
+        tHadECutHiEnergy = new TH1F("Jet Had Hi-Et", "Had Et Cut", 100, setMinHadEt, setMaxHadEt);
+        tHadECutLowEnergy = new TH1F("Jet Had Low-Et", "Had Et Cut", 100, setMinHadEt, setMaxHadEt);
+        tF1 = new TH1F("Jet F1", "F1 Cut", 100, minF1, maxF1);
+
+        trCore->SetLineColor(kRed);
+        teRatio->SetLineColor(kRed);
+        tEt->SetLineColor(kRed);
+        tHadECutHiEnergy->SetLineColor(kRed);
+        tHadECutLowEnergy->SetLineColor(kMagenta);
+
+
+    }
+
+    trCore->SetBit(TH1::kCanRebin);
+    teRatio->SetBit(TH1::kCanRebin);
+    tEt->SetBit(TH1::kCanRebin);
+    tHadECutHiEnergy->SetBit(TH1::kCanRebin);
+    tHadECutLowEnergy->SetBit(TH1::kCanRebin);
+    tF1->SetBit(TH1::kCanRebin);
+
+
+	for(int i = 0; i<nEvents; ++i){
+  
+        if (DEBUG) std::cout<<"------------"<<std::endl;
+
+		readChain->GetEntry(i);
+ 
+        if (DEBUG) std::cout<<"Lida a entrada "<<i<<std::endl;
+
+        if (DEBUG) std::cout<<"Calculando parametros"<<std::endl;
+     
+	    calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+
+        if (DEBUG) std::cout<<"lvl2_eta size = "<<lvl2_eta->size()<<std::endl;
+
+
+	    for(size_t j=0; j<lvl2_eta->size(); ++j){       
+            if (DEBUG) std::cout<<j<<std::endl;
+            fill_Cuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j)); // apply cut for each ROI j;
+	    }//for j
+
+
+        if (DEBUG) std::cout<<"Esvaziando parametros"<<std::endl;
+        clearVectors();
+
+        if (DEBUG) std::cout<<"Entrada "<<i<<" concluida com sucesso"<<std::endl;
+
+        if (DEBUG) std::cout<<"------------"<<std::endl;
+
+    }
+
+    if (DEBUG) std::cout<<"min rCore = "<<setMinrCore<<std::endl; 
+    if (DEBUG) std::cout<<"max rCore = "<<maxrCore<<std::endl; 
+    if (DEBUG) std::cout<<"min eRatio = "<<mineRatio<<std::endl;
+    if (DEBUG) std::cout<<"max rCore = "<<maxeRatio<<std::endl; 
+    if (DEBUG) std::cout<<"min et = "<<minEt<<std::endl; 
+    if (DEBUG) std::cout<<"max et = "<<maxEt<<std::endl; 
+    if (DEBUG) std::cout<<"min hadEt = "<<minHadEt<<std::endl; 
+    if (DEBUG) std::cout<<"max hadEt = "<<maxHadEt<<std::endl;
+    if (DEBUG) std::cout<<"min F1 = "<<minF1<<std::endl; 
+    if (DEBUG) std::cout<<"max F1 = "<<maxF1<<std::endl;  
+
+
+    if (DEBUG) std::cout<<"Execute terminado com sucesso"<<std::endl;     
+
+	return Graphs::OK;
+    
 }
 
 
-inline T2CaloGraphs::CODE T2CaloGraphs::calcTransverseFraction(){
+
+inline Graphs::CODE T2CaloGraphs::calcTransverseFraction(){
 
     //Electrons
-    for(size_t j=0; j<elc_lvl2_eta->size(); ++j){
-	    elc_et->push_back( ( elc_energy->at(j) ) / ( cosh ( fabs ( elc_lvl2_eta->at(j) ) ) ) );
-	    elc_hadET_T2Calo->push_back( ( elc_ehad1->at(j) ) / ( cosh ( fabs ( elc_lvl2_eta->at(j) ) ) ) / (elc_et->at(j)) );
-	    elc_F1->push_back( ( elc_energyS1->at(j) ) / ( elc_energy->at(j) ) );
-    }
-    //Jets
-    for(size_t j=0; j<jet_lvl2_eta->size(); ++j){
-	    jet_et->push_back( ( jet_energy->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta->at(j) ) ) ) );
-	    jet_hadET_T2Calo->push_back( ( jet_ehad1->at(j) ) / ( cosh ( fabs ( jet_lvl2_eta->at(j) ) ) ) / (jet_et->at(j)));
-	    jet_F1->push_back( ( jet_energyS1->at(j) ) / ( jet_energy->at(j) ) );
+    for(size_t j=0; j<lvl2_eta->size(); ++j){
+	    et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
+	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
+	    F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
     }
 
-	return	T2CaloGraphs::OK;
+
+	return	Graphs::OK;
 
 }
 
-T2CaloGraphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo, const int dataId){
+Graphs::CODE T2CaloGraphs::findGraphsLimits(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
+
+    minrCore=(minrCore>rCore)?rCore:minrCore;
+    maxrCore=(maxrCore<rCore)?rCore:maxrCore;
+
+    bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
+
+    if ( (!inCrack) || ( F1 < m_F1thr)) {
+        mineRatio=(mineRatio>eRatio)?eRatio:mineRatio;
+        maxeRatio=(maxeRatio<eRatio)?eRatio:maxeRatio;
+    }
+
+    minEt=(minEt>eT_T2Calo)?eT_T2Calo:minEt;
+    maxEt=(minEt<eT_T2Calo)?eT_T2Calo:maxEt;
+
+    minHadEt=(minHadEt>hadET_T2Calo)?hadET_T2Calo:minHadEt;
+    maxHadEt=(maxHadEt<hadET_T2Calo)?hadET_T2Calo:maxHadEt;
+
+    minF1=(minF1>F1)?F1:minF1;
+    maxF1=(maxF1<F1)?F1:maxF1;
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
 	
 	size_t	etaBin = 0;
 	for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
@@ -162,53 +345,56 @@ T2CaloGraphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, c
 	//Corte Phi
 	//if (cutPhi(dPhi)) return T2CaloGraphs::dPHI;
 
+    if (DEBUG) std::cout<<"Preenxendo os gráficos"<<std::endl;
+
+
     bool pass = true;
 
 	//Corte rCore
-    if (fill_rCore(rCore, etaBin,dataId)) {
+    if (fill_rCore(rCore, etaBin)) {
         t2CaAns->push_back(T2CaloGraphs::rCORE);
         pass = false;
     }
 
 	//Corte eRatio
-    if (fill_eRatio(eRatio, F1, eta, etaBin,dataId)) {
+    if (fill_eRatio(eRatio, F1, eta, etaBin) && pass) {
         t2CaAns->push_back(T2CaloGraphs::eRATIO);
         pass = false;
     }
 
 	//Corte Energia Tranversa EM
-    if (fill_eT_T2Calo(eT_T2Calo, etaBin, dataId)) {
+    if (fill_eT_T2Calo(eT_T2Calo, etaBin) && pass) {
         t2CaAns->push_back(T2CaloGraphs::et_EM);
         pass = false;
     }
     
 	//Corte Energia Tranversa HAD
-    if (fill_hadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin, dataId)) {
+    if (fill_hadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) && pass) {
         t2CaAns->push_back(T2CaloGraphs::et_HAD);
         pass = false;
     }
 
 	//Corte Fração de energia
-/*	if (fill_F1(F1, eta, dataId)) {
+/*	if (fill_F1(F1, eta) && pass) {
         t2CaAns->push_back(T2CaloGraphs::et_HAD);
         pass = false;
     }
 */
 
-    if (pass) t2CaAns->push_back(T2CaloGraphs::AP);
+    if (pass) {
+        t2CaAns->push_back(T2CaloGraphs::AP);
+    }
 
-    return T2CaloGraphs::OK;
+    return Graphs::OK;
 
 }
 
 
-inline bool T2CaloGraphs::fill_rCore(const float rCore, const size_t etaBin, const int dataId){
+inline bool T2CaloGraphs::fill_rCore(const float rCore, const size_t etaBin){
 
-    minrCore=(minrCore>rCore)?rCore:minrCore;
-    minrCore=(maxrCore<rCore)?rCore:maxrCore;
 
-    if (dataId) elc_trCore->Fill(rCore);
-    else jet_trCore->Fill(rCore);
+    if (DEBUG) std::cout<<"Dando fill no rCore, rCore = "<<rCore<<std::endl;
+    trCore->Fill(rCore);
 
     if ( rCore < m_carcorethr[etaBin] )  {
         return true;
@@ -217,17 +403,15 @@ inline bool T2CaloGraphs::fill_rCore(const float rCore, const size_t etaBin, con
 
 }
 
-inline bool T2CaloGraphs::fill_eRatio(const float eRatio, const float F1, const float eta, const size_t etaBin, const int dataId){
+inline bool T2CaloGraphs::fill_eRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
 
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
      
-    mineRatio=(mineRatio>eRatio)?eRatio:mineRatio;
-    maxeRatio=(maxeRatio<eRatio)?eRatio:maxeRatio;
 
-    if (dataId) elc_teRatio->Fill(eRatio);
-    else jet_teRatio->Fill(eRatio);
 
 	if ( (!inCrack) || ( F1 < m_F1thr) ){
+        if (DEBUG) std::cout<<"Dando fill no eRatio, eRatio = "<<eRatio<<std::endl;
+        teRatio->Fill(eRatio);
         if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
 		    return true;
         }
@@ -237,13 +421,11 @@ inline bool T2CaloGraphs::fill_eRatio(const float eRatio, const float F1, const 
 
 }
 
-inline bool T2CaloGraphs::fill_eT_T2Calo(const float eT_T2Calo, const size_t etaBin, const int dataId){
+inline bool T2CaloGraphs::fill_eT_T2Calo(const float eT_T2Calo, const size_t etaBin){
 
-    minEt=(minEt>eT_T2Calo)?eT_T2Calo:minEt;
-    maxEt=(minEt<eT_T2Calo)?eT_T2Calo:maxEt;
 
-    if (dataId) elc_tEt->Fill(eT_T2Calo);
-    else jet_tEt->Fill(eT_T2Calo);
+    if (DEBUG) std::cout<<"Dando fill no EM Et, eT = "<<eT_T2Calo<<std::endl;
+    tEt->Fill(eT_T2Calo);
 
     if ( eT_T2Calo < m_eTthr[etaBin] ){
         return true;
@@ -251,24 +433,21 @@ inline bool T2CaloGraphs::fill_eT_T2Calo(const float eT_T2Calo, const size_t eta
     return false;
 }
 
-inline bool T2CaloGraphs::fill_hadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin, const int dataId){
+inline bool T2CaloGraphs::fill_hadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
 
-    minHadEt=(minHadEt>hadET_T2Calo)?hadET_T2Calo:minHadEt;
-    maxHadEt=(maxHadEt<hadET_T2Calo)?hadET_T2Calo:maxHadEt;
 
     float hadET_cut;
 
 
     if ( eT_T2Calo >  m_eT2thr[etaBin] ) {
+        if (DEBUG) std::cout<<"Dando fill no HAD Hi-Et, HADeT = "<<hadET_T2Calo<<std::endl;
         hadET_cut = m_hadeT2thr[etaBin];
-        if (dataId) elc_tHadECutHiEnergy->Fill(hadET_T2Calo);
-        else jet_tHadECutHiEnergy->Fill(hadET_T2Calo);
+        tHadECutHiEnergy->Fill(hadET_T2Calo);
     }
     else{
+        if (DEBUG) std::cout<<"Dando fill no HAD Low-Et, HADeT = "<<hadET_T2Calo<<std::endl;
         hadET_cut = m_hadeTthr[etaBin];
-        if (dataId) elc_tHadECutLowEnergy->Fill(hadET_T2Calo);
-        else jet_tHadECutLowEnergy->Fill(hadET_T2Calo);
-    
+        tHadECutLowEnergy->Fill(hadET_T2Calo);
     }
     if ( hadET_T2Calo > hadET_cut ) {
         return true;
@@ -276,10 +455,9 @@ inline bool T2CaloGraphs::fill_hadET_T2Calo(const float hadET_T2Calo, const floa
     return false;
 }
 
-inline bool T2CaloGraphs::fill_F1(const float F1, const int dataId){
+inline bool T2CaloGraphs::fill_F1(const float F1){
 
-    if (dataId) elc_tF1->Fill(F1);
-    else jet_tF1->Fill(F1);
+    tF1->Fill(F1);
 
     if ( F1 < m_F1thr){
         return true;
@@ -288,75 +466,294 @@ inline bool T2CaloGraphs::fill_F1(const float F1, const int dataId){
 }
 
 
-T2CaloGraphs::CODE T2CaloGraphs::draw_rCore(){
+Graphs::CODE T2CaloGraphs::draw_rCore(){
 
-    elc_trCore->SetAxisRange(minrCore,maxrCore);
-    jet_trCore->SetAxisRange(minrCore,maxrCore);
+    trCore->Draw();
 
-    elc_trCore->Draw();
-    jet_trCore->Draw("same");
+    gPad->Update();
 
-    return T2CaloGraphs::OK;
+    if (dataLabel == "electrons") {
+    
+        psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
+        psrCore->SetX1NDC(0.8); psrCore->SetX2NDC(0.98);
+        psrCore->SetTextColor(kBlue);
+    }else{
+        psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
+        psrCore->SetX1NDC(0.55); psrCore->SetX2NDC(0.75);
+        psrCore->SetTextColor(kRed);
+    }
 
-}
+    psrCore->Draw();
 
-T2CaloGraphs::CODE T2CaloGraphs::draw_eRatio(){
-
-    elc_teRatio->SetAxisRange(mineRatio,maxeRatio);
-    jet_teRatio->SetAxisRange(mineRatio,maxeRatio);
-
-    elc_teRatio->Draw();
-    jet_teRatio->Draw("same");
-
-    return T2CaloGraphs::OK;
-
-}
-
-T2CaloGraphs::CODE T2CaloGraphs::draw_et(){
-
-    elc_tEt->SetAxisRange(minEt,maxEt);
-    jet_tEt->SetAxisRange(minEt,maxEt);
+    gPad->Update();
 
 
-    elc_tEt->Draw();
-    jet_tEt->Draw("same");
-
-    return T2CaloGraphs::OK;
+    return Graphs::OK;
 
 }
 
-T2CaloGraphs::CODE T2CaloGraphs::draw_hadEt(){
+Graphs::CODE T2CaloGraphs::draw_eRatio(){
 
-    elc_tHadECutHiEnergy->SetAxisRange(minHadEt,maxHadEt);
-    elc_tHadECutLowEnergy->SetAxisRange(minHadEt,maxHadEt);
-    jet_tHadECutHiEnergy->SetAxisRange(minHadEt,maxHadEt);
-    jet_tHadECutLowEnergy->SetAxisRange(minHadEt,maxHadEt);
 
-    elc_tHadECutHiEnergy->Draw();
-    elc_tHadECutLowEnergy->Draw("same");
-    jet_tHadECutHiEnergy->Draw("same");
-    jet_tHadECutLowEnergy->Draw("same");
+    teRatio->Draw();
 
-    return T2CaloGraphs::OK;
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+    
+        pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
+        pseRatio->SetX1NDC(0.8); pseRatio->SetX2NDC(0.98);
+        pseRatio->SetTextColor(kBlue);
+    }else{
+        pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
+        pseRatio->SetX1NDC(0.55); pseRatio->SetX2NDC(0.75);
+        pseRatio->SetTextColor(kRed);
+    }
+
+    pseRatio->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
 
 }
 
-T2CaloGraphs::CODE T2CaloGraphs::draw_F1(){
+Graphs::CODE T2CaloGraphs::draw_et(){
 
-    elc_tF1->SetAxisRange(minF1,maxF1);
-    jet_tF1->SetAxisRange(minF1,maxF1);
+    tEt->Draw();
 
-    elc_tF1->Draw();
-    jet_tF1->Draw("same");
-    return T2CaloGraphs::OK;
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+    
+        psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
+        psEt->SetX1NDC(0.8); psEt->SetX2NDC(0.98);
+        psEt->SetTextColor(kBlue);
+    }else{
+        psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
+        psEt->SetX1NDC(0.55); psEt->SetX2NDC(0.75);
+        psEt->SetTextColor(kRed);
+    }
+
+    psEt->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_hadEt(){
+
+	int max1=tHadECutHiEnergy->GetMaximum();
+	int max2=tHadECutLowEnergy->GetMaximum();
+
+    if (max1>max2){
+	    tHadECutHiEnergy->SetAxisRange(0,1.1*max1, "Y");
+        tHadECutLowEnergy->SetAxisRange(0,1.1*max1,"Y");
+    }else{
+	    tHadECutHiEnergy->SetAxisRange(0,1.1*max2, "Y");
+        tHadECutLowEnergy->SetAxisRange(0,1.1*max2,"Y");
+    }
+        
+
+    tHadECutHiEnergy->Draw();
+    tHadECutLowEnergy->Draw("sames");
+
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+
+        psHiHadEt = (TPaveStats*)tHadECutHiEnergy->GetListOfFunctions()->FindObject("stats");
+        psHiHadEt->SetX1NDC(0.84); psHiHadEt->SetX2NDC(0.99);
+        psHiHadEt->SetTextColor(kBlue);
+
+        psLowHadEt = (TPaveStats*)tHadECutLowEnergy->GetListOfFunctions()->FindObject("stats");
+        psLowHadEt->SetX1NDC(0.68); psLowHadEt->SetX2NDC(0.83);
+        psLowHadEt->SetTextColor(kTeal);
+
+    }else{
+
+        psHiHadEt = (TPaveStats*)tHadECutHiEnergy->GetListOfFunctions()->FindObject("stats");
+        psHiHadEt->SetX1NDC(0.52); psHiHadEt->SetX2NDC(0.67);
+        psHiHadEt->SetTextColor(kRed);
+
+        psLowHadEt = (TPaveStats*)tHadECutLowEnergy->GetListOfFunctions()->FindObject("stats");
+        psLowHadEt->SetX1NDC(0.36); psLowHadEt->SetX2NDC(0.51);
+        psLowHadEt->SetTextColor(kMagenta);
+
+    }
+
+    psHiHadEt->Draw();
+    psLowHadEt->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_F1(){
+
+    tF1->Draw();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_rCore(std::string input){
+
+    trCore->Draw(input.c_str());
+
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+    
+        psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
+        psrCore->SetX1NDC(0.8); psrCore->SetX2NDC(0.98);
+        psrCore->SetTextColor(kBlue);
+    }else{
+        psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
+        psrCore->SetX1NDC(0.55); psrCore->SetX2NDC(0.75);
+        psrCore->SetTextColor(kRed);
+    }
+
+    psrCore->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_eRatio(std::string input){
+
+    teRatio->Draw(input.c_str());
+
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+    
+        pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
+        pseRatio->SetX1NDC(0.8); pseRatio->SetX2NDC(0.98);
+        pseRatio->SetTextColor(kBlue);
+    }else{
+        pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
+        pseRatio->SetX1NDC(0.55); pseRatio->SetX2NDC(0.75);
+        pseRatio->SetTextColor(kRed);
+    }
+
+    pseRatio->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_et(std::string input){
+
+
+    tEt->Draw(input.c_str());
+
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+    
+        psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
+        psEt->SetX1NDC(0.8); psEt->SetX2NDC(0.98);
+        psEt->SetTextColor(kBlue);
+    }else{
+        psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
+        psEt->SetX1NDC(0.55); psEt->SetX2NDC(0.75);
+        psEt->SetTextColor(kRed);
+    }
+
+    psEt->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_hadEt(std::string input){
+
+	int max1=tHadECutHiEnergy->GetMaximum();
+	int max2=tHadECutLowEnergy->GetMaximum();
+
+    if (max1>max2){
+	    tHadECutHiEnergy->SetAxisRange(0,1.1*max1, "Y");
+        tHadECutLowEnergy->SetAxisRange(0,1.1*max1,"Y");
+    }else{
+	    tHadECutHiEnergy->SetAxisRange(0,1.1*max2, "Y");
+        tHadECutLowEnergy->SetAxisRange(0,1.1*max2,"Y");
+    }
+
+    tHadECutHiEnergy->Draw(input.c_str());
+    tHadECutLowEnergy->Draw(input.c_str());
+
+    gPad->Update();
+
+    if (dataLabel == "electrons") {
+
+        psHiHadEt = (TPaveStats*)tHadECutHiEnergy->GetListOfFunctions()->FindObject("stats");
+        psHiHadEt->SetX1NDC(0.84); psHiHadEt->SetX2NDC(0.99);
+        psHiHadEt->SetTextColor(kBlue);
+
+        psLowHadEt = (TPaveStats*)tHadECutLowEnergy->GetListOfFunctions()->FindObject("stats");
+        psLowHadEt->SetX1NDC(0.68); psLowHadEt->SetX2NDC(0.83);
+        psLowHadEt->SetTextColor(kTeal);
+
+    }else{
+
+        psHiHadEt = (TPaveStats*)tHadECutHiEnergy->GetListOfFunctions()->FindObject("stats");
+        psHiHadEt->SetX1NDC(0.52); psHiHadEt->SetX2NDC(0.67);
+        psHiHadEt->SetTextColor(kRed);
+
+        psLowHadEt = (TPaveStats*)tHadECutLowEnergy->GetListOfFunctions()->FindObject("stats");
+        psLowHadEt->SetX1NDC(0.36); psLowHadEt->SetX2NDC(0.51);
+        psLowHadEt->SetTextColor(kMagenta);
+
+    }
+
+    psHiHadEt->Draw();
+    psLowHadEt->Draw();
+
+    gPad->Update();
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE T2CaloGraphs::draw_F1(std::string input){
+
+    tF1->Draw(input.c_str());
+
+    return Graphs::OK;
 
 }
 
 
-T2CaloGraphs::CODE T2CaloGraphs::drawCutCounter(){
+
+inline Graphs::CODE T2CaloGraphs::clearVectors(){
+
+	et->clear();
+	hadET_T2Calo->clear();
+	F1->clear();
+
+    return Graphs::OK;
+
+}
+
+
+
+
+Graphs::CODE T2CaloGraphs::draw_cutCounter(){
 
 	TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
+    if (DEBUG) std::cout<<"t2CaAns size é de "<<t2CaAns->size()<<std::endl;
 
 	for(size_t j=0; j<t2CaAns->size();++j){
 		switch (t2CaAns->at(j)){
@@ -379,8 +776,8 @@ T2CaloGraphs::CODE T2CaloGraphs::drawCutCounter(){
 				hCuts->Fill(T2CaloGraphs::LVL2E);
 				break;
 			default:
-				cout<<"Retorno de valor inesperado de corte"<<endl;
-				return T2CaloGraphs::ERROR;
+				std::cout<<"Retorno de valor inesperado de corte"<<std::endl;
+				return Graphs::ERROR;
 		}
 	}
 
@@ -403,11 +800,88 @@ T2CaloGraphs::CODE T2CaloGraphs::drawCutCounter(){
 
 	hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
 
+	hCuts->SetEntries(hCuts->GetBinContent(1));
 
 	hCuts->Draw();
 
-    return T2CaloGraphs::OK;
+    return Graphs::OK;
 
 }
+
+
+Graphs::CODE T2CaloGraphs::setRange(const std::string &cutName, const float yMax){
+
+    if (cutName == "rcore"){
+        trCore->SetAxisRange(0,1.1*yMax,"Y");
+    }else if (cutName == "eratio"){
+        teRatio->SetAxisRange(0,1.1*yMax,"Y");
+    }else if (cutName == "et"){
+        tEt->SetAxisRange(0,1.1*yMax,"Y");
+    }else if (cutName == "hadet"){
+        tHadECutHiEnergy->SetAxisRange(0,yMax,"Y");
+        tHadECutLowEnergy->SetAxisRange(0,yMax,"Y");
+    }else if (cutName == "f1"){
+        tF1->SetAxisRange(0,1.1*yMax,"Y");
+    }
+
+    return Graphs::OK;
+
+}
+
+/*
+
+float T2CaloGraphs::getminX(const std::string &dataType){
+
+
+    if(dataType == "rcore"){
+        return minrCore;
+    } else if (dataType == "eratio"){
+        return mineRatio;
+    } else if (dataType == "et"){
+        return minEt;
+    } else if (dataType == "hadet"){
+        return minHadEt;
+    }
+    else return 0;
+
+}
+
+float T2CaloGraphs::getmaxX(const std::string &dataType){
+
+
+    if(dataType == "rcore"){
+        return maxrCore;
+    } else if (dataType == "eratio"){
+        return maxeRatio;
+    } else if (dataType == "et"){
+        return maxEt;
+    } else if (dataType == "hadet"){
+        return maxHadEt;
+    }
+    else return 0;
+
+
+}
+
+*/
+
+float T2CaloGraphs::getY(const std::string &dataType){
+
+    if(dataType == "rcore"){
+        return trCore->GetMaximum();
+    } else if (dataType == "eratio"){
+        return teRatio->GetMaximum();
+    } else if (dataType == "et"){
+        return tEt->GetMaximum();
+    } else if (dataType == "hadet"){
+        if (tHadECutHiEnergy->GetMaximum() > tHadECutLowEnergy->GetMaximum()) return tHadECutHiEnergy->GetMaximum();
+        else return tHadECutLowEnergy->GetMaximum();
+    }
+    else return 0;
+
+}
+
+
+
 
 
