@@ -89,16 +89,15 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
     float yet1 = myT2CaloGraphs1.getY("et");
     float yhadet1 = myT2CaloGraphs1.getY("hadet");
 
-    float yrcore2 = myT2CaloGraphs1.getY("rcore");
-    float yeratio2 = myT2CaloGraphs1.getY("eratio");
-    float yet2 = myT2CaloGraphs1.getY("et");
-    float yhadet2 = myT2CaloGraphs1.getY("hadet");
+    float yrcore2 = myT2CaloGraphs2.getY("rcore");
+    float yeratio2 = myT2CaloGraphs2.getY("eratio");
+    float yet2 = myT2CaloGraphs2.getY("et");
+    float yhadet2 = myT2CaloGraphs2.getY("hadet");
 
     float yrcore = (yrcore1>yrcore2)?yrcore1:yrcore2;
     float yeratio = (yeratio1>yeratio2)?yeratio1:yeratio2;
     float yet = (yet1>yet2)?yet1:yet2;
     float yhadet = (yhadet1>yhadet2)?yhadet1:yhadet2;
-
 
     myT2CaloGraphs1.setRange("rcore", yrcore);
     myT2CaloGraphs1.setRange("eratio", yeratio);
