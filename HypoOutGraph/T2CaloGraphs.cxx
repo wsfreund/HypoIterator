@@ -86,6 +86,18 @@ Graphs(stringPath, userDataLabel){
 
     }
 
+    if (DEBUG) std::cout<<"min rCore = "<<minrCore<<std::endl; 
+    if (DEBUG) std::cout<<"max rCore = "<<maxrCore<<std::endl; 
+    if (DEBUG) std::cout<<"min eRatio = "<<mineRatio<<std::endl;
+    if (DEBUG) std::cout<<"max eRatio = "<<maxeRatio<<std::endl; 
+    if (DEBUG) std::cout<<"min et = "<<minEt<<std::endl; 
+    if (DEBUG) std::cout<<"max et = "<<maxEt<<std::endl; 
+    if (DEBUG) std::cout<<"min hadEt = "<<minHadEt<<std::endl; 
+    if (DEBUG) std::cout<<"max hadEt = "<<maxHadEt<<std::endl;
+    if (DEBUG) std::cout<<"min F1 = "<<minF1<<std::endl; 
+    if (DEBUG) std::cout<<"max F1 = "<<maxF1<<std::endl;  
+
+
 
 }
    
@@ -172,18 +184,6 @@ Graphs::CODE T2CaloGraphs::exec(){
         if (DEBUG) std::cout<<"------------"<<std::endl;
 
     }
-
-    if (DEBUG) std::cout<<"min rCore = "<<minrCore<<std::endl; 
-    if (DEBUG) std::cout<<"max rCore = "<<maxrCore<<std::endl; 
-    if (DEBUG) std::cout<<"min eRatio = "<<mineRatio<<std::endl;
-    if (DEBUG) std::cout<<"max rCore = "<<maxeRatio<<std::endl; 
-    if (DEBUG) std::cout<<"min et = "<<minEt<<std::endl; 
-    if (DEBUG) std::cout<<"max et = "<<maxEt<<std::endl; 
-    if (DEBUG) std::cout<<"min hadEt = "<<minHadEt<<std::endl; 
-    if (DEBUG) std::cout<<"max hadEt = "<<maxHadEt<<std::endl;
-    if (DEBUG) std::cout<<"min F1 = "<<minF1<<std::endl; 
-    if (DEBUG) std::cout<<"max F1 = "<<maxF1<<std::endl;  
-
 
     if (DEBUG) std::cout<<"Execute terminado com sucesso"<<std::endl;     
 
@@ -273,18 +273,6 @@ Graphs::CODE T2CaloGraphs::exec(const float setMinrCore, const float setMaxrCore
 
     }
 
-    if (DEBUG) std::cout<<"min rCore = "<<setMinrCore<<std::endl; 
-    if (DEBUG) std::cout<<"max rCore = "<<maxrCore<<std::endl; 
-    if (DEBUG) std::cout<<"min eRatio = "<<mineRatio<<std::endl;
-    if (DEBUG) std::cout<<"max rCore = "<<maxeRatio<<std::endl; 
-    if (DEBUG) std::cout<<"min et = "<<minEt<<std::endl; 
-    if (DEBUG) std::cout<<"max et = "<<maxEt<<std::endl; 
-    if (DEBUG) std::cout<<"min hadEt = "<<minHadEt<<std::endl; 
-    if (DEBUG) std::cout<<"max hadEt = "<<maxHadEt<<std::endl;
-    if (DEBUG) std::cout<<"min F1 = "<<minF1<<std::endl; 
-    if (DEBUG) std::cout<<"max F1 = "<<maxF1<<std::endl;  
-
-
     if (DEBUG) std::cout<<"Execute terminado com sucesso"<<std::endl;     
 
 	return Graphs::OK;
@@ -295,7 +283,6 @@ Graphs::CODE T2CaloGraphs::exec(const float setMinrCore, const float setMaxrCore
 
 inline Graphs::CODE T2CaloGraphs::calcTransverseFraction(){
 
-    //Electrons
     for(size_t j=0; j<lvl2_eta->size(); ++j){
 	    et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
 	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
@@ -308,6 +295,13 @@ inline Graphs::CODE T2CaloGraphs::calcTransverseFraction(){
 }
 
 Graphs::CODE T2CaloGraphs::findGraphsLimits(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
+
+
+    if (DEBUG) std::cout<<"rCore = "<<rCore<<std::endl;
+    if (DEBUG) std::cout<<"eRatio = "<<eRatio<<std::endl;
+    if (DEBUG) std::cout<<"ET = "<<eT_T2Calo<<std::endl;
+    if (DEBUG) std::cout<<"Had_et = "<<hadET_T2Calo<<std::endl;
+
 
     minrCore=(minrCore>rCore)?rCore:minrCore;
     maxrCore=(maxrCore<rCore)?rCore:maxrCore;
@@ -352,24 +346,28 @@ Graphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, const f
 
 	//Corte rCore
     if (fill_rCore(rCore, etaBin)) {
+        if (DEBUG) std::cout<<"Dando push_back em rCore"<<std::endl;
         t2CaAns->push_back(T2CaloGraphs::rCORE);
         pass = false;
     }
 
 	//Corte eRatio
     if (fill_eRatio(eRatio, F1, eta, etaBin) && pass) {
+        if (DEBUG) std::cout<<"Dando push_back em eRatio"<<std::endl;
         t2CaAns->push_back(T2CaloGraphs::eRATIO);
         pass = false;
     }
 
 	//Corte Energia Tranversa EM
     if (fill_eT_T2Calo(eT_T2Calo, etaBin) && pass) {
+        if (DEBUG) std::cout<<"Dando push_back em et_EM"<<std::endl;
         t2CaAns->push_back(T2CaloGraphs::et_EM);
         pass = false;
     }
     
 	//Corte Energia Tranversa HAD
     if (fill_hadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) && pass) {
+        if (DEBUG) std::cout<<"Dando push_back em et_HAD"<<std::endl;
         t2CaAns->push_back(T2CaloGraphs::et_HAD);
         pass = false;
     }
@@ -383,6 +381,7 @@ Graphs::CODE T2CaloGraphs::fill_Cuts(const float eta, const float rCore, const f
 
     if (pass) {
         t2CaAns->push_back(T2CaloGraphs::AP);
+        if (DEBUG) std::cout<<"Dando push_back em AP"<<std::endl;
     }
 
     return Graphs::OK;
@@ -397,6 +396,7 @@ inline bool T2CaloGraphs::fill_rCore(const float rCore, const size_t etaBin){
     trCore->Fill(rCore);
 
     if ( rCore < m_carcorethr[etaBin] )  {
+        if (DEBUG) std::cout<<"retornando true"<<std::endl;
         return true;
     }
     return false;
@@ -413,6 +413,7 @@ inline bool T2CaloGraphs::fill_eRatio(const float eRatio, const float F1, const 
         if (DEBUG) std::cout<<"Dando fill no eRatio, eRatio = "<<eRatio<<std::endl;
         teRatio->Fill(eRatio);
         if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
+            if (DEBUG) std::cout<<"retornando true"<<std::endl;
 		    return true;
         }
 	}
@@ -428,6 +429,7 @@ inline bool T2CaloGraphs::fill_eT_T2Calo(const float eT_T2Calo, const size_t eta
     tEt->Fill(eT_T2Calo);
 
     if ( eT_T2Calo < m_eTthr[etaBin] ){
+        if (DEBUG) std::cout<<"retornando true"<<std::endl;
         return true;
     }
     return false;
@@ -450,6 +452,7 @@ inline bool T2CaloGraphs::fill_hadET_T2Calo(const float hadET_T2Calo, const floa
         tHadECutLowEnergy->Fill(hadET_T2Calo);
     }
     if ( hadET_T2Calo > hadET_cut ) {
+        if (DEBUG) std::cout<<"retornando true"<<std::endl;
         return true;
     }
     return false;

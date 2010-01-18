@@ -133,6 +133,15 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
     hypoOutGraphsCanvas->cd();
     hypoOutGraphsCanvas->Update();
 
+    TCanvas *debug = new TCanvas("Debug", "Debug");
+    
+    debug->Divide(2,1)   ;
+    
+    debug->cd(1);
+    myT2CaloGraphs1.draw_cutCounter();
+    
+    debug->cd(2);
+    myT2CaloGraphs2.draw_cutCounter();
 
     return 0;
 

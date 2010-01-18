@@ -10,7 +10,7 @@ class Graphs {
 
     protected:
 
-    static const int DEBUG = 0;
+    static const int DEBUG = 1;
 	std::vector<float> *lvl2_eta;
 	std::vector<float> *lvl2_phi;
 	std::vector<float> *et;
