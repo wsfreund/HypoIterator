@@ -1,0 +1,12 @@
+*~
+*.d
+*.so
+*.root
+*swp
+*.m
+.cvsignore
+.cdtproject
+.project
+.settings/*
+
+.tm_project2.cache
