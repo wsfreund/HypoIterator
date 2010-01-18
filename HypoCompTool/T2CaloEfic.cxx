@@ -332,7 +332,7 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 	hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
 
-	hCuts->SetEntries(hCuts->GetBinContent(T2CaloEfic::LVL2E));
+	hCuts->SetEntries(hCuts->GetBinContent(1));
 
 	hCuts->Draw();
 
