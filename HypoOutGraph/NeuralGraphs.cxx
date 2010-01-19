@@ -16,14 +16,12 @@ Graphs(stringPath, userDataLabel){
 
     readChain->SetBranchStatus("Ringer_Rings",     true);
 	readChain->SetBranchStatus("Ringer_LVL2_Eta",  true);
-	readChain->SetBranchStatus("Ringer_LVL2_Phi",  true);
 	readChain->SetBranchStatus("Ringer_LVL2_Et",   true);
 
 
 
     readChain->SetBranchAddress("Ringer_Rings",      &rings);
     readChain->SetBranchAddress("Ringer_LVL2_Eta",   &lvl2_eta);       
-    readChain->SetBranchAddress("Ringer_LVL2_Phi",   &lvl2_phi);       
 	readChain->SetBranchAddress("Ringer_LVL2_Et",	 &et);
 
 
@@ -144,7 +142,35 @@ Graphs::CODE NeuralGraphs::draw_netAns(std::string input){
 
 }
 
+Graphs::CODE NeuralGraphs::eraseVectors(const size_t index){
 
+    lvl2_eta->erase(lvl2_eta->begin() + index,lvl2_eta->end());
+    lvl2_phi->erase( lvl2_phi->begin() + index ,lvl2_phi->end());
+    et->erase(et->begin()+index,et->end());
+
+    return Graphs::OK;
+
+}
+
+Graphs::CODE NeuralGraphs::swapVectors(const size_t index1, const size_t index2){
+
+    float temp;
+    temp=lvl2_eta->at(index1);
+    lvl2_eta->at(index1)=lvl2_eta->at(index2);
+    lvl2_eta->at(index2)=temp;
+
+    temp=lvl2_phi->at(index1);
+    lvl2_phi->at(index1)=lvl2_phi->at(index2);
+    lvl2_phi->at(index2)=temp;
+
+    temp=et->at(index1);
+    et->at(index1)=et->at(index2);
+    et->at(index2)=temp;
+
+
+    return Graphs::OK;
+
+}
 
 NeuralGraphs::~NeuralGraphs(){
 

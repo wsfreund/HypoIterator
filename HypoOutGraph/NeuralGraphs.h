@@ -28,6 +28,8 @@ class NeuralGraphs : public Graphs {
 
     CODE fillDecision(const float);
 
+    CODE swapVectors(const size_t index1, const size_t index2);
+    CODE eraseVectors(const size_t index);
 
     public:
 

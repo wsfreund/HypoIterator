@@ -1,5 +1,7 @@
 #include "TChain.h"
 #include <cstring>
+#include <cmath>
+#include <iostream>
 
 #ifndef GRAPHS
 #define GRAPHS
@@ -21,6 +23,8 @@ class Graphs {
     TChain  *readChain;
     std::string dataLabel;
 
+    virtual CODE swapVectors(const size_t index1, const size_t index2) = 0;
+    virtual CODE eraseVectors(const size_t index) = 0;
 
     public: 
 
@@ -38,13 +42,37 @@ class Graphs {
         dataLabel = userDataLabel;
 
     }
+
+    CODE ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi){
+
+        for(size_t j=0; j<lvl2_eta->size();++j){
+            if ( j < eta->size() ){
+                unsigned matchingPair = 	j;
+                float	vError	=	sqrt (pow(( eta->at(j) - lvl2_eta->at(j) ),2)+pow(( phi->at(j) - lvl2_phi->at(j) ),2) );
+                for(size_t k= (j+1) ; k < (lvl2_eta->size()); ++k){
+                    float actualError =  sqrt (pow(( eta->at(j) - lvl2_eta->at(k) ),2)+pow(( phi->at(j) - lvl2_phi->at(k) ),2) );
+                    if ( actualError < vError ) {
+                        vError = actualError;
+                        matchingPair = k;
+                    }
+                }
+                if (j!=matchingPair) {
+                    swapVectors(j,matchingPair);
+                }
+            }else{
+                eraseVectors(j);
+                break;
+            }
+        }
+	    return OK;
+    }
     
     ~Graphs(){
     
 		delete  lvl2_eta;
 		delete  lvl2_phi;
 		delete  et;
-        delete readChain;
+        delete  readChain;
     }
 
 
