@@ -540,5 +540,7 @@ T2CaloGraphs::~T2CaloGraphs(){
 	delete	ehad1;
 	delete	energyS1;
 	delete	t2CaAns;
+    delete ringer_lvl2_eta;
+    delete ringer_lvl2_phi;
 
 }

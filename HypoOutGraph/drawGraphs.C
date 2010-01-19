@@ -23,19 +23,19 @@ int drawGraphs(const std::string &dataPath, const std::string &dataType){
     myT2CaloGraphs.exec();
 
     hypoOutGraphsCanvas->cd(1);
-    myT2CaloGraphs.draw_rCore();
+    myT2CaloGraphs.drawCut("rcore");
 
     hypoOutGraphsCanvas->cd(2);
-    myT2CaloGraphs.draw_eRatio();
+    myT2CaloGraphs.drawCut("eratio");
 
     hypoOutGraphsCanvas->cd(3);
-    myT2CaloGraphs.draw_et();
+    myT2CaloGraphs.drawCut("et");
 
     hypoOutGraphsCanvas->cd(4);
-    myT2CaloGraphs.draw_hadEt();
+    myT2CaloGraphs.drawCut("hadet");
 
     hypoOutGraphsCanvas->cd();
-    hypoOutGraphsCanvas->Update();
+//    hypoOutGraphsCanvas->Update();
 
 
     return 0;
@@ -50,98 +50,76 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
     hypoOutGraphsCanvas->SetFillColor(kYellow-10);
     hypoOutGraphsCanvas->Divide(2,2);
 
-    T2CaloGraphs myT2CaloGraphs1(dataPath1, dataType1);
+    T2CaloGraphs *myT2CaloGraphs1 = new T2CaloGraphs(dataPath1, dataType1);
 
-    T2CaloGraphs myT2CaloGraphs2(dataPath2, dataType2);
+    T2CaloGraphs *myT2CaloGraphs2 = new T2CaloGraphs(dataPath2, dataType2);
 
-    float minrCore1 = myT2CaloGraphs1.getMinrCore();
-    float maxrCore1 = myT2CaloGraphs1.getMaxrCore();
-    float mineRatio1 = myT2CaloGraphs1.getMineRatio();
-    float maxeRatio1 = myT2CaloGraphs1.getMaxeRatio();
-    float minEt1 = myT2CaloGraphs1.getMinEt();
-    float maxEt1 = myT2CaloGraphs1.getMaxEt();
-    float minHadEt1 = myT2CaloGraphs1.getMinHadEt();
-    float maxHadEt1 = myT2CaloGraphs1.getMaxHadEt();
+    myT2CaloGraphs1->exec();
+    myT2CaloGraphs2->exec();
 
-    float minrCore2 = myT2CaloGraphs2.getMinrCore();
-    float maxrCore2 = myT2CaloGraphs2.getMaxrCore();
-    float mineRatio2 = myT2CaloGraphs2.getMineRatio();
-    float maxeRatio2 = myT2CaloGraphs2.getMaxeRatio();
-    float minEt2 = myT2CaloGraphs2.getMinEt();
-    float maxEt2 = myT2CaloGraphs2.getMaxEt();
-    float minHadEt2 = myT2CaloGraphs2.getMinHadEt();
-    float maxHadEt2 = myT2CaloGraphs2.getMaxHadEt();
+    float yrcore1 = myT2CaloGraphs1->getMaximum("rcore");
+    float yeratio1 = myT2CaloGraphs1->getMaximum("eratio");
+    float yet1 = myT2CaloGraphs1->getMaximum("et");
+    float yhadet1 = myT2CaloGraphs1->getMaximum("hadet");
 
-    float minrCore = (minrCore1<minrCore2)?minrCore1:minrCore2;
-    float maxrCore = (maxrCore1>maxrCore2)?maxrCore1:maxrCore2;
-    float mineRatio = (mineRatio1<mineRatio2)?mineRatio1:mineRatio2;
-    float maxeRatio = (maxeRatio1>maxeRatio2)?maxeRatio1:maxeRatio2;
-    float minEt = (minEt1<minEt2)?minEt1:minEt2;
-    float maxEt = (maxEt1>maxEt2)?maxEt1:maxEt2;
-    float minHadEt = (minHadEt1<minHadEt2)?minHadEt1:minHadEt2;
-    float maxHadEt = (maxHadEt1>maxHadEt2)?maxHadEt1:maxHadEt2;
+    float yrcore2 = myT2CaloGraphs2->getMaximum("rcore");
+    float yeratio2 = myT2CaloGraphs2->getMaximum("eratio");
+    float yet2 = myT2CaloGraphs2->getMaximum("et");
+    float yhadet2 = myT2CaloGraphs2->getMaximum("hadet");
 
-    myT2CaloGraphs1.exec(minrCore, maxrCore, mineRatio, maxeRatio, minEt, maxEt, minHadEt, maxHadEt);
-    myT2CaloGraphs2.exec(minrCore, maxrCore, mineRatio, maxeRatio, minEt, maxEt, minHadEt, maxHadEt);
-
-    float yrcore1 = myT2CaloGraphs1.getY("rcore");
-    float yeratio1 = myT2CaloGraphs1.getY("eratio");
-    float yet1 = myT2CaloGraphs1.getY("et");
-    float yhadet1 = myT2CaloGraphs1.getY("hadet");
-
-    float yrcore2 = myT2CaloGraphs2.getY("rcore");
-    float yeratio2 = myT2CaloGraphs2.getY("eratio");
-    float yet2 = myT2CaloGraphs2.getY("et");
-    float yhadet2 = myT2CaloGraphs2.getY("hadet");
-
-    float yrcore = (yrcore1>yrcore2)?yrcore1:yrcore2;
-    float yeratio = (yeratio1>yeratio2)?yeratio1:yeratio2;
-    float yet = (yet1>yet2)?yet1:yet2;
-    float yhadet = (yhadet1>yhadet2)?yhadet1:yhadet2;
-
-    myT2CaloGraphs1.setRange("rcore", yrcore);
-    myT2CaloGraphs1.setRange("eratio", yeratio);
-    myT2CaloGraphs1.setRange("et", yet);
-    myT2CaloGraphs1.setRange("hadet", yhadet);
-
-
-    myT2CaloGraphs2.setRange("rcore", yrcore);
-    myT2CaloGraphs2.setRange("eratio", yeratio);
-    myT2CaloGraphs2.setRange("et", yet);
-    myT2CaloGraphs2.setRange("hadet", yhadet);
-
+    std::cout<<"Drawing rCore"<<std::endl;
     hypoOutGraphsCanvas->cd(1);
-//    setAxisRange(myT2CaloGraphs1, myT2CaloGraphs2, "rcore");
-    myT2CaloGraphs1.draw_rCore();
-    myT2CaloGraphs2.draw_rCore("sames");
+    if (yrcore1>yrcore2){
+        myT2CaloGraphs1->drawCut("rcore");
+        myT2CaloGraphs2->drawCut("rcore","sames");
+    }else{
+        myT2CaloGraphs2->drawCut("rcore");
+        myT2CaloGraphs1->drawCut("rcore","sames");
+    }
+    std::cout<<"Drawing eRatio"<<std::endl;
 
     hypoOutGraphsCanvas->cd(2);
-//    setAxisRange(myT2CaloGraphs1, myT2CaloGraphs2, "eratio");
-    myT2CaloGraphs1.draw_eRatio();
-    myT2CaloGraphs2.draw_eRatio("sames");
+    if (yeratio1>yeratio2){
+        myT2CaloGraphs1->drawCut("eratio");
+        hypoOutGraphsCanvas->cd(2)->Update();
+        myT2CaloGraphs2->drawCut("eratio","sames");
+    }else{
+        myT2CaloGraphs2->drawCut("eratio");
+        hypoOutGraphsCanvas->cd(2)->Update();
+        myT2CaloGraphs1->drawCut("eratio","sames");
+    }
 
+    std::cout<<"Drawing Et"<<std::endl;
     hypoOutGraphsCanvas->cd(3);
-    myT2CaloGraphs1.draw_et();
-//    setAxisRange(myT2CaloGraphs1, myT2CaloGraphs2, "et");
-    myT2CaloGraphs2.draw_et("sames");
+    if (yet1>yet2){
+        myT2CaloGraphs1->drawCut("et");
+        myT2CaloGraphs2->drawCut("et","sames");
+    }else{
+        myT2CaloGraphs2->drawCut("et");
+        myT2CaloGraphs1->drawCut("et","sames");
+    }    
 
+    std::cout<<"Drawing hadEt"<<std::endl;
     hypoOutGraphsCanvas->cd(4);
-//    setAxisRange(myT2CaloGraphs1, myT2CaloGraphs2, "hadet");
-    myT2CaloGraphs1.draw_hadEt();
-    myT2CaloGraphs2.draw_hadEt("sames");
+    if (yhadet1>yhadet2){
+        myT2CaloGraphs1->drawCut("hadet");
+        myT2CaloGraphs2->drawCut("hadet","sames");
+    }else{
+        myT2CaloGraphs2->drawCut("hadet");
+        myT2CaloGraphs1->drawCut("hadet","sames");
+    }
+
 
     hypoOutGraphsCanvas->cd();
     hypoOutGraphsCanvas->Update();
 
     TCanvas *debug = new TCanvas("Debug", "Debug");
-    
-    debug->Divide(2,1)   ;
-    
-    debug->cd(1);
-    myT2CaloGraphs1.draw_cutCounter();
-    
-    debug->cd(2);
-    myT2CaloGraphs2.draw_cutCounter();
+   
+    myT2CaloGraphs1->drawCutCounter();
+ 
+    TCanvas *debug2 = new TCanvas("Debug2", "Debug2");
+     
+    myT2CaloGraphs2->drawCutCounter();
 
     return 0;
 
@@ -157,8 +135,8 @@ int setAxisRange(T2CaloGraphs &myT2CaloGraphs1, T2CaloGraphs &myT2CaloGraphs2, c
     float minX2 = myT2CaloGraphs2.getminX(datatype);
     float maxX2 = myT2CaloGraphs2.getmaxX(datatype);
 
-    float maxY1 = myT2CaloGraphs1.getY(datatype);
-    float maxY2 = myT2CaloGraphs2.getY(datatype);
+    float maxY1 = myT2CaloGraphs1.getMaximum(datatype);
+    float maxY2 = myT2CaloGraphs2.getMaximum(datatype);
 
     if (minX1<minX2)
         if (maxX1>maxX2)
