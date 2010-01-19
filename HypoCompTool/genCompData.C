@@ -201,7 +201,7 @@ int scatterPlot(TTree *tree){
 
 	int nEntries	        =       static_cast<int>(tree->GetEntries());
 
-    TH2I *scatterPlot = new TH2I("ScatterPlot", "eGammaHyppo x Ringer; T2Calo; Ringer; Log Scale", 2, -2, 2, 2, -2, 2);
+    TH2I *scatterPlot = new TH2I("ScatterPlot", "eGammaHypo x Ringer; T2Calo; Ringer; Log Scale", 2, -2, 2, 2, -2, 2);
 
     scatterPlot->SetOption("lego1 cg(1)");
 

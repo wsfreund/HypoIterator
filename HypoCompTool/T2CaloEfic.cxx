@@ -277,7 +277,7 @@ Efic::CODE T2CaloEfic::drawCutCounter(){
 
 	std::vector<int> *readOutPut=new std::vector<int>;
 
-	int nEntries	        =static_cast<int>(eficFillingTree->GetEntries());
+	int nEntries = static_cast<int>(eficFillingTree->GetEntries());
 
 	eficFillingTree->SetBranchStatus("T2CaOut",	true);
 
