@@ -1,3 +1,7 @@
+#ifndef T2CALO_GRAPHS
+#define T2CALO_GRAPHS
+
+
 #include"Graphs.h"
 #include"../T2CaloConfig.h"
 #include"TPaveStats.h"
@@ -7,8 +11,6 @@
 #include<iostream>
 #include<TPad.h>
 
-#ifndef T2CALO_GRAPHS
-#define T2CALO_GRAPHS
 
 
 class T2CaloGraphs : public Graphs {

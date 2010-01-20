@@ -1,10 +1,12 @@
+#ifndef GRAPHS
+#define GRAPHS
+
 #include "TChain.h"
 #include <cstring>
 #include <cmath>
 #include <iostream>
 
-#ifndef GRAPHS
-#define GRAPHS
+
 
 
 
@@ -12,7 +14,7 @@ class Graphs {
 
     protected:
 
-    static const int DEBUG = 1;
+    static const int DEBUG = 0;
 	std::vector<float> *lvl2_eta;
 	std::vector<float> *lvl2_phi;
 	std::vector<float> *et;

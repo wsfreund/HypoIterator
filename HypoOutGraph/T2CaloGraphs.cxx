@@ -15,6 +15,8 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     ringer_lvl2_eta =   new std::vector<float>;
     ringer_lvl2_phi =   new std::vector<float>;
 
+    
+
     trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0, .1);
     teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0, .1);
     tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0, .1);
@@ -30,13 +32,17 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     psEt = new TPaveStats();
     psHadEt= new TPaveStats();
 
-
-    if (dataLabel == "nopile"){ 
+    size_t comp = dataLabel.find("common");
+    if (comp != std::string::npos){ 
         trCore->SetLineColor(kBlue);
         teRatio->SetLineColor(kBlue);
         tEt->SetLineColor(kBlue);
         tHadEt->SetLineColor(kBlue);
-    }else if(dataLabel == "pile"){
+    }
+
+    comp = dataLabel.find("pile");
+
+    if (comp != std::string::npos){
         trCore->SetLineColor(kRed);
         teRatio->SetLineColor(kRed);
         tEt->SetLineColor(kRed);
@@ -349,7 +355,7 @@ Graphs::CODE T2CaloGraphs::drawCutCounter(){
 				hCuts->Fill(T2CaloGraphs::LVL2E);
 				break;
 			default:
-				cout<<"Retorno de valor inesperado de corte"<<endl;
+				std::cout<<"Retorno de valor inesperado de corte"<<std::endl;
 				return Graphs::ERROR;
 		}
 	}
@@ -383,56 +389,78 @@ Graphs::CODE T2CaloGraphs::drawCutCounter(){
 
 Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
 
+    size_t cond;
+
     if (cut == "rcore"){
         trCore->Draw();
         gPad->Update();
-        if (dataLabel == "nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
             psrCore->SetX1NDC(0.8); psrCore->SetX2NDC(0.98);
             psrCore->SetTextColor(kBlue);
-        }else if(dataLabel == "pile"){
+            psrCore->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if(cond != std::string::npos){
             psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
             psrCore->SetX1NDC(0.55); psrCore->SetX2NDC(0.75);
             psrCore->SetTextColor(kRed);
+            psrCore->Draw();
         }
         gPad->Update();
     }else if (cut == "eratio"){
         teRatio->Draw();
         gPad->Update();
-        if (dataLabel == "nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
             pseRatio->SetX1NDC(0.8); pseRatio->SetX2NDC(0.98);
             pseRatio->SetTextColor(kBlue);
-        }else if(dataLabel == "pile"){
+            pseRatio->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
             pseRatio->SetX1NDC(0.55); pseRatio->SetX2NDC(0.75);
             pseRatio->SetTextColor(kRed);
+            pseRatio->Draw();
         }
         gPad->Update();
     }else if (cut == "et"){
         tEt->Draw();
         gPad->Update();
-        if(dataLabel =="nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
             psEt->SetX1NDC(0.8); psEt->SetX2NDC(0.98);
             psEt->SetTextColor(kBlue);
-        }else if(dataLabel =="pile"){
+            psEt->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
             psEt->SetX1NDC(0.55); psEt->SetX2NDC(0.75);
             psEt->SetTextColor(kRed);
+            psEt->Draw();
         }
         gPad->Update();
     }else if (cut == "hadet"){
         tHadEt->Draw();
         gPad->Update();
-        if(dataLabel =="nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psHadEt = (TPaveStats*)tHadEt->GetListOfFunctions()->FindObject("stats");
             psHadEt->SetX1NDC(0.8); psHadEt->SetX2NDC(0.98);
             psHadEt->SetTextColor(kBlue);
-        }else if(dataLabel =="pile"){
+            psHadEt->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             psHadEt = (TPaveStats*)tHadEt->GetListOfFunctions()->FindObject("stats");
             psHadEt->SetX1NDC(0.55); psHadEt->SetX2NDC(0.75);
             psHadEt->SetTextColor(kRed);
+            psHadEt->Draw();
         }
         gPad->Update();
     }
@@ -442,58 +470,83 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
 
 }
 
+
 Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mode){
+
+    size_t cond;
 
     if (cut == "rcore"){
         trCore->Draw(mode.c_str());
         gPad->Update();
-        if (dataLabel == "nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
             psrCore->SetX1NDC(0.8); psrCore->SetX2NDC(0.98);
             psrCore->SetTextColor(kBlue);
-        }else if(dataLabel == "pile"){
+            psrCore->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             psrCore = (TPaveStats*)trCore->GetListOfFunctions()->FindObject("stats");
             psrCore->SetX1NDC(0.55); psrCore->SetX2NDC(0.75);
             psrCore->SetTextColor(kRed);
+            psrCore->Draw();
         }
+
         gPad->Update();
     }else if (cut == "eratio"){
         teRatio->Draw(mode.c_str());
         gPad->Update();
-        if(dataLabel == "nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
             pseRatio->SetX1NDC(0.8); pseRatio->SetX2NDC(0.98);
             pseRatio->SetTextColor(kBlue);
-        }else if(dataLabel =="pile"){
+            pseRatio->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             pseRatio = (TPaveStats*)teRatio->GetListOfFunctions()->FindObject("stats");
             pseRatio->SetX1NDC(0.55); pseRatio->SetX2NDC(0.75);
             pseRatio->SetTextColor(kRed);
+            pseRatio->Draw();
         }
         gPad->Update();
     }else if (cut == "et"){
         tEt->Draw(mode.c_str());
         gPad->Update();
-        if(dataLabel =="nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
             psEt->SetX1NDC(0.8); psEt->SetX2NDC(0.98);
             psEt->SetTextColor(kBlue);
-        }else if(dataLabel =="pile"){
+            psEt->SetTextColor(kBlue);
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             psEt = (TPaveStats*)tEt->GetListOfFunctions()->FindObject("stats");
             psEt->SetX1NDC(0.55); psEt->SetX2NDC(0.75);
             psEt->SetTextColor(kRed);
+            psEt->Draw();
         }
+
         gPad->Update();
     }else if (cut == "hadet"){
         tHadEt->Draw(mode.c_str());
         gPad->Update();
-        if(dataLabel == "nopile"){
+        cond = dataLabel.find("common");
+        if (cond != std::string::npos){
             psHadEt = (TPaveStats*)tHadEt->GetListOfFunctions()->FindObject("stats");
             psHadEt->SetX1NDC(0.8); psHadEt->SetX2NDC(0.98);
             psHadEt->SetTextColor(kBlue);
-        }else if(dataLabel == "pile"){
+            psHadEt->Draw();
+        }
+        cond = dataLabel.find("pile");
+        if (cond != std::string::npos){
             psHadEt = (TPaveStats*)tHadEt->GetListOfFunctions()->FindObject("stats");
             psHadEt->SetX1NDC(0.55); psHadEt->SetX2NDC(0.75);
             psHadEt->SetTextColor(kRed);
+            psHadEt->Draw();
         }
         gPad->Update();
     }
@@ -501,6 +554,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
     return Graphs::OK;
 
 }
+
 
 double T2CaloGraphs::getMaximum(const std::string &cut){
 

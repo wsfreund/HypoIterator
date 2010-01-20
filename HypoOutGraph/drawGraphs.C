@@ -35,7 +35,7 @@ int drawGraphs(const std::string &dataPath, const std::string &dataType){
     myT2CaloGraphs.drawCut("hadet");
 
     hypoOutGraphsCanvas->cd();
-//    hypoOutGraphsCanvas->Update();
+    hypoOutGraphsCanvas->Update();
 
 
     return 0;
@@ -113,67 +113,15 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
     hypoOutGraphsCanvas->cd();
     hypoOutGraphsCanvas->Update();
 
-    TCanvas *debug = new TCanvas("Debug", "Debug");
+//    TCanvas *debug = new TCanvas("Debug", "Debug");
    
-    myT2CaloGraphs1->drawCutCounter();
+//    myT2CaloGraphs1->drawCutCounter();
  
-    TCanvas *debug2 = new TCanvas("Debug2", "Debug2");
+//    TCanvas *debug2 = new TCanvas("Debug2", "Debug2");
      
-    myT2CaloGraphs2->drawCutCounter();
+//    myT2CaloGraphs2->drawCutCounter();
 
     return 0;
 
 }
 
-/*
-
-int setAxisRange(T2CaloGraphs &myT2CaloGraphs1, T2CaloGraphs &myT2CaloGraphs2, const std::string &datatype){
-
-    float minX1 = myT2CaloGraphs1.getminX(datatype);
-    float maxX1 = myT2CaloGraphs1.getmaxX(datatype);
-
-    float minX2 = myT2CaloGraphs2.getminX(datatype);
-    float maxX2 = myT2CaloGraphs2.getmaxX(datatype);
-
-    float maxY1 = myT2CaloGraphs1.getMaximum(datatype);
-    float maxY2 = myT2CaloGraphs2.getMaximum(datatype);
-
-    if (minX1<minX2)
-        if (maxX1>maxX2)
-            if (maxY1 > maxY2){   
-                std::cout<<"caso1"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX1, maxX1, maxY1);
-            }else{
-                std::cout<<"caso2"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX1, maxX1, maxY2);
-                myT2CaloGraphs1.setRange(datatype,minX1, maxX1, maxY2);
-        }else if (maxY1 > maxY2){
-                std::cout<<"caso3"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX1, maxX2, maxY1);
-                myT2CaloGraphs1.setRange(datatype,minX1, maxX2, maxY1);
-            }else{
-                std::cout<<"caso4"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX1, maxX2, maxY2);
-                myT2CaloGraphs1.setRange(datatype,minX1, maxX2, maxY2);
-    }else if (maxX1>maxX2)
-            if (maxY1 > maxY2){
-                std::cout<<"caso5"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX2, maxX1, maxY1);
-                myT2CaloGraphs1.setRange(datatype,minX2, maxX1, maxY1);
-            }else {
-                std::cout<<"caso6"<<std::endl;
-                myT2CaloGraphs2.setRange(datatype,minX2, maxX1, maxY2);
-                myT2CaloGraphs1.setRange(datatype,minX2, maxX1, maxY2);
-        }else if(maxY1 > maxY2){
-                myT2CaloGraphs2.setRange(datatype,minX2, maxX2, maxY1);
-                myT2CaloGraphs1.setRange(datatype,minX2, maxX2, maxY1);
-        }
-    else {
-            myT2CaloGraphs1.setRange(datatype,minX2, maxX2, maxY2);
-    }
-
-    return 0;
-
-}
-
-*/
