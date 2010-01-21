@@ -15,7 +15,7 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     ringer_lvl2_eta =   new std::vector<float>;
     ringer_lvl2_phi =   new std::vector<float>;
 
-    
+/*    
 
     trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0, .1);
     teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0, .1);
@@ -26,6 +26,14 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     teRatio->SetBit(TH1::kCanRebin);
     tEt->SetBit(TH1::kCanRebin);
     tHadEt->SetBit(TH1::kCanRebin);
+
+*/
+
+    trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0.9, 1.2);
+    teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0.4, 1.4);
+    tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0., 85.e3);
+    tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, -0.01, .02);
+
 
     psrCore = new TPaveStats();
     pseRatio = new TPaveStats();
@@ -74,6 +82,12 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     readChain->SetBranchAddress("Ringer_LVL2_Phi",   &ringer_lvl2_phi); 
 
     if (DEBUG) std::cout<<"Fim Construtor"<<std::endl;
+
+    rCoreCuts = 0;
+    eRatioCuts = 0;
+    etCuts = 0;
+    hadEtCuts = 0;
+    totalData = 0;
 
 }
 
@@ -141,29 +155,35 @@ T2CaloGraphs::PCUTS T2CaloGraphs::applyCuts(const float eta, const float rCore, 
 
     bool untouched = true;
 
+    ++totalData;
+
     T2CaloGraphs::PCUTS pass = T2CaloGraphs::AP;
 
 	if (cutrCore(rCore, etaBin)) {
         pass = T2CaloGraphs::rCORE;
-        untouched = false;
+        ++rCoreCuts;
+//        untouched = false;
     }
 
 	//Corte eRatio
 	if (cuteRatio(eRatio, F1, eta, etaBin) && untouched){
         pass = T2CaloGraphs::eRATIO;
-        untouched = false;
+        ++eRatioCuts;
+//        untouched = false;
     }
 
 	//Corte Energia Tranversa EM
 	if (cuteT_T2Calo(eT_T2Calo, etaBin) && untouched){
         pass = T2CaloGraphs::et_EM;
-        untouched = false;
+        ++etCuts;
+//        untouched = false;
     }
 
 	//Corte Energia Tranversa HAD
 	if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) &&untouched){
         pass = T2CaloGraphs::et_HAD;
-        untouched = false;
+        ++hadEtCuts;
+//        untouched = false;
     }
 
 	//Corte Fração de energia
@@ -387,11 +407,53 @@ Graphs::CODE T2CaloGraphs::drawCutCounter(){
 
 }
 
+Graphs::CODE T2CaloGraphs::cutStats(){
+
+    TPaveText *pt = new TPaveText(.05,.05,.95,.95);
+    TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
+
+    line1.Form("Total Data = %.0d", totalData);
+    line2.Form("rCore Cuts = %.0d", rCoreCuts);
+    line3.Form("rCore Rate = %.4f", static_cast<float>(rCoreCuts)/static_cast<float>(totalData)*100.);
+    line4.Form("eRatio Cuts %.0d", eRatioCuts);
+    line5.Form("eRatio Rate = %.4f", static_cast<float>(eRatioCuts)/static_cast<float>(totalData)*100.);
+    line6.Form("Et_em Cuts = %.0d", etCuts);
+    line7.Form("Et_em Rate = %.4f", static_cast<float>(etCuts)/static_cast<float>(totalData)*100.);
+    line8.Form("Et_had Cuts = %.0d", hadEtCuts);
+    line9.Form("Et_had Rate = %.4f", static_cast<float>(hadEtCuts)/static_cast<float>(totalData)*100.);
+
+    pt->AddText("");
+    pt->AddText(line1);
+    pt->AddText("");
+    pt->AddText(line2);
+    pt->AddText(line3);
+    pt->AddText("");
+    pt->AddText(line4);
+    pt->AddText(line5);
+    pt->AddText("");
+    pt->AddText(line6);
+    pt->AddText(line7);
+    pt->AddText("");
+    pt->AddText(line8);
+    pt->AddText(line9);
+
+    pt->SetFillColor(30);
+    pt->SetTextAlign(12);
+
+    pt->SetLabel(dataLabel.c_str());
+
+    pt->Draw();
+
+    return Graphs::OK;
+
+}
+
 Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
 
     size_t cond;
 
     if (cut == "rcore"){
+        trCore->Scale(1/trCore->Integral());
         trCore->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -410,6 +472,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "eratio"){
+        teRatio->Scale(1/teRatio->Integral());
         teRatio->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -428,6 +491,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "et"){
+        tEt->Scale(1/tEt->Integral());
         tEt->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -446,6 +510,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "hadet"){
+        tHadEt->Scale(1/tHadEt->Integral());
         tHadEt->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -476,6 +541,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
     size_t cond;
 
     if (cut == "rcore"){
+        trCore->Scale(1/trCore->Integral());
         trCore->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -495,6 +561,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
 
         gPad->Update();
     }else if (cut == "eratio"){
+        teRatio->Scale(1/teRatio->Integral());
         teRatio->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -513,6 +580,7 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
         }
         gPad->Update();
     }else if (cut == "et"){
+        tEt->Scale(1/tEt->Integral());
         tEt->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -529,9 +597,9 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
             psEt->SetTextColor(kRed);
             psEt->Draw();
         }
-
         gPad->Update();
     }else if (cut == "hadet"){
+        tHadEt->Scale(1/tHadEt->Integral());
         tHadEt->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");

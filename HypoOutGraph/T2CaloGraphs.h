@@ -38,6 +38,12 @@ class T2CaloGraphs : public Graphs {
     TH1F *tEt;
     TH1F *tHadEt;
 
+    unsigned rCoreCuts;
+    unsigned eRatioCuts;
+    unsigned etCuts;
+    unsigned hadEtCuts;
+    unsigned totalData;
+
     TPaveStats *psrCore;
     TPaveStats *pseRatio;
     TPaveStats *psEt; 
@@ -53,6 +59,7 @@ class T2CaloGraphs : public Graphs {
 
     CODE swapVectors(const size_t index1, const size_t index2);
     CODE eraseVectors(const size_t index);
+    CODE clearVectors();
 
     //Corte
     PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
@@ -71,7 +78,7 @@ class T2CaloGraphs : public Graphs {
 
     CODE exec();
     CODE drawCutCounter();
-    CODE clearVectors();
+    CODE cutStats();
 
     CODE drawCut(const std::string &cut);
     CODE drawCut(const std::string &cut, const std::string &mode);

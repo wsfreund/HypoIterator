@@ -2,6 +2,7 @@
 #include <cstring>
 #include <TChain.h>
 #include <TTree.h>
+#include <TPad.h>
 #include <TCanvas.h>
 #include <TString.h>
 #include <TPaveText.h>
@@ -18,21 +19,22 @@ int drawGraphs(const std::string &dataPath, const std::string &dataType){
     hypoOutGraphsCanvas->SetFillColor(kYellow-10);
     hypoOutGraphsCanvas->Divide(2,2);
 
-    T2CaloGraphs myT2CaloGraphs(dataPath, dataType);
+    T2CaloGraphs *myT2CaloGraphs = new T2CaloGraphs(dataPath, dataType);
 
-    myT2CaloGraphs.exec();
+    myT2CaloGraphs->exec();
 
     hypoOutGraphsCanvas->cd(1);
-    myT2CaloGraphs.drawCut("rcore");
+    myT2CaloGraphs->drawCut("rcore");
+    
 
     hypoOutGraphsCanvas->cd(2);
-    myT2CaloGraphs.drawCut("eratio");
+    myT2CaloGraphs->drawCut("eratio");
 
     hypoOutGraphsCanvas->cd(3);
-    myT2CaloGraphs.drawCut("et");
+    myT2CaloGraphs->drawCut("et");
 
     hypoOutGraphsCanvas->cd(4);
-    myT2CaloGraphs.drawCut("hadet");
+    myT2CaloGraphs->drawCut("hadet");
 
     hypoOutGraphsCanvas->cd();
     hypoOutGraphsCanvas->Update();
@@ -76,6 +78,7 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
         myT2CaloGraphs2->drawCut("rcore");
         myT2CaloGraphs1->drawCut("rcore","sames");
     }
+
     std::cout<<"Drawing eRatio"<<std::endl;
 
     hypoOutGraphsCanvas->cd(2);
@@ -112,6 +115,19 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
 
     hypoOutGraphsCanvas->cd();
     hypoOutGraphsCanvas->Update();
+
+    TCanvas *hypoOutStats = new TCanvas("Cut Stats", "Cut Stats");
+    hypoOutStats->Divide(2,1);
+
+    hypoOutStats->cd(1);
+    myT2CaloGraphs1->cutStats();
+
+    hypoOutStats->cd(2);
+    myT2CaloGraphs2->cutStats();
+
+    hypoOutStats->cd();    
+    hypoOutStats->Update();
+  
 
 //    TCanvas *debug = new TCanvas("Debug", "Debug");
    
