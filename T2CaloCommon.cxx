@@ -1,5 +1,4 @@
 #include "T2CaloCommon.h"
-#include <iostream>
 
 T2CaloCommon::T2CaloCommon(const std::string &chainPath):
     HypoBase(chainPath){

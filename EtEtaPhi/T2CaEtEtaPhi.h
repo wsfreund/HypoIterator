@@ -1,12 +1,13 @@
 #ifndef T2CAETETAPHI_H
 #define T2CAETETAPHI_H
-
+#include <iostream>
 #include "../T2CaloCommon.h"
 #include <vector>
 #include <cstring>
 #include "HypoErrorsGraph.h"
 #include "TMath.h"
-
+using std::cout;
+using std::endl;
 
 class T2CaEtEtaPhi : public T2CaloCommon {
     

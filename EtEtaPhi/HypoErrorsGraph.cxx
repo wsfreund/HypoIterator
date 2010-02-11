@@ -41,42 +41,6 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     
 
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const char *branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const char *userTitle)
-/*:NREGIONS(userNREGIONS),
-NPOINTS(userNREGIONS+1),
-LOWEDGE(userLOWEDGE),
-HIEDGE(userHIEDGE),
-dataTree(userDataTree)*/
-{
-    NREGIONS = userNREGIONS;
-    NPOINTS = userNREGIONS+1;
-    LOWEDGE = userLOWEDGE;
-    HIEDGE = userHIEDGE;
-    vectorInput = new std::vector<float>;
-    dataTree=userDataTree;
-    dataTree->SetBranchAddress(branchName, &vectorInput);
-    dataLabel = std::string(userDataLabel);
-    title = std::string(userTitle);
-    genGraph();
-}
-
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &userDataLabel, const char *userTitle)
-/*:    NREGIONS(userNREGIONS),
-    NPOINTS(userNREGIONS+1),
-    LOWEDGE(userLOWEDGE),
-    HIEDGE(userHIEDGE),                  
-    vectorInput(dataVector),
-    dataTree(0)*/{
-    NREGIONS = userNREGIONS;
-    NPOINTS = userNREGIONS+1;
-    LOWEDGE = userLOWEDGE;
-    HIEDGE = userHIEDGE;
-    vectorInput = dataVector;
-    dataTree = 0;
-    dataLabel = std::string(userDataLabel);
-    title = std::string(userTitle);
-    genGraph();
-}
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
     float edges[NPOINTS], *pEdges;
