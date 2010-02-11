@@ -37,9 +37,6 @@ class HypoErrorsGraph {
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *&userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *&userDataTree, const char *branchName, const unsigned userNREGIONS, const string &dataLabel, const char *userTitle);
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &dataLabel, const char *userTitle);
-
     HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
     HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);
     
