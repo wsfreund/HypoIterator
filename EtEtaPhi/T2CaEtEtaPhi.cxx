@@ -7,10 +7,10 @@ T2CaEtEtaPhi::T2CaEtEtaPhi(std::string &rPath, unsigned user_nRegions, std::stri
 
     cout<<"Cheguei aqui"<<endl;
 
-    etaxEficGraph = new HypoErrorsGraph(-2.5, 2.5, extraVariables, "T2CaEta", NREGIONS, dataLabel, "T2CaEfic x Eta");
+    etaxEficGraph = new HypoErrorsGraph(-2.5, 2.5, extraVariables, "T2CaEta", "T2CaDec", NREGIONS, dataLabel, "T2CaEfic x Eta");
     cout<<"Passei!!!"<<endl;
-    phixEficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), extraVariables, "T2CaPhi", NREGIONS, dataLabel, "T2CaEfic x Phi");
-    etxEficGraph = new HypoErrorsGraph(10e3, 80e3, extraVariables, "T2CaEt", NREGIONS, dataLabel, "T2CaEfic x Et");
+    phixEficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), extraVariables, "T2CaPhi", "T2CaDec", NREGIONS, dataLabel, "T2CaEfic x Phi");
+    etxEficGraph = new HypoErrorsGraph(10e3, 80e3, extraVariables, "T2CaEt", "T2CaDec", NREGIONS, dataLabel, "T2CaEfic x Et");
 
 }
 
