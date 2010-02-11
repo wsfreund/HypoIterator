@@ -79,6 +79,8 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
         myT2CaloGraphs1->drawCut("rcore","sames");
     }
 
+//    hypoOutGraphsCanvas->cd(1)->SetLogy();
+
     std::cout<<"Drawing eRatio"<<std::endl;
 
     hypoOutGraphsCanvas->cd(2);
@@ -92,6 +94,8 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
         myT2CaloGraphs1->drawCut("eratio","sames");
     }
 
+//    hypoOutGraphsCanvas->cd(2)->SetLogy();
+
     std::cout<<"Drawing Et"<<std::endl;
     hypoOutGraphsCanvas->cd(3);
     if (yet1>yet2){
@@ -102,6 +106,8 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
         myT2CaloGraphs1->drawCut("et","sames");
     }    
 
+//    hypoOutGraphsCanvas->cd(3)->SetLogy();
+
     std::cout<<"Drawing hadEt"<<std::endl;
     hypoOutGraphsCanvas->cd(4);
     if (yhadet1>yhadet2){
@@ -111,6 +117,8 @@ int drawGraphs(const std::string &dataPath1, const std::string &dataPath2, const
         myT2CaloGraphs2->drawCut("hadet");
         myT2CaloGraphs1->drawCut("hadet","sames");
     }
+
+//    hypoOutGraphsCanvas->cd(4)->SetLogy();
 
 
     hypoOutGraphsCanvas->cd();

@@ -45,12 +45,12 @@ int genCompData(const char *inPut, const char *outPut){
 		myNeural->exec();
 		myT2Calo->exec();
 
-        myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
+                myT2Calo->ordenateRoi(myNeural->getEta(), myNeural->getPhi());
 
-        generateData->Fill();
+                generateData->Fill();
 
-        myNeural->clearVectors();
-        myT2Calo->clearVectors();
+                myNeural->clearVectors();
+                myT2Calo->clearVectors();
 
 	}//for i
 

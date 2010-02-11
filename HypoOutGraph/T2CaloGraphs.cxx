@@ -3,36 +3,36 @@
 
 T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userDataLabel):Graphs(dataPath, userDataLabel){
 
-	hadET_T2Calo	=	new std::vector<float>;
-	rCore			=	new std::vector<float>;
-	energyRatio		=	new std::vector<float>;
-	F1			    =	new std::vector<float>;
-	energy			=	new std::vector<float>;
-	ehad1			=	new std::vector<float>;
-	energyS1		=	new std::vector<float>;
-	t2CaAns		    =	new std::vector<int>;
+    hadET_T2Calo = new std::vector<float>;
+    rCore  = new std::vector<float>;
+    energyRatio = new std::vector<float>;
+    F1 = new std::vector<float>;
+    energy = new std::vector<float>;
+    ehad1 = new std::vector<float>;
+    energyS1 = new std::vector<float>;
+    t2CaAns =   new std::vector<int>;
 
-    ringer_lvl2_eta =   new std::vector<float>;
-    ringer_lvl2_phi =   new std::vector<float>;
+    ringer_lvl2_eta = new std::vector<float>;
+    ringer_lvl2_phi = new std::vector<float>;
 
-/*    
+    /*    
 
-    trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0, .1);
-    teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0, .1);
-    tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0, .1);
-    tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, 0, .1);
+          trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0, .1);
+          teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0, .1);
+          tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0, .1);
+          tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, 0, .1);
 
-    trCore->SetBit(TH1::kCanRebin);
-    teRatio->SetBit(TH1::kCanRebin);
-    tEt->SetBit(TH1::kCanRebin);
-    tHadEt->SetBit(TH1::kCanRebin);
+          trCore->SetBit(TH1::kCanRebin);
+          teRatio->SetBit(TH1::kCanRebin);
+          tEt->SetBit(TH1::kCanRebin);
+          tHadEt->SetBit(TH1::kCanRebin);
 
 */
 
-    trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0.9, 1.2);
-    teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0.4, 1.4);
-    tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0., 85.e3);
-    tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, -0.01, .02);
+    trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0.5, 1.02);
+    teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, -0.02, 1.02);
+    tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0., 50.e3);
+    tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, -0.01, .1);
 
 
     psrCore = new TPaveStats();
@@ -58,25 +58,25 @@ T2CaloGraphs::T2CaloGraphs(const std::string &dataPath, const std::string &userD
     }
 
 
-	readChain->SetBranchStatus("T2CaEta", 		true);
-	readChain->SetBranchStatus("T2CaPhi", 		true);
-	readChain->SetBranchStatus("T2CaRcore", 	true);
-	readChain->SetBranchStatus("T2CaEratio",	true);
-	readChain->SetBranchStatus("T2CaEmES1", 	true);
-	readChain->SetBranchStatus("T2CaEmE", 		true);
-	readChain->SetBranchStatus("T2CaHadES0", 	true);
+    readChain->SetBranchStatus("T2CaEta",               true);
+    readChain->SetBranchStatus("T2CaPhi",               true);
+    readChain->SetBranchStatus("T2CaRcore",     true);
+    readChain->SetBranchStatus("T2CaEratio",    true);
+    readChain->SetBranchStatus("T2CaEmES1",     true);
+    readChain->SetBranchStatus("T2CaEmE",               true);
+    readChain->SetBranchStatus("T2CaHadES0",    true);
 
-	readChain->SetBranchStatus("Ringer_LVL2_Eta", 	true);
-	readChain->SetBranchStatus("Ringer_LVL2_Phi",   true);
+    readChain->SetBranchStatus("Ringer_LVL2_Eta",       true);
+    readChain->SetBranchStatus("Ringer_LVL2_Phi",   true);
 
 
-	readChain->SetBranchAddress("T2CaEta", 		&lvl2_eta);
-	readChain->SetBranchAddress("T2CaPhi", 		&lvl2_phi);
-	readChain->SetBranchAddress("T2CaRcore", 	&rCore);
-	readChain->SetBranchAddress("T2CaEratio",	&energyRatio);
-	readChain->SetBranchAddress("T2CaEmES1", 	&energyS1);
-	readChain->SetBranchAddress("T2CaEmE", 		&energy);
-	readChain->SetBranchAddress("T2CaHadES0", 	&ehad1);
+    readChain->SetBranchAddress("T2CaEta",              &lvl2_eta);
+    readChain->SetBranchAddress("T2CaPhi",              &lvl2_phi);
+    readChain->SetBranchAddress("T2CaRcore",    &rCore);
+    readChain->SetBranchAddress("T2CaEratio",   &energyRatio);
+    readChain->SetBranchAddress("T2CaEmES1",    &energyS1);
+    readChain->SetBranchAddress("T2CaEmE",              &energy);
+    readChain->SetBranchAddress("T2CaHadES0",   &ehad1);
 
     readChain->SetBranchAddress("Ringer_LVL2_Eta",   &ringer_lvl2_eta);       
     readChain->SetBranchAddress("Ringer_LVL2_Phi",   &ringer_lvl2_phi); 
@@ -104,54 +104,61 @@ Graphs::CODE T2CaloGraphs::exec(){
 
         readChain->GetEntry(i);
 
-	    calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
+        calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI j;
 
         ordenateRoi(ringer_lvl2_eta, ringer_lvl2_phi);
 
-	    for(size_t j=0; j<lvl2_eta->size(); ++j){
-                    
-		    T2CaloGraphs::PCUTS	roiAns	=	applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
-		    t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
+        for(size_t j=0; j<lvl2_eta->size(); ++j){
 
-	    }//for j
+            T2CaloGraphs::PCUTS roiAns  =       applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
+            t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
+
+        }//for j
         clearVectors();
 
     }
 
+    trCore->Scale(1/trCore->Integral());
+    teRatio->Scale(1/teRatio->Integral());
+    tEt->Scale(1/tEt->Integral());
+    tHadEt->Scale(1/tHadEt->Integral());
+
+
+
     if (DEBUG) std::cout<<"Fim do execute"<<std::endl;
 
-	return Graphs::OK;
+    return Graphs::OK;
 
 }
 
 inline Graphs::CODE T2CaloGraphs::calcTransverseFraction(){
 
 
-	for(size_t j=0; j<lvl2_eta->size(); ++j){
-	    et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
-//	    hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); //Antiga implementação no T2Calo
+    for(size_t j=0; j<lvl2_eta->size(); ++j){
+        et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
+        //          hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); //Antiga implementação no T2Calo
         hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
-	    F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
+        F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
     }
 
-	return	Graphs::OK;
+    return      Graphs::OK;
 
 }
 
 T2CaloGraphs::PCUTS T2CaloGraphs::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
-	
-	size_t	etaBin = 0;
-	for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
-		if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
-	}
 
-	//Corte Eta
-	//if (cutEta(dEta)) return T2CaloGraphs::dETA;
- 
-	//Corte Phi
-	//if (cutPhi(dPhi)) return T2CaloGraphs::dPHI;
+    size_t      etaBin = 0;
+    for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
+        if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
+    }
 
-	//Corte rCore
+    //Corte Eta
+    //if (cutEta(dEta)) return T2CaloGraphs::dETA;
+
+    //Corte Phi
+    //if (cutPhi(dPhi)) return T2CaloGraphs::dPHI;
+
+    //Corte rCore
 
     bool untouched = true;
 
@@ -159,82 +166,82 @@ T2CaloGraphs::PCUTS T2CaloGraphs::applyCuts(const float eta, const float rCore, 
 
     T2CaloGraphs::PCUTS pass = T2CaloGraphs::AP;
 
-	if (cutrCore(rCore, etaBin)) {
+    if (cutrCore(rCore, etaBin)) {
         pass = T2CaloGraphs::rCORE;
         ++rCoreCuts;
-//        untouched = false;
+        //        untouched = false;
     }
 
-	//Corte eRatio
-	if (cuteRatio(eRatio, F1, eta, etaBin) && untouched){
+    //Corte eRatio
+    if (cuteRatio(eRatio, F1, eta, etaBin) && untouched){
         pass = T2CaloGraphs::eRATIO;
         ++eRatioCuts;
-//        untouched = false;
+        //        untouched = false;
     }
 
-	//Corte Energia Tranversa EM
-	if (cuteT_T2Calo(eT_T2Calo, etaBin) && untouched){
+    //Corte Energia Tranversa EM
+    if (cuteT_T2Calo(eT_T2Calo, etaBin) && untouched){
         pass = T2CaloGraphs::et_EM;
         ++etCuts;
-//        untouched = false;
+        //        untouched = false;
     }
 
-	//Corte Energia Tranversa HAD
-	if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) &&untouched){
+    //Corte Energia Tranversa HAD
+    if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) &&untouched){
         pass = T2CaloGraphs::et_HAD;
         ++hadEtCuts;
-//        untouched = false;
+        //        untouched = false;
     }
 
-	//Corte Fração de energia
+    //Corte Fração de energia
     //if (cutF1(F1)) return T2CaloGraphs::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
 
-	//Chegou até aqui passou yeah
-	return pass;
+    //Chegou até aqui passou yeah
+    return pass;
 
 }
 
 inline bool T2CaloGraphs::cutEta(const float dEta){
 
-	if ( dEta > m_detacluster ) {
-		return true;
-	}	
-	return false;
+    if ( dEta > m_detacluster ) {
+        return true;
+    }   
+    return false;
 }
 
 
 inline bool T2CaloGraphs::cutPhi(const float dPhi){
 
-	if ( dPhi > m_dphicluster ){
-		return true;
-	}	
-	return false;
+    if ( dPhi > m_dphicluster ){
+        return true;
+    }   
+    return false;
 
 }
 
 inline bool T2CaloGraphs::cutrCore(const float rCore, const size_t etaBin){
 
     trCore->Fill(rCore);
-	if ( rCore < m_carcorethr[etaBin] )  {
-		return true;
-	}
-	return false;
+    if ( rCore < m_carcorethr[etaBin] )  {
+        return true;
+    }
+    return false;
 
 }
 
 inline bool T2CaloGraphs::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
 
-	bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
-	 
+    bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
+
     teRatio->Fill(eRatio);
 
-	if ( (!inCrack) || ( F1 < m_F1thr) ){
+    if ( (!inCrack) || ( F1 < m_F1thr) ){
         if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
-		    return true;
+            return true;
         }
-	}
- 
-	return false;
+    }
+
+    return false;
 
 }
 
@@ -242,32 +249,32 @@ inline bool T2CaloGraphs::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBi
 
     tEt->Fill(eT_T2Calo);
 
-	if ( eT_T2Calo < m_eTthr[etaBin] ){
-		return true;
-	}
-	return false;
+    if ( eT_T2Calo < m_eTthr[etaBin] ){
+        return true;
+    }
+    return false;
 }
 
 inline bool T2CaloGraphs::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
 
     tHadEt->Fill(hadET_T2Calo);
 
-	float hadET_cut;
-	if ( eT_T2Calo >  m_eT2thr[etaBin] ) hadET_cut = m_hadeT2thr[etaBin] ;
-	else hadET_cut = m_hadeTthr[etaBin];
+    float hadET_cut;
+    if ( eT_T2Calo >  m_eT2thr[etaBin] ) hadET_cut = m_hadeT2thr[etaBin] ;
+    else hadET_cut = m_hadeTthr[etaBin];
 
-	if ( hadET_T2Calo > hadET_cut ) {
-		return true;
-	}
-	return false;
+    if ( hadET_T2Calo > hadET_cut ) {
+        return true;
+    }
+    return false;
 }
 
 inline bool T2CaloGraphs::cutF1(const float F1){
 
-	if ( F1 < m_F1thr){
-		return true;
-	}
-	return false;
+    if ( F1 < m_F1thr){
+        return true;
+    }
+    return false;
 
 }
 
@@ -339,11 +346,11 @@ Graphs::CODE T2CaloGraphs::eraseVectors(const size_t index){
 
 inline Graphs::CODE T2CaloGraphs::clearVectors(){
 
-	et->clear();
-	hadET_T2Calo->clear();
-	F1->clear();
+    et->clear();
+    hadET_T2Calo->clear();
+    F1->clear();
 
-	return Graphs::OK;
+    return Graphs::OK;
 
 }
 
@@ -351,59 +358,59 @@ inline Graphs::CODE T2CaloGraphs::clearVectors(){
 //Create T2Calo Graphic for debug comparision
 Graphs::CODE T2CaloGraphs::drawCutCounter(){
 
-	TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
+    TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
 
-	for(size_t j=0; j<t2CaAns->size();++j){
-		switch (t2CaAns->at(j)){
-			case T2CaloGraphs::AP:
-				hCuts->Fill(T2CaloGraphs::c_F1);
-			case T2CaloGraphs::c_F1:
-				hCuts->Fill(T2CaloGraphs::et_HAD);
-			case T2CaloGraphs::et_HAD:
-				hCuts->Fill(T2CaloGraphs::et_EM);
-			case T2CaloGraphs::et_EM:
-				hCuts->Fill(T2CaloGraphs::eRATIO);
-			case T2CaloGraphs::eRATIO:
-				hCuts->Fill(T2CaloGraphs::rCORE);
-			case T2CaloGraphs::rCORE:
-				hCuts->Fill(T2CaloGraphs::dPHI);
-			case T2CaloGraphs::dPHI:
-				hCuts->Fill(T2CaloGraphs::dETA);
-			case T2CaloGraphs::dETA:
-				hCuts->Fill(T2CaloGraphs::TRIG);
-				hCuts->Fill(T2CaloGraphs::LVL2E);
-				break;
-			default:
-				std::cout<<"Retorno de valor inesperado de corte"<<std::endl;
-				return Graphs::ERROR;
-		}
-	}
+    for(size_t j=0; j<t2CaAns->size();++j){
+        switch (t2CaAns->at(j)){
+            case T2CaloGraphs::AP:
+                hCuts->Fill(T2CaloGraphs::c_F1);
+            case T2CaloGraphs::c_F1:
+                hCuts->Fill(T2CaloGraphs::et_HAD);
+            case T2CaloGraphs::et_HAD:
+                hCuts->Fill(T2CaloGraphs::et_EM);
+            case T2CaloGraphs::et_EM:
+                hCuts->Fill(T2CaloGraphs::eRATIO);
+            case T2CaloGraphs::eRATIO:
+                hCuts->Fill(T2CaloGraphs::rCORE);
+            case T2CaloGraphs::rCORE:
+                hCuts->Fill(T2CaloGraphs::dPHI);
+            case T2CaloGraphs::dPHI:
+                hCuts->Fill(T2CaloGraphs::dETA);
+            case T2CaloGraphs::dETA:
+                hCuts->Fill(T2CaloGraphs::TRIG);
+                hCuts->Fill(T2CaloGraphs::LVL2E);
+                break;
+            default:
+                std::cout<<"Retorno de valor inesperado de corte"<<std::endl;
+                return Graphs::ERROR;
+        }
+    }
 
 
-	hCuts->GetXaxis()->SetBinLabel(1,"Input");
+    hCuts->GetXaxis()->SetBinLabel(1,"Input");
 
-	hCuts->GetXaxis()->SetBinLabel(2,"has one TrigEMCluster");
+    hCuts->GetXaxis()->SetBinLabel(2,"has one TrigEMCluster");
 
-	hCuts->GetXaxis()->SetBinLabel(3,"#Delta #eta L2-L1");
+    hCuts->GetXaxis()->SetBinLabel(3,"#Delta #eta L2-L1");
 
-	hCuts->GetXaxis()->SetBinLabel(4,"#Delta #phi L2-L1");
+    hCuts->GetXaxis()->SetBinLabel(4,"#Delta #phi L2-L1");
 
-	hCuts->GetXaxis()->SetBinLabel(5,"rCore");
+    hCuts->GetXaxis()->SetBinLabel(5,"rCore");
 
-	hCuts->GetXaxis()->SetBinLabel(6,"eRatio");
+    hCuts->GetXaxis()->SetBinLabel(6,"eRatio");
 
-	hCuts->GetXaxis()->SetBinLabel(7,"E_{T}^{EM}");
+    hCuts->GetXaxis()->SetBinLabel(7,"E_{T}^{EM}");
 
-	hCuts->GetXaxis()->SetBinLabel(8,"E_{T}^{Had}");
+    hCuts->GetXaxis()->SetBinLabel(8,"E_{T}^{Had}");
 
-	hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
+    hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
 
-	hCuts->SetEntries(hCuts->GetBinContent(1));
+    hCuts->SetEntries(hCuts->GetBinContent(1));
 
-	hCuts->Draw();
+    hCuts->Draw();
 
-	return Graphs::OK;
+    return Graphs::OK;
 
 }
 
@@ -453,7 +460,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
     size_t cond;
 
     if (cut == "rcore"){
-        trCore->Scale(1/trCore->Integral());
         trCore->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -472,7 +478,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "eratio"){
-        teRatio->Scale(1/teRatio->Integral());
         teRatio->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -491,7 +496,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "et"){
-        tEt->Scale(1/tEt->Integral());
         tEt->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -510,7 +514,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut){
         }
         gPad->Update();
     }else if (cut == "hadet"){
-        tHadEt->Scale(1/tHadEt->Integral());
         tHadEt->Draw();
         gPad->Update();
         cond = dataLabel.find("common");
@@ -541,7 +544,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
     size_t cond;
 
     if (cut == "rcore"){
-        trCore->Scale(1/trCore->Integral());
         trCore->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -561,7 +563,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
 
         gPad->Update();
     }else if (cut == "eratio"){
-        teRatio->Scale(1/teRatio->Integral());
         teRatio->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -580,7 +581,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
         }
         gPad->Update();
     }else if (cut == "et"){
-        tEt->Scale(1/tEt->Integral());
         tEt->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -599,7 +599,6 @@ Graphs::CODE T2CaloGraphs::drawCut(const std::string &cut, const std::string &mo
         }
         gPad->Update();
     }else if (cut == "hadet"){
-        tHadEt->Scale(1/tHadEt->Integral());
         tHadEt->Draw(mode.c_str());
         gPad->Update();
         cond = dataLabel.find("common");
@@ -654,14 +653,14 @@ T2CaloGraphs::~T2CaloGraphs(){
     delete psEt;
     delete psHadEt;
 
-	delete 	hadET_T2Calo;
-	delete	rCore;
-	delete	energyRatio;
-	delete	F1;
-	delete	energy;
-	delete	ehad1;
-	delete	energyS1;
-	delete	t2CaAns;
+    delete      hadET_T2Calo;
+    delete      rCore;
+    delete      energyRatio;
+    delete      F1;
+    delete      energy;
+    delete      ehad1;
+    delete      energyS1;
+    delete      t2CaAns;
     delete ringer_lvl2_eta;
     delete ringer_lvl2_phi;
 
