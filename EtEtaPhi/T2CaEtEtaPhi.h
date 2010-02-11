@@ -13,16 +13,19 @@ class T2CaEtEtaPhi : public T2CaloCommon {
 
     protected:
 
-    HypoErrorsGraph etaxEficGraph;
-    HypoErrorsGraph phixEficGraph;
-    HypoErrorsGraph etxEficGraph;
+    HypoErrorsGraph *etaxEficGraph;
+    HypoErrorsGraph *phixEficGraph;
+    HypoErrorsGraph *etxEficGraph;
 
-    const unsigned NREGIONS;
-    const std::string dataLabel;
+    unsigned NREGIONS;
+    std::string dataLabel;
 
     public:
 
-    T2CaloEtPhi(std::string &rPath, const unsigned int user_nRegions, const std::string &dataLabel);
-    CODE drawEficVs(const std::string &opt);
+    T2CaEtEtaPhi(std::string &rPath, unsigned user_nRegions, std::string &dataLabel);
+    CODE DrawEficVs(const std::string &vsWho, const std::string &opt);
 
 };
+
+
+#endif

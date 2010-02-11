@@ -2,6 +2,7 @@
 #define HYPOERRORSGRAPH_H
 
 #include <vector>
+#include <typeinfo>
 #include "TTree.h"
 #include "TMath.h"
 #include <cstring>
@@ -12,8 +13,8 @@ class HypoErrorsGraph {
     protected:
     enum PARTICLES {JET = -1, ELECTRON = 1};
     enum CODE {ERROR = 0, OK};
-    /*const*/ int NREGIONS;
-    /*const*/ int NPOINTS;
+    /*const*/ unsigned NREGIONS;
+    /*const*/ unsigned NPOINTS;
     /*const*/ float LOWEDGE;
     /*const*/ float HIEDGE;
     /*const*/ std::vector<float> *vectorInput;
@@ -32,9 +33,16 @@ class HypoErrorsGraph {
 
     public:
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
+    HypoErrorsGraph();
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *&userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *&userDataTree, const char *branchName, const unsigned userNREGIONS, const string &dataLabel, const char *userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &dataLabel, const char *userTitle);
+
+    HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
+    HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);
+    
     TGraphAsymmErrors *& getGraph(){ return graph; };
     CODE Draw(const std::string &input);
 

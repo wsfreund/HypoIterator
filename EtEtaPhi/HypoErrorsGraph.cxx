@@ -1,6 +1,8 @@
 #include "HypoErrorsGraph.h"
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree *userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph() {
+};
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 /*:NREGIONS(userNREGIONS),
 NPOINTS(userNREGIONS+1),
 LOWEDGE(userLOWEDGE),
@@ -38,6 +40,43 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 }
     
 
+
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const char *branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const char *userTitle)
+/*:NREGIONS(userNREGIONS),
+NPOINTS(userNREGIONS+1),
+LOWEDGE(userLOWEDGE),
+HIEDGE(userHIEDGE),
+dataTree(userDataTree)*/
+{
+    NREGIONS = userNREGIONS;
+    NPOINTS = userNREGIONS+1;
+    LOWEDGE = userLOWEDGE;
+    HIEDGE = userHIEDGE;
+    vectorInput = new std::vector<float>;
+    dataTree=userDataTree;
+    dataTree->SetBranchAddress(branchName, &vectorInput);
+    dataLabel = std::string(userDataLabel);
+    title = std::string(userTitle);
+    genGraph();
+}
+
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &userDataLabel, const char *userTitle)
+/*:    NREGIONS(userNREGIONS),
+    NPOINTS(userNREGIONS+1),
+    LOWEDGE(userLOWEDGE),
+    HIEDGE(userHIEDGE),                  
+    vectorInput(dataVector),
+    dataTree(0)*/{
+    NREGIONS = userNREGIONS;
+    NPOINTS = userNREGIONS+1;
+    LOWEDGE = userLOWEDGE;
+    HIEDGE = userHIEDGE;
+    vectorInput = dataVector;
+    dataTree = 0;
+    dataLabel = std::string(userDataLabel);
+    title = std::string(userTitle);
+    genGraph();
+}
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
     float edges[NPOINTS], *pEdges;
@@ -56,7 +95,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     //No error on x
     float exl[NREGIONS], exh[NREGIONS];
     //Initializing them becouse the variable size:
-    for( int i=0; i<NREGIONS; ++i){
+    for( unsigned i=0; i<NREGIONS; ++i){
         exl[i]=0.;
         exh[i]=0.;
     }
@@ -88,7 +127,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 }
 
 inline HypoErrorsGraph::CODE HypoErrorsGraph::genEdges(float* edges){
-    int i = 0;
+    unsigned i = 0;
     for(float edge = LOWEDGE; i<NPOINTS; edge+= ( HIEDGE - LOWEDGE ) / ( NREGIONS ), ++edges, ++i)
         *edges=edge;
     edges -= NPOINTS; 
@@ -97,7 +136,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::genEdges(float* edges){
 
 inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges, float* centerBin){
     const float HALF_REGION_SIZE = ( HIEDGE - LOWEDGE ) / ( NREGIONS ) * .5;
-    for(int i = 0; i < NREGIONS;++i, ++edges, ++centerBin)
+    for(unsigned i = 0; i < NREGIONS;++i, ++edges, ++centerBin)
         *centerBin = (*edges) + HALF_REGION_SIZE;
     edges -= NREGIONS; centerBin-= NREGIONS;// it only iterates for NREGIONS eventhough edges is NPOINTS size.
     return HypoErrorsGraph::OK;
@@ -109,7 +148,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
     if ( dataTree!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
-        for(int lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
+        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
             float regElectrons = 0;
             float regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
@@ -129,7 +168,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
         }
     }else{
-        for(int lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
+        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
             float regElectrons = 0;
             float regData = 0;
             for(size_t i=0; i < vectorInput->size();++i){
@@ -157,9 +196,35 @@ inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, c
     else return false;
 }
 
-inline HypoErrorsGraph::CODE HypoErrorsGraph::Draw(const std::string &input){
+HypoErrorsGraph::CODE HypoErrorsGraph::Draw(const std::string &input){
     graph->Draw(input.c_str());
     return HypoErrorsGraph::OK;
+}
+
+HypoErrorsGraph::HypoErrorsGraph &HypoErrorsGraph::operator=(const HypoErrorsGraph &graph2){
+     NREGIONS = graph2.NREGIONS;
+     NPOINTS = graph2.NPOINTS;
+     LOWEDGE = graph2.LOWEDGE;
+     HIEDGE = graph2.HIEDGE;
+     vectorInput = graph2.vectorInput;
+     dataTree= graph2.dataTree;
+     dataLabel = graph2.dataLabel;
+     title = graph2.title;
+
+     return *this;
+}
+
+HypoErrorsGraph::HypoErrorsGraph* HypoErrorsGraph::operator=(const HypoErrorsGraph* &graph2){
+     NREGIONS = graph2->NREGIONS;
+     NPOINTS = graph2->NPOINTS;
+     LOWEDGE = graph2->LOWEDGE;
+     HIEDGE = graph2->HIEDGE;
+     vectorInput = graph2->vectorInput;
+     dataTree= graph2->dataTree;
+     dataLabel = graph2->dataLabel;
+     title = graph2->title;
+
+     return this;
 }
 
 HypoErrorsGraph::~HypoErrorsGraph(){
