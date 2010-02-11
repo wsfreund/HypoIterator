@@ -15,7 +15,7 @@ dataTree(userDataTree)*/
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     vectorInput = new std::vector<float>;
-    decBranch = new std::vetor<float>;
+    vectorDec = new std::vetor<float>;
     dataTree=userDataTree;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
