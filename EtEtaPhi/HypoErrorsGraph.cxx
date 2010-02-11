@@ -17,7 +17,7 @@ dataTree(userDataTree)*/
     vectorInput = new std::vector<float>;
     dataTree=userDataTree;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
-    dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec)
+    dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
     dataLabel = userDataLabel;
     title = userTitle;
     genGraph();
