@@ -17,6 +17,7 @@ dataTree(userDataTree)*/
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     dataTree=userDataTree;
+    dataTree->ResetBranchAddress();
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
     dataLabel = userDataLabel;
