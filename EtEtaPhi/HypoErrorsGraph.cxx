@@ -125,8 +125,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
     if ( dataTree!=0){
         cout<<"Entrei loop com dataTree"<<endl;
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
-        vector<float>* decision = new vector<float>; 
-        extraVariables->Branch("T2CaDec", &decision);
+
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
             cout<<"lowEdge = "<<lowEdge<<endl;
             float regElectrons = 0;
@@ -140,7 +139,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                     cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         cout<<"Esta na regiao!!"<<endl;
-                        if (vectorInput->at(entry) == HypoErrorsGraph::ELECTRON)
+                        if (vectorInput->at(entry) == HypoErrorsGraph::PARTICLES::ELECTRON)
                             ++regElectrons;
                     }
                 }
@@ -152,7 +151,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             *lowEdgeErrors = *efic - error; 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
         }
-        delete decision;
     }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
             float regElectrons = 0;
