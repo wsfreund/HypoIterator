@@ -2,7 +2,7 @@
 
 HypoErrorsGraph::HypoErrorsGraph() {
 };
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const std::string &decBranch, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 /*:NREGIONS(userNREGIONS),
 NPOINTS(userNREGIONS+1),
 LOWEDGE(userLOWEDGE),
@@ -17,12 +17,13 @@ dataTree(userDataTree)*/
     vectorInput = new std::vector<float>;
     dataTree=userDataTree;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
+    dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec)
     dataLabel = userDataLabel;
     title = userTitle;
     genGraph();
 }
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<float> *&inputDec, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 /*:    NREGIONS(userNREGIONS),
     NPOINTS(userNREGIONS+1),
     LOWEDGE(userLOWEDGE),
@@ -34,6 +35,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     vectorInput = dataVector;
+    vectorDec = inputDec;
     dataTree = 0;
     dataLabel = userDataLabel;
     title = userTitle;
@@ -128,8 +130,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
 
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
             cout<<"lowEdge = "<<lowEdge<<endl;
-            float regElectrons = 0;
-            float regData = 0;
+            unsigned regElectrons = 0;
+            unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
                 cout<<"Pegando entry "<<entry<<endl;
                 dataTree->GetEntry(entry);
@@ -139,13 +141,13 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                     cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         cout<<"Esta na regiao!!"<<endl;
-                        if (vectorInput->at(entry) == HypoErrorsGraph::PARTICLES::ELECTRON)
+                        if (vectorDec->at(entry) == HypoErrorsGraph::PARTICLES::ELECTRON)
                             ++regElectrons;
                     }
                 }
             }   
             cout<<"chegou na parte dos erros"<<endl;
-            *efic = regElectrons / regData;
+            *efic = (float)regElectrons / (float)regData;
             float error = 1/TMath::Sqrt(regData);
             if (error>*efic) error = *efic;
             *lowEdgeErrors = *efic - error; 
@@ -153,23 +155,23 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
         }
     }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
-            float regElectrons = 0;
-            float regData = 0;
+            unsigned regElectrons = 0;
+            unsigned regData = 0;
             for(size_t i=0; i < vectorInput->size();++i){
                 ++regData;
                 if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
-                    if (vectorInput->at(i) == HypoErrorsGraph::ELECTRON)
+                    if (vectorDec->at(i) == HypoErrorsGraph::ELECTRON)
                         ++regElectrons;
                 }
             }
-            *efic = regElectrons / regData; 
+            *efic = (float)regElectrons / (float)regData; 
             float error = 1/TMath::Sqrt(regData);
             if (error>*efic) error = *efic;
             *lowEdgeErrors = *efic - error; 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
         }
     }
-    efic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS;
+    efic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS;
     return HypoErrorsGraph::OK;
 
 }
