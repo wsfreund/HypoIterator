@@ -50,13 +50,20 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     cout<<"Criei ponteiro pEdges"<<endl;
     genEdges(pEdges);
     cout<<"criei genEdges"<<endl;
-
+    for(unsigned i =0; i<NPOINTS; ++i)
+        cout<<edges[i]<<" ";
+    cout<<endl;
+    
     float x[NREGIONS], efic[NREGIONS], hiErrors[NREGIONS], lowErrors[NREGIONS], *pX, *pEfic, *pHiErrors, *pLowErrors;
     pX = x; pEfic = efic; pHiErrors = hiErrors; pLowErrors = lowErrors;
     cout<<"criei um monte de ponteiro"<<endl;
     //Generating x
     incrementEdges(edges, pX);
     cout<<"dei incrementEdges"<<endl;
+    for(unsigned i =0; i<NREGIONS; ++i)
+        cout<<x[i]<<" ";
+    cout<<endl;
+
     //Generating Efic, lowErrors, hiErrors
     genEficErrors(pEdges, pEfic, pLowErrors, pHiErrors); 
     //No error on x
@@ -115,21 +122,28 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* efic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     if ( dataTree!=0){
+        cout<<"Entrei loop 1"<<endl;
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
+            cout<<"lowEdge = "<<lowEdge<<endl;
             float regElectrons = 0;
             float regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
+                cout<<"Pegando entry "<<entry<<endl;
                 dataTree->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
+                    cout<<"Pegando entrada "<<i<<" de vectorInput("<<vectorInput->size()<<")"<<endl;
                     ++regData;
+                    cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
+                        cout<<"Esta na regiao!!"<<endl;
                         if (vectorInput->at(entry) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
                 }
             }   
+            cout<<"chegou na parte dos erros"<<endl;
             *efic = regElectrons / regData;
             float error = 1/TMath::Sqrt(regData);
             if (error>*efic) error = *efic;
