@@ -64,6 +64,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         cout<<x[i]<<" ";
     cout<<endl;
 
+    cout<<"ponteiro de edges "<<*pEdges<<endl;
     //Generating Efic, lowErrors, hiErrors
     genEficErrors(pEdges, pEfic, pLowErrors, pHiErrors); 
     //No error on x
@@ -122,10 +123,11 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* efic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     if ( dataTree!=0){
-        cout<<"Entrei loop 1"<<endl;
+        cout<<"Entrei loop com dataTree"<<endl;
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
-
-        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
+        vector<float>* decision = new vector<float>; 
+        extraVariables->Branch("T2CaDec", &decision);
+        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
             cout<<"lowEdge = "<<lowEdge<<endl;
             float regElectrons = 0;
             float regData = 0;
@@ -150,6 +152,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             *lowEdgeErrors = *efic - error; 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
         }
+        delete decision;
     }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
             float regElectrons = 0;
