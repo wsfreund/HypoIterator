@@ -44,7 +44,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
-    cout<<"Entrei no genGraph()"
+    cout<<"Entrei no genGraph()"<<endl;
     float edges[NPOINTS], *pEdges;
     pEdges = edges;
     cout<<"Criei ponteiro pEdges"<<endl;
