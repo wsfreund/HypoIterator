@@ -7,6 +7,9 @@
 #include "TMath.h"
 #include <cstring>
 #include "TGraphAsymmErrors.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 
 class HypoErrorsGraph {
 

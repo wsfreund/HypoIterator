@@ -1,13 +1,15 @@
+#ifndef T2CALO_COMMON
+#define T2CALO_COMMON
+
 #include "HypoBase.h"
 #include "T2CaloConfig.h"
 #include <vector>
 #include "TChain.h"
 #include "TH1F.h"
 #include "TTree.h"
-
-#ifndef T2CALO_COMMON
-#define T2CALO_COMMON
-
+#include <iostream>
+using std::cout;
+using std::endl;
 
 class T2CaloCommon : public HypoBase {
 

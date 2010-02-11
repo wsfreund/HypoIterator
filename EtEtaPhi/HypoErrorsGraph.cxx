@@ -9,6 +9,7 @@ LOWEDGE(userLOWEDGE),
 HIEDGE(userHIEDGE),
 dataTree(userDataTree)*/
 {
+    cout<<"Entrei construtor!!"<<endl;
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
@@ -43,27 +44,30 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
+    cout<<"Entrei no genGraph()"
     float edges[NPOINTS], *pEdges;
     pEdges = edges;
-    
+    cout<<"Criei ponteiro pEdges"<<endl;
     genEdges(pEdges);
- 
+    cout<<"criei genEdges"<<endl;
+
     float x[NREGIONS], efic[NREGIONS], hiErrors[NREGIONS], lowErrors[NREGIONS], *pX, *pEfic, *pHiErrors, *pLowErrors;
     pX = x; pEfic = efic; pHiErrors = hiErrors; pLowErrors = lowErrors;
-
+    cout<<"criei um monte de ponteiro"<<endl;
     //Generating x
     incrementEdges(edges, pX);
-    
+    cout<<"dei incrementEdges"<<endl;
     //Generating Efic, lowErrors, hiErrors
     genEficErrors(pEdges, pEfic, pLowErrors, pHiErrors); 
     //No error on x
+    cout<<"passou EficErrors"<<endl;
     float exl[NREGIONS], exh[NREGIONS];
     //Initializing them becouse the variable size:
     for( unsigned i=0; i<NREGIONS; ++i){
         exl[i]=0.;
         exh[i]=0.;
     }
-
+    cout<<"inicialisei os erros em x para zeros"<<endl;
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, efic, exl, exh, lowErrors, hiErrors);
     //Setting graph parameters:
@@ -86,6 +90,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     }
     graph->SetTitle(title.c_str());
 
+    cout<<"terminei de setar as coisas"<<endl;
     return HypoErrorsGraph::OK;
 
 }

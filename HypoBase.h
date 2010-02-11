@@ -7,7 +7,9 @@
 #include<TChain.h>
 #include<TH1I.h>
 #include<TTree.h>
-
+#include<iostream>
+using std::cout;
+using std::endl;
 
 class HypoBase {
 
@@ -32,6 +34,7 @@ class HypoBase {
 
         HypoBase(const std::string &chainPath){
 
+            cout<<"Entrei no HypoBase"<<endl;
             hypoChain = new TChain("CollectionTree");
 
             hypoChain->Add(chainPath.c_str());
@@ -43,6 +46,7 @@ class HypoBase {
             decision  = new std::vector<int>;
             et        = new std::vector<float>;
 
+            cout<<"Terminei HypoBase"<<endl;
 
         }
 
