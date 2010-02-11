@@ -21,7 +21,7 @@ class HypoErrorsGraph {
     /*const*/ float LOWEDGE;
     /*const*/ float HIEDGE;
     /*const*/ std::vector<float> *vectorInput;
-    /*const*/ std::vector<float> *vectorDec;
+    /*const*/ std::vector<int> *vectorDec;
     /*const*/ std::string title;
     /*const*/ std::string dataLabel;
     TTree* dataTree;
@@ -40,7 +40,7 @@ class HypoErrorsGraph {
     HypoErrorsGraph();
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const std::string &decBranch, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<float> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 
     HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
     HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);

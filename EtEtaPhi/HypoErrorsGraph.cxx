@@ -15,7 +15,7 @@ dataTree(userDataTree)*/
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     vectorInput = new std::vector<float>;
-    vectorDec = new std::vector<float>;
+    vectorDec = new std::vector<int>;
     dataTree=userDataTree;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
@@ -24,7 +24,7 @@ dataTree(userDataTree)*/
     genGraph();
 }
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<float> *&inputDec, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 /*:    NREGIONS(userNREGIONS),
     NPOINTS(userNREGIONS+1),
     LOWEDGE(userLOWEDGE),
@@ -142,6 +142,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                     cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         cout<<"Esta na regiao!!"<<endl;
+                        cout<<"Decision:"<<vectorDec->at(entry)<<endl;
                         if (vectorDec->at(entry) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
