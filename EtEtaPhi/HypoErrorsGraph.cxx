@@ -9,7 +9,6 @@ LOWEDGE(userLOWEDGE),
 HIEDGE(userHIEDGE),
 dataTree(userDataTree)*/
 {
-    cout<<"Entrei construtor!!"<<endl;
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
@@ -47,38 +46,24 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
-    cout<<"Entrei no genGraph()"<<endl;
     float edges[NPOINTS], *pEdges;
     pEdges = edges;
-    cout<<"Criei ponteiro pEdges"<<endl;
     genEdges(pEdges);
-    cout<<"criei genEdges"<<endl;
-    for(unsigned i =0; i<NPOINTS; ++i)
-        cout<<edges[i]<<" ";
-    cout<<endl;
     
     float x[NREGIONS], efic[NREGIONS], hiErrors[NREGIONS], lowErrors[NREGIONS], *pX, *pEfic, *pHiErrors, *pLowErrors;
     pX = x; pEfic = efic; pHiErrors = hiErrors; pLowErrors = lowErrors;
-    cout<<"criei um monte de ponteiro"<<endl;
     //Generating x
     incrementEdges(edges, pX);
-    cout<<"dei incrementEdges"<<endl;
-    for(unsigned i =0; i<NREGIONS; ++i)
-        cout<<x[i]<<" ";
-    cout<<endl;
 
-    cout<<"ponteiro de edges "<<*pEdges<<endl;
     //Generating Efic, lowErrors, hiErrors
     genEficErrors(pEdges, pEfic, pLowErrors, pHiErrors); 
     //No error on x
-    cout<<"passou EficErrors"<<endl;
     float exl[NREGIONS], exh[NREGIONS];
     //Initializing them becouse the variable size:
     for( unsigned i=0; i<NREGIONS; ++i){
         exl[i]=0.;
         exh[i]=0.;
     }
-    cout<<"inicialisei os erros em x para zeros"<<endl;
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, efic, exl, exh, lowErrors, hiErrors);
     //Setting graph parameters:
@@ -101,7 +86,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     }
     graph->SetTitle(title.c_str());
 
-    cout<<"terminei de setar as coisas"<<endl;
     return HypoErrorsGraph::OK;
 
 }
@@ -126,34 +110,27 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* efic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     if ( dataTree!=0){
-        cout<<"Entrei loop com dataTree"<<endl;
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
-            cout<<"lowEdge = "<<lowEdge<<endl;
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
-                cout<<"Pegando entry "<<entry<<endl;
                 dataTree->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
-                    cout<<"Pegando entrada "<<i<<" de vectorInput("<<vectorInput->size()<<")"<<endl;
                     ++regData;
-                    cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
-                        cout<<"Esta na regiao!!"<<endl;
-                        cout<<"Decision:"<<vectorDec->at(i)<<endl;
                         if (vectorDec->at(i) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
                 }
             }   
-            cout<<"chegou na parte dos erros"<<endl;
             *efic = (float)regElectrons / (float)regData;
             float error = 1/TMath::Sqrt(regData);
             if (error>*efic) error = *efic;
             *lowEdgeErrors = *efic - error; 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
+            cout<<*efic<<"     "<<error<<"    "<<lowEdgeErrors<<"     "<<hiEdgeErrors<<endl;
         }
     }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){

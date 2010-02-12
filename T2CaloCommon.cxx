@@ -3,7 +3,6 @@
 T2CaloCommon::T2CaloCommon(const std::string &chainPath):
     HypoBase(chainPath){
 
-    cout<<"Entrei no HypoCommon"<<endl;
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
     energyRatio = new std::vector<float>;
@@ -47,8 +46,6 @@ T2CaloCommon::T2CaloCommon(const std::string &chainPath):
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
 
     exec();
-
-    cout<<"Terminei o HypoCommon"<<endl;
 
 }
 

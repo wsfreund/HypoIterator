@@ -10,7 +10,6 @@ using std::cout;
 using std::endl;
 
 class T2CaEtEtaPhi : public T2CaloCommon {
-    
 
     protected:
 
