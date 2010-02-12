@@ -118,8 +118,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             for(Long64_t entry = 0; entry < n_entries; ++entry){
                 dataTree->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
-                    ++regData;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
+                        ++regData;
                         if (vectorDec->at(i) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
