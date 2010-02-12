@@ -127,7 +127,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             }   
             *efic = (float)regElectrons / (float)regData * 100;
             float error = 1/TMath::Sqrt(regData);
-            checkAndGenError(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
+            checkAndGenErrors(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
             cout<<*efic<<"     "<<error<<"    "<<*lowEdgeErrors<<"     "<<*hiEdgeErrors<<endl;
         }
     }else{
@@ -143,7 +143,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             }
             *efic = (float)regElectrons / (float)regData; 
             float error = 1/TMath::Sqrt(regData);
-            checkAndGenError(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
+            checkAndGenErrors(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
     }
     efic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS;
