@@ -142,7 +142,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                 }
             }
             *efic = (float)regElectrons / (float)regData; 
-            float error = 1/TMath::Sqrt(regData);
+            float error = (1/TMath::Sqrt(regData))*100.;
             checkAndGenErrors(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
     }
