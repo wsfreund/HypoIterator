@@ -162,6 +162,9 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::checkAndGenErrors(const float &efi
         error = efic;
     if ( error + efic > 100.)
         hiError = 100.-efic;
+    else
+        hiError = error;
+    lowError = error;
     return HypoErrorsGraph::OK;
 }
 
