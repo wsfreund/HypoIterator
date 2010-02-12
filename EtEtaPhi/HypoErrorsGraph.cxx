@@ -17,7 +17,6 @@ dataTree(userDataTree)*/
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     dataTree=userDataTree;
-    dataTree->ResetBranchAddresses();
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
     dataLabel = userDataLabel;
@@ -143,7 +142,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                     cout<<"chamando isAtRegion"<<endl;
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         cout<<"Esta na regiao!!"<<endl;
-                        cout<<"Decision:"<<vectorDec->at(entry)<<endl;
+                        cout<<"Decision:"<<vectorDec->at(i)<<endl;
                         if (vectorDec->at(entry) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
