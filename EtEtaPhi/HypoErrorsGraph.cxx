@@ -127,9 +127,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             }   
             *efic = (float)regElectrons / (float)regData * 100;
             float error = 1/TMath::Sqrt(regData);
-            if (error>*efic) error = *efic;
-            *lowEdgeErrors = *efic - error; 
-            *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
+            checkAndGenError(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
             cout<<*efic<<"     "<<error<<"    "<<*lowEdgeErrors<<"     "<<*hiEdgeErrors<<endl;
         }
     }else{
@@ -145,9 +143,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             }
             *efic = (float)regElectrons / (float)regData; 
             float error = 1/TMath::Sqrt(regData);
-            if (error>*efic) error = *efic;
-            *lowEdgeErrors = *efic - error; 
-            *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
+            checkAndGenError(*efic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
     }
     efic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS;
@@ -160,6 +156,17 @@ inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, c
     if ( ( data< hiEdge ) && ( data >= lowEdge ) ) return true;
     else return false;
 }
+
+inline HypoErrorsGraph::CODE HypoErrorsGraph::checkAndGenErrors(const float &efic, float &error, float &lowError, float &hiError){
+    if ( error > efic )
+        error = efic;
+    if ( error + efic > 100.)
+        hiError = 100.-efic;
+    else hiError = error + efic;
+    lowError = error - efic;
+    return HypoErrorsGraph::OK;
+}
+
 
 HypoErrorsGraph::CODE HypoErrorsGraph::Draw(const std::string &input){
     graph->Draw(input.c_str());

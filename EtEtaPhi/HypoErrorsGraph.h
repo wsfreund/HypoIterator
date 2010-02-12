@@ -34,6 +34,7 @@ class HypoErrorsGraph {
     CODE incrementEdges(const float*  edges, float* centerBin);
     CODE genEficErrors(const float* edges, float* efic, float* lowErrors, float* hiErrors) ;
     bool isAtRegion(const float lowEdge, const float data, const float hiEdge);
+    CODE checkAndGenErrors(const float &efic, float &error, float &lowError, float &hiError);
 
     public:
 
