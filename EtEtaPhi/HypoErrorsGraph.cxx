@@ -143,7 +143,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         cout<<"Esta na regiao!!"<<endl;
                         cout<<"Decision:"<<vectorDec->at(i)<<endl;
-                        if (vectorDec->at(entry) == HypoErrorsGraph::ELECTRON)
+                        if (vectorDec->at(i) == HypoErrorsGraph::ELECTRON)
                             ++regElectrons;
                     }
                 }
