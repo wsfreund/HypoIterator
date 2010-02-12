@@ -1,6 +1,6 @@
-#include "T2CaEtEtaPhi.h"
+#include "T2CaRelEfic.h"
 
-T2CaEtEtaPhi::T2CaEtEtaPhi(std::string &rPath, unsigned user_nRegions, std::string &userDataLabel):
+T2CaRelEfic::T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string &userDataLabel):
     T2CaloCommon(rPath),
     NREGIONS(user_nRegions),
     dataLabel(userDataLabel){
@@ -11,7 +11,7 @@ T2CaEtEtaPhi::T2CaEtEtaPhi(std::string &rPath, unsigned user_nRegions, std::stri
 
 }
 
-HypoBase::CODE T2CaEtEtaPhi::DrawEficVs(const std::string &vsWho, const std::string &opt){
+HypoBase::CODE T2CaRelEfic::DrawEficVs(const std::string &vsWho, const std::string &opt){
 
     if ( vsWho == "eta")
         etaxEficGraph->Draw(opt);

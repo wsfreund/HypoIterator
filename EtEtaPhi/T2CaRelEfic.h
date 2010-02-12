@@ -1,5 +1,5 @@
-#ifndef T2CAETETAPHI_H
-#define T2CAETETAPHI_H
+#ifndef T2CARELEFIC_H
+#define T2CARELEFIC_H
 #include <iostream>
 #include "../T2CaloCommon.h"
 #include <vector>
@@ -9,7 +9,7 @@
 using std::cout;
 using std::endl;
 
-class T2CaEtEtaPhi : public T2CaloCommon {
+class T2CaRelEfic : public T2CaloCommon {
 
     protected:
 
@@ -22,7 +22,7 @@ class T2CaEtEtaPhi : public T2CaloCommon {
 
     public:
 
-    T2CaEtEtaPhi(std::string &rPath, unsigned user_nRegions, std::string &dataLabel);
+    T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string &dataLabel);
     CODE DrawEficVs(const std::string &vsWho, const std::string &opt);
 
 };
