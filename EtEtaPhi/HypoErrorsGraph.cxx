@@ -130,7 +130,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             if (error>*efic) error = *efic;
             *lowEdgeErrors = *efic - error; 
             *hiEdgeErrors = ((*efic + error) > 100)?100:(*efic+ error); 
-            cout<<*efic<<"     "<<*error<<"    "<<*lowEdgeErrors<<"     "<<*hiEdgeErrors<<endl;
+            cout<<*efic<<"     "<<error<<"    "<<*lowEdgeErrors<<"     "<<*hiEdgeErrors<<endl;
         }
     }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors){
