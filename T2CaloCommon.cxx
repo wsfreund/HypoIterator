@@ -368,7 +368,7 @@ T2CaloCommon::~T2CaloCommon(){
     delete  ehad1;
     delete  energyS1;
     delete  t2CaAns;
-    delete  ringerEta;
-    delete  ringerPhi;
+    delete  ringer_eta;
+    delete  ringer_phi;
 
 }

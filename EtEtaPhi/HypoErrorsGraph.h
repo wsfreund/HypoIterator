@@ -23,7 +23,7 @@ class HypoErrorsGraph {
     /*const*/ float HIEDGE;
     /*const*/ std::string title;
     /*const*/ std::string dataLabel;
-    HypoBase *dataHypo;
+    const HypoBase *dataHypo;
 
 
     TGraphAsymmErrors *graph;
@@ -37,8 +37,7 @@ class HypoErrorsGraph {
 
     public:
 
-    HypoErrorsGraph();
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *dataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&dataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 
