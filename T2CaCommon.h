@@ -18,10 +18,10 @@ class T2CaCommon : public HypoBase {
     //Variables
     enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
 
-    virtual CODE ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi);
-    virtual CODE clearVectors();
-    virtual CODE swapVectors(const size_t index1, const size_t index2);
-    virtual CODE eraseVectors(const size_t index);
+    CODE ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi);
+    CODE clearVectors();
+    CODE swapVectors(const size_t index1, const size_t index2);
+    CODE eraseVectors(const size_t index);
 
     std::vector<float>  *hadET_T2Calo;
     std::vector<float>  *rCore;
@@ -44,9 +44,9 @@ class T2CaCommon : public HypoBase {
 
     //Functions
 
-    virtual CODE calcTransverseFraction();
+    CODE calcTransverseFraction();
 
-    virtual CODE fillDecision(PCUTS entry);
+    CODE fillDecision(PCUTS entry);
 
     //Corte
     virtual PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
@@ -63,8 +63,8 @@ class T2CaCommon : public HypoBase {
 
     T2CaCommon(const std::string &chainPath);
 
-    virtual CODE exec();
-    virtual CODE drawCutCounter();
+    CODE exec();
+    CODE drawCutCounter();
     void getExtraVariables(const TTree*& refExtraVariables){ refExtraVariables = extraVariables; };
 
 

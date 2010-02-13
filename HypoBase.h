@@ -35,6 +35,7 @@ class HypoBase {
 
         HypoBase(const std::string &chainPath){
 
+            extraVariables = 0;
             hypoChain = new TChain("CollectionTree");
 
             hypoChain->Add(chainPath.c_str());
@@ -58,8 +59,10 @@ class HypoBase {
         virtual CODE exec() = 0;
 
         ~HypoBase(){ 
+
             delete hypoChain;
-            delete extraVariables;
+            if (extraVariables !=0)
+                delete extraVariables;
             delete lvl2_eta;
             delete lvl2_phi;
             delete decision;
