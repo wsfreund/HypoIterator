@@ -65,6 +65,7 @@ class T2CaCommon : public HypoBase {
 
     virtual CODE exec();
     virtual CODE drawCutCounter();
+    void getExtraVariables(const TTree*& refExtraVariables){ refExtraVariables = extraVariables; };
 
 
     ~T2CaCommon();
