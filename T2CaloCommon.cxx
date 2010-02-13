@@ -1,6 +1,6 @@
-#include "T2CaloCommon.h"
+#include "T2CaCommon.h"
 
-T2CaloCommon::T2CaloCommon(const std::string &chainPath):
+T2CaCommon::T2CaCommon(const std::string &chainPath):
     HypoBase(chainPath){
 
     hadET_T2Calo = new std::vector<float>;
@@ -50,7 +50,7 @@ T2CaloCommon::T2CaloCommon(const std::string &chainPath):
 
 
 
-HypoBase::CODE T2CaloCommon::exec(){
+HypoBase::CODE T2CaCommon::exec(){
 
     int n_entries = static_cast<int>(hypoChain->GetEntries());
 
@@ -60,7 +60,7 @@ HypoBase::CODE T2CaloCommon::exec(){
         calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI i;
 
         for(size_t j=0; j<lvl2_eta->size(); ++j){
-            T2CaloCommon::PCUTS       roiAns  =       applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
+            T2CaCommon::PCUTS       roiAns  =       applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
             t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
             fillDecision(roiAns); //Fill vector telling if the event was a electron or a jet;
         }//for j
@@ -73,7 +73,7 @@ HypoBase::CODE T2CaloCommon::exec(){
 
 }
 
-inline HypoBase::CODE T2CaloCommon::calcTransverseFraction(){
+inline HypoBase::CODE T2CaCommon::calcTransverseFraction(){
 
 
     for(size_t j=0; j<lvl2_eta->size(); ++j){
@@ -87,19 +87,19 @@ inline HypoBase::CODE T2CaloCommon::calcTransverseFraction(){
 
 }
 
-HypoBase::CODE T2CaloCommon::fillDecision(T2CaloCommon::PCUTS   entry){
+HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
 
     switch (entry){
-        case T2CaloCommon::AP:
+        case T2CaCommon::AP:
             decision->push_back(HypoBase::ELECTRON);
             break;
-        case T2CaloCommon::dETA:
-        case T2CaloCommon::dPHI:
-        case T2CaloCommon::rCORE:
-        case T2CaloCommon::eRATIO:
-        case T2CaloCommon::et_EM:
-        case T2CaloCommon::et_HAD:
-        case T2CaloCommon::c_F1:
+        case T2CaCommon::dETA:
+        case T2CaCommon::dPHI:
+        case T2CaCommon::rCORE:
+        case T2CaCommon::eRATIO:
+        case T2CaCommon::et_EM:
+        case T2CaCommon::et_HAD:
+        case T2CaCommon::c_F1:
             decision->push_back(HypoBase::JET);
             break;
         default:
@@ -110,7 +110,7 @@ HypoBase::CODE T2CaloCommon::fillDecision(T2CaloCommon::PCUTS   entry){
 
 }
 
-T2CaloCommon::PCUTS T2CaloCommon::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
+T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
 
     size_t  etaBin = 0;
     for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
@@ -118,32 +118,32 @@ T2CaloCommon::PCUTS T2CaloCommon::applyCuts(const float eta, const float rCore, 
     }
 
     //Corte Eta
-    //if (cutEta(dEta)) return T2CaloCommon::dETA;
+    //if (cutEta(dEta)) return T2CaCommon::dETA;
 
     //Corte Phi
-    //if (cutPhi(dPhi)) return T2CaloCommon::dPHI;
+    //if (cutPhi(dPhi)) return T2CaCommon::dPHI;
 
     //Corte rCore
-    if (cutrCore(rCore, etaBin)) return T2CaloCommon::rCORE;
+    if (cutrCore(rCore, etaBin)) return T2CaCommon::rCORE;
 
     //Corte eRatio
-    if (cuteRatio(eRatio, F1, eta, etaBin)) return T2CaloCommon::eRATIO;
+    if (cuteRatio(eRatio, F1, eta, etaBin)) return T2CaCommon::eRATIO;
 
     //Corte Energia Tranversa EM
-    if (cuteT_T2Calo(eT_T2Calo, etaBin)) return T2CaloCommon::et_EM;
+    if (cuteT_T2Calo(eT_T2Calo, etaBin)) return T2CaCommon::et_EM;
 
     //Corte Energia Tranversa HAD
-    if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)) return T2CaloCommon::et_HAD;
+    if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)) return T2CaCommon::et_HAD;
 
     //Corte Fração de energia
-    //if (cutF1(F1)) return T2CaloCommon::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
+    //if (cutF1(F1)) return T2CaCommon::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
 
     //Chegou até aqui passou yeah
-    return T2CaloCommon::AP;
+    return T2CaCommon::AP;
 
 }
 
-inline bool T2CaloCommon::cutEta(const float dEta){
+inline bool T2CaCommon::cutEta(const float dEta){
 
     if ( dEta > m_detacluster ) {
         return true;
@@ -152,7 +152,7 @@ inline bool T2CaloCommon::cutEta(const float dEta){
 }
 
 
-inline bool T2CaloCommon::cutPhi(const float dPhi){
+inline bool T2CaCommon::cutPhi(const float dPhi){
 
     if ( dPhi > m_dphicluster ){
         return true;
@@ -161,7 +161,7 @@ inline bool T2CaloCommon::cutPhi(const float dPhi){
 
 }
 
-inline bool T2CaloCommon::cutrCore(const float rCore, const size_t etaBin){
+inline bool T2CaCommon::cutrCore(const float rCore, const size_t etaBin){
 
     if ( rCore < m_carcorethr[etaBin] )  {
         return true;
@@ -170,7 +170,7 @@ inline bool T2CaloCommon::cutrCore(const float rCore, const size_t etaBin){
 
 }
 
-inline bool T2CaloCommon::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
+inline bool T2CaCommon::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
 
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
 
@@ -184,7 +184,7 @@ inline bool T2CaloCommon::cuteRatio(const float eRatio, const float F1, const fl
 
 }
 
-inline bool T2CaloCommon::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
+inline bool T2CaCommon::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
 
 
     if ( eT_T2Calo < m_eTthr[etaBin] ){
@@ -193,7 +193,7 @@ inline bool T2CaloCommon::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBi
     return false;
 }
 
-inline bool T2CaloCommon::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
+inline bool T2CaCommon::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
 
 
     float hadET_cut;
@@ -206,7 +206,7 @@ inline bool T2CaloCommon::cuthadET_T2Calo(const float hadET_T2Calo, const float 
     return false;
 }
 
-inline bool T2CaloCommon::cutF1(const float F1){
+inline bool T2CaCommon::cutF1(const float F1){
 
     if ( F1 < m_F1thr){
         return true;
@@ -216,7 +216,7 @@ inline bool T2CaloCommon::cutF1(const float F1){
 }
 
 
-HypoBase::CODE T2CaloCommon::eraseVectors(const size_t index){
+HypoBase::CODE T2CaCommon::eraseVectors(const size_t index){
 
     std::vector<float>::iterator p;
     std::vector<int>::iterator p2;
@@ -242,7 +242,7 @@ HypoBase::CODE T2CaloCommon::eraseVectors(const size_t index){
 
 }
 
-HypoBase::CODE T2CaloCommon::swapVectors(const size_t index1, const size_t index2){
+HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2){
 
     float temp;
     temp=lvl2_eta->at(index1);
@@ -270,7 +270,7 @@ HypoBase::CODE T2CaloCommon::swapVectors(const size_t index1, const size_t index
 
 }
 
-inline HypoBase::CODE T2CaloCommon::clearVectors(){
+inline HypoBase::CODE T2CaCommon::clearVectors(){
 
     t2CaAns->clear();
     et->clear();
@@ -282,7 +282,7 @@ inline HypoBase::CODE T2CaloCommon::clearVectors(){
 
 }
 
-HypoBase::CODE T2CaloCommon::ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi){
+HypoBase::CODE T2CaCommon::ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi){
 
     for(size_t j=0; j<lvl2_eta->size();++j){
         if ( j < eta->size() ){
@@ -308,7 +308,7 @@ HypoBase::CODE T2CaloCommon::ordenateRoi(const std::vector<float> *eta, const st
 
 
 //Create T2Calo Graphic for debug comparision
-HypoBase::CODE T2CaloCommon::drawCutCounter(){
+HypoBase::CODE T2CaCommon::drawCutCounter(){
 
     TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
@@ -318,23 +318,23 @@ HypoBase::CODE T2CaloCommon::drawCutCounter(){
         extraVariables->GetEntry(i);
         for(size_t j=0; j<t2CaAns->size();++j){
             switch (t2CaAns->at(j)){
-                case T2CaloCommon::AP:
-                    hCuts->Fill(T2CaloCommon::c_F1);
-                case T2CaloCommon::c_F1:
-                    hCuts->Fill(T2CaloCommon::et_HAD);
-                case T2CaloCommon::et_HAD:
-                    hCuts->Fill(T2CaloCommon::et_EM);
-                case T2CaloCommon::et_EM:
-                    hCuts->Fill(T2CaloCommon::eRATIO);
-                case T2CaloCommon::eRATIO:
-                    hCuts->Fill(T2CaloCommon::rCORE);
-                case T2CaloCommon::rCORE:
-                    hCuts->Fill(T2CaloCommon::dPHI);
-                case T2CaloCommon::dPHI:
-                    hCuts->Fill(T2CaloCommon::dETA);
-                case T2CaloCommon::dETA:
-                    hCuts->Fill(T2CaloCommon::TRIG);
-                    hCuts->Fill(T2CaloCommon::LVL2E);
+                case T2CaCommon::AP:
+                    hCuts->Fill(T2CaCommon::c_F1);
+                case T2CaCommon::c_F1:
+                    hCuts->Fill(T2CaCommon::et_HAD);
+                case T2CaCommon::et_HAD:
+                    hCuts->Fill(T2CaCommon::et_EM);
+                case T2CaCommon::et_EM:
+                    hCuts->Fill(T2CaCommon::eRATIO);
+                case T2CaCommon::eRATIO:
+                    hCuts->Fill(T2CaCommon::rCORE);
+                case T2CaCommon::rCORE:
+                    hCuts->Fill(T2CaCommon::dPHI);
+                case T2CaCommon::dPHI:
+                    hCuts->Fill(T2CaCommon::dETA);
+                case T2CaCommon::dETA:
+                    hCuts->Fill(T2CaCommon::TRIG);
+                    hCuts->Fill(T2CaCommon::LVL2E);
                     break;
                 default:
                     return HypoBase::ERROR;
@@ -358,7 +358,7 @@ HypoBase::CODE T2CaloCommon::drawCutCounter(){
 
 }
 
-T2CaloCommon::~T2CaloCommon(){
+T2CaCommon::~T2CaCommon(){
 
     delete  hadET_T2Calo;
     delete  rCore;

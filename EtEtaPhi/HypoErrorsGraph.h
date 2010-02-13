@@ -8,6 +8,7 @@
 #include <cstring>
 #include "TGraphAsymmErrors.h"
 #include "../HypoBase.h"
+#include "../T2CaCommon.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -26,7 +27,7 @@ class HypoErrorsGraph {
     const HypoBase *dataHypo;
 
     std::vector<float>* vectorInput;
-    std::vector<float>* vectorDec;
+    std::vector<int>* vectorDec;
 
 
     TGraphAsymmErrors *graph;
@@ -40,7 +41,7 @@ class HypoErrorsGraph {
 
     public:
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&dataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&dataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 

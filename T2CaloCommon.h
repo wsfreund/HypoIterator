@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-class T2CaloCommon : public HypoBase {
+class T2CaCommon : public HypoBase {
 
     protected:
 
@@ -61,13 +61,13 @@ class T2CaloCommon : public HypoBase {
 
     public:
 
-    T2CaloCommon(const std::string &chainPath);
+    T2CaCommon(const std::string &chainPath);
 
     virtual CODE exec();
     virtual CODE drawCutCounter();
 
 
-    ~T2CaloCommon();
+    ~T2CaCommon();
 
 };
 

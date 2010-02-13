@@ -1,15 +1,14 @@
 #ifndef T2CARELEFIC_H
 #define T2CARELEFIC_H
-#include <iostream>
 #include "../T2CaloCommon.h"
-#include <vector>
 #include <cstring>
 #include "HypoErrorsGraph.h"
 #include "TMath.h"
+#include <iostream>
 using std::cout;
 using std::endl;
 
-class T2CaRelEfic : public T2CaloCommon {
+class T2CaRelEfic : public T2CaCommon {
 
     protected:
 

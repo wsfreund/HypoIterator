@@ -1,6 +1,6 @@
 #include "HypoErrorsGraph.h"
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&userDataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
@@ -11,7 +11,15 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
-    dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
+    hypoBase* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
+    if (pHypo)
+        dataTree->SetBranchAddress("T2CaDec", &vectorDec);
+    else{
+        pHypo = dynamic_cast<NeuralCommon*>(dataHypo);
+        if (pHypo)
+            dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
+        else delete this;
+    }
     dataLabel = userDataLabel;
     title = userTitle;
     genGraph();
