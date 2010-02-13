@@ -1,7 +1,7 @@
 #include "T2CaRelEfic.h"
 
 T2CaRelEfic::T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string &userDataLabel):
-    T2CaloCommon(rPath),
+    T2CaCommon(rPath),
     NREGIONS(user_nRegions),
     dataLabel(userDataLabel){
 
