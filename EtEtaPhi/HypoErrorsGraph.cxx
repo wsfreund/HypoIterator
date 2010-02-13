@@ -10,14 +10,14 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     const TTree *dataTree = const_cast<HypoBase*>(dataHypo)->getExtraVariables();
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
-    dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
+    const_cast<TTree*>(dataTree)->SetBranchAddress(branchName.c_str(), &vectorInput);
     hypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
     if (pHypo)
-        dataTree->SetBranchAddress("T2CaDec", &vectorDec);
+        const_cast<TTree*>(dataTree)->SetBranchAddress("T2CaDec", &vectorDec);
     else{
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
         if (pHypo)
-            dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
+            const_cast<TTree*>(dataTree)->SetBranchAddress("Ringer_Dec", &vectorDec);
         else delete this;
     }
     dataLabel = userDataLabel;
