@@ -54,7 +54,7 @@ class HypoBase {
         const std::vector<float> *getPhi(){  return lvl2_phi; }
         const std::vector<int>   *getDec(){  return decision; }
         const std::vector<float> *getEt() {  return et;       }
-        const TTree&* getExtraVariables(){ return extraVariables;}
+        const TTree& const * getExtraVariables(){ return extraVariables;}
 
         virtual CODE exec() = 0;
 
