@@ -36,6 +36,7 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
+    cout<<"antes do extraVariables"<<endl;
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
     extraVariables->Branch("T2CaDec", &decision);
