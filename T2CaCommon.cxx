@@ -3,6 +3,7 @@
 T2CaCommon::T2CaCommon(const std::string &chainPath):
     HypoBase(chainPath){
 
+    cout<<"T2CaCommon"<<endl;
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
     energyRatio = new std::vector<float>;

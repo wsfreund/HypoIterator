@@ -4,7 +4,7 @@ T2CaRelEfic::T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string
     T2CaCommon(rPath),
     NREGIONS(user_nRegions),
     dataLabel(userDataLabel){
-
+    cout<<"T2CaRelEfic"<<endl;
     etaxEficGraph = new HypoErrorsGraph(-2.5, 2.5, static_cast<HypoBase*>(this), std::string("T2CaEta"),NREGIONS, dataLabel, std::string("T2CaEfic x Eta"));
     phixEficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), static_cast<HypoBase*>(this), std::string("T2CaPhi"), NREGIONS, dataLabel,std::string("T2CaEfic x Phi"));
     etxEficGraph = new HypoErrorsGraph(10e3, 80e3, static_cast<HypoBase*>(this), std::string("T2CaEt"),NREGIONS, dataLabel, std::string("T2CaEfic x Et"));
