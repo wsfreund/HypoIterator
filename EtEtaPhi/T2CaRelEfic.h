@@ -23,7 +23,7 @@ class T2CaRelEfic : public T2CaCommon {
 
     T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string &dataLabel);
     CODE DrawEficVs(const std::string &vsWho, const std::string &opt);
-    ~T2CaRelEfic;
+    ~T2CaRelEfic();
 
 };
 
