@@ -2,20 +2,16 @@
 
 HypoErrorsGraph::HypoErrorsGraph() {
 };
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const std::string &decBranch, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
-/*:NREGIONS(userNREGIONS),
-NPOINTS(userNREGIONS+1),
-LOWEDGE(userLOWEDGE),
-HIEDGE(userHIEDGE),
-dataTree(userDataTree)*/
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *userDataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
+    dataHypo = userDataHypo;
+    TTree *dataTree = dataHypo->getExtraVariables();
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
-    dataTree=userDataTree;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     dataTree->SetBranchAddress(decBranch.c_str(), &vectorDec);
     dataLabel = userDataLabel;

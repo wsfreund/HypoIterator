@@ -35,8 +35,6 @@ T2CaloCommon::T2CaloCommon(const std::string &chainPath):
     hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
-    extraVariables = new TTree("HypoData", "Tree with Hypo data");
-
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
     extraVariables->Branch("T2CaDec", &decision);
@@ -66,18 +64,9 @@ HypoBase::CODE T2CaloCommon::exec(){
             t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
             fillDecision(roiAns); //Fill vector telling if the event was a electron or a jet;
         }//for j
-        /*std::cout<<"Decision apos o fill"<<std::endl;
-        for(i=0; i<decision->size();++i)
-            std::cout<<decision->at(i)<<std::endl;*/
         ordenateRoi(ringer_eta, ringer_phi);
         extraVariables->Fill();
-        /*std::cout<<"Decision apos o ordenate"<<std::endl;
-        for(i=0; i<decision->size();++i)
-            std::cout<<decision->at(i)<<std::endl;*/
         clearVectors();
-        /*std::cout<<"Decision apos o clear vectors"<<std::endl;
-        for(i=0; i<decision->size();++i)
-            std::cout<<decision->at(i)<<std::endl;*/
     }
 
     return HypoBase::OK;
@@ -325,10 +314,6 @@ HypoBase::CODE T2CaloCommon::drawCutCounter(){
 
     int nEntries = static_cast<int>(extraVariables->GetEntries());
 
-//    extraVariables->ResetBranchAddresses();
-//    extraVariables->SetBranchAddress("T2CaOut", &t2CaAns);
-
-
     for(int i=0; i<nEntries;++i){
         extraVariables->GetEntry(i);
         for(size_t j=0; j<t2CaAns->size();++j){
@@ -383,7 +368,7 @@ T2CaloCommon::~T2CaloCommon(){
     delete  ehad1;
     delete  energyS1;
     delete  t2CaAns;
-
-    delete extraVariables;
+    delete  ringerEta;
+    delete  ringerPhi;
 
 }

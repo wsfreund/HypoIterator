@@ -7,6 +7,7 @@
 #include "TMath.h"
 #include <cstring>
 #include "TGraphAsymmErrors.h"
+#include "../HypoBase.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -20,11 +21,9 @@ class HypoErrorsGraph {
     /*const*/ unsigned NPOINTS;
     /*const*/ float LOWEDGE;
     /*const*/ float HIEDGE;
-    /*const*/ std::vector<float> *vectorInput;
-    /*const*/ std::vector<int> *vectorDec;
     /*const*/ std::string title;
     /*const*/ std::string dataLabel;
-    TTree* dataTree;
+    HypoBase *dataHypo;
 
 
     TGraphAsymmErrors *graph;
@@ -39,7 +38,7 @@ class HypoErrorsGraph {
     public:
 
     HypoErrorsGraph();
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, TTree* &userDataTree, const std::string &branchName, const std::string &decBranch, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *dataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 

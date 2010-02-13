@@ -26,6 +26,7 @@ class HypoBase {
         std::vector<float>      *et;
 
         TChain *hypoChain;
+        TTree *extraVariables;
 
     public:
 
@@ -35,6 +36,7 @@ class HypoBase {
         HypoBase(const std::string &chainPath){
 
             hypoChain = new TChain("CollectionTree");
+            extraVariables = new TTree("HypoData", "Tree with Hypo data");
 
             hypoChain->Add(chainPath.c_str());
 
@@ -52,10 +54,13 @@ class HypoBase {
         const std::vector<float> *getPhi(){  return lvl2_phi; }
         const std::vector<int>   *getDec(){  return decision; }
         const std::vector<float> *getEt() {  return et;       }
+        const TTree*& getExtraVariables{ return extraVariables;}
 
         virtual CODE exec() = 0;
 
         ~HypoBase(){ 
+            delete hypoChain;
+            delete extraVariables;
             delete lvl2_eta;
             delete lvl2_phi;
             delete decision;
