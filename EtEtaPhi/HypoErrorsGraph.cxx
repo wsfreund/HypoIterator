@@ -1,8 +1,6 @@
 #include "HypoErrorsGraph.h"
 
-HypoErrorsGraph::HypoErrorsGraph() {
-};
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *userDataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&userDataHypo, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
