@@ -42,7 +42,7 @@ class HypoErrorsGraph {
 
     public:
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, HypoBase *dataHypo, std::string &branchName, const unsigned userNREGIONS, std::string &userDataLabel, std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *dataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 
