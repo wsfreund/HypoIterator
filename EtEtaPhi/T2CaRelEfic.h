@@ -1,6 +1,6 @@
 #ifndef T2CARELEFIC_H
 #define T2CARELEFIC_H
-#include "../T2CaloCommon.h"
+#include "../T2CaCommon.h"
 #include <cstring>
 #include "HypoErrorsGraph.h"
 #include "TMath.h"
