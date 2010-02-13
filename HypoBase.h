@@ -1,5 +1,5 @@
-#ifndef HYPOBASE
-#define HYPOBASE
+#ifndef HYPOBASE_H
+#define HYPOBASE_H
 
 #include<vector>
 #include<iostream>

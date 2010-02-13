@@ -1,5 +1,5 @@
-#ifndef T2CALO_COMMON
-#define T2CALO_COMMON
+#ifndef T2CA_COMMON_H
+#define T2CA_COMMON_H
 
 #include "HypoBase.h"
 #include "T2CaConfig.h"
