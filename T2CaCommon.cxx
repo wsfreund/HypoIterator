@@ -44,8 +44,9 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     extraVariables->Branch("T2CaF1",  &F1);
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
 
+    cout<<"Chegou aqui!!"<<endl;
     exec();
-
+    cout<<"Passou o exec"<<endl;
 }
 
 
