@@ -1,23 +1,23 @@
 #include "HypoErrorsGraph.h"
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *&userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, HypoBase *userDataHypo, std::string &branchName, const unsigned userNREGIONS, std::string &userDataLabel, std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
-    dataHypo = const_cast<HypoBase*>(userDataHypo);
-    dataTree = const_cast<HypoBase*>(dataHypo)->getExtraVariables();
+    dataHypo = userDataHypo;
+    dataTree = const_cast<TTree*>(dataHypo->getExtraVariables());
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
-    const_cast<TTree*>(dataTree)->SetBranchAddress(branchName.c_str(), &vectorInput);
+    dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     const HypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
     if (pHypo)
-        const_cast<TTree*>(dataTree)->SetBranchAddress("T2CaDec", &vectorDec);
+        dataTree->SetBranchAddress("T2CaDec", &vectorDec);
     else{
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
         if (pHypo)
-            const_cast<TTree*>(dataTree)->SetBranchAddress("Ringer_Dec", &vectorDec);
+            dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
         else delete this;
     }
     dataLabel = userDataLabel;
@@ -111,14 +111,14 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 
 HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* efic, float* lowEdgeErrors, float* hiEdgeErrors){
 
-    if ( dataTree!=0){
+    if ( dataHypo!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++efic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
-                const_cast<TTree*>(dataTree)->GetEntry(entry);
+                dataTree->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;
@@ -182,6 +182,8 @@ HypoErrorsGraph::HypoErrorsGraph &HypoErrorsGraph::operator=(const HypoErrorsGra
      LOWEDGE = graph2.LOWEDGE;
      HIEDGE = graph2.HIEDGE;
      vectorInput = graph2.vectorInput;
+     vectorDec = graph2.vectorDec;
+     dataHypo = graph2.dataHypo;
      dataTree= graph2.dataTree;
      dataLabel = graph2.dataLabel;
      title = graph2.title;
@@ -195,6 +197,8 @@ HypoErrorsGraph::HypoErrorsGraph* HypoErrorsGraph::operator=(const HypoErrorsGra
      LOWEDGE = graph2->LOWEDGE;
      HIEDGE = graph2->HIEDGE;
      vectorInput = graph2->vectorInput;
+     vectorDec = graph2->vectorDec;
+     dataHypo = graph2->dataHypo;
      dataTree= graph2->dataTree;
      dataLabel = graph2->dataLabel;
      title = graph2->title;
