@@ -37,7 +37,6 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
 
     extraVariables = new TTree("HypoData", "Tree with Hypo data");
 
-    cout<<"T2Ca "<<extraVariables<<endl;
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
     extraVariables->Branch("T2CaDec", &decision);
