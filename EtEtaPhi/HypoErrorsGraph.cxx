@@ -11,11 +11,11 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
-    hypoBase* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
+    hypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
     if (pHypo)
         dataTree->SetBranchAddress("T2CaDec", &vectorDec);
     else{
-        pHypo = dynamic_cast<NeuralCommon*>(dataHypo);
+//        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
         if (pHypo)
             dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
         else delete this;
