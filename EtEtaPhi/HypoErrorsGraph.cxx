@@ -10,7 +10,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     HIEDGE = userHIEDGE;
     cout<<"Passei as paradas idiotas"<<endl;
     dataHypo = const_cast<HypoBase*>(userDataHypo);
-    cout<<"Cheguei e coloquei o negocio para const"<<endl
+    cout<<"Cheguei e coloquei o negocio para const"<<endl;
     dataTree = const_cast<TTree*>(const_cast<HypoBase*>(dataHypo)->getExtraVariables());
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
