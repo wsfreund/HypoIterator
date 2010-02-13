@@ -2,7 +2,7 @@
 #define T2CALO_COMMON
 
 #include "HypoBase.h"
-#include "T2CaloConfig.h"
+#include "T2CaConfig.h"
 #include <vector>
 #include "TChain.h"
 #include "TH1F.h"
