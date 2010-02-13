@@ -3,6 +3,7 @@
 
 HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 {
+    cout<<"Dai eu entrei no HypoErrors"<<endl;
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
@@ -23,6 +24,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     }
     dataLabel = userDataLabel;
     title = userTitle;
+    cout<<"Pronto para entrar no genGraph()"<<endl;
     genGraph();
 }
 
