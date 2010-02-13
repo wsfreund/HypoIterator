@@ -9,7 +9,6 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     cout<<"Passei as paradas idiotas"<<endl;
-    dataHypo = const_cast<HypoBase*>(userDataHypo);
     cout<<"Cheguei e coloquei o negocio para const"<<endl;
     cout<<dataHypo->getExtraVariables();
     cout<<const_cast<HypoBase*>(dataHypo)->getExtraVariables();
