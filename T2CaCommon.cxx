@@ -38,11 +38,17 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
 
     cout<<"antes do extraVariables"<<endl;
     extraVariables->Branch("T2CaEta", &lvl2_eta);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaDec", &decision);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaOut", &t2CaAns);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaEt",  &et);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaF1",  &F1);
+    cout<<"passou 1 variavel"<<endl;
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
 
     cout<<"Chegou aqui!!"<<endl;
