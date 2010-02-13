@@ -7,7 +7,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     dataHypo = const_cast<HypoBase*>(userDataHypo);
-    TTree *dataTree = const_cast<HypoBase*>(dataHypo)->getExtraVariables();
+    const TTree *dataTree = const_cast<HypoBase*>(dataHypo)->getExtraVariables();
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
