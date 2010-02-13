@@ -4,6 +4,7 @@
 HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
 {
     cout<<"Dai eu entrei no HypoErrors"<<endl;
+    cout<<"O valor da memoria do HypoBase que chegou aqui é : "<<userDataHypo<<endl;
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
@@ -12,7 +13,8 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     dataHypo = const_cast<HypoBase*>(userDataHypo);
     cout<<"Cheguei e coloquei o negocio para const"<<endl;
     const_cast<HypoBase*>(dataHypo)->getExtraVariables(dataTree);
-    cout<<"Tree que chegou aqui"<<dataTree<<endl;
+    cout<<"Valor de tree que ta retornando"<<const_cast<HypoBase*>(dataHypo)->getExtraVariables(dataTree);
+    cout<<"Tree que chegou aqui "<<dataTree<<endl;
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     const_cast<TTree*>(dataTree)->SetBranchAddress(branchName.c_str(), &vectorInput);
