@@ -8,7 +8,9 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
+    cout<<"Passei as paradas idiotas"<<endl;
     dataHypo = const_cast<HypoBase*>(userDataHypo);
+    cout<<"Cheguei e coloquei o negocio para const"<<endl
     dataTree = const_cast<TTree*>(const_cast<HypoBase*>(dataHypo)->getExtraVariables());
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
@@ -20,7 +22,10 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
         if (pHypo)
             const_cast<TTree*>(dataTree)->SetBranchAddress("Ringer_Dec", &vectorDec);
-        else delete this;
+        else {
+                cout<<"Delete this"<<endl;
+                delete this;
+        }
     }
     dataLabel = userDataLabel;
     title = userTitle;
