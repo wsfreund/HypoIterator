@@ -36,6 +36,8 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
+    extraVariables = new TTree("HypoData", "Tree with Hypo data");
+
     cout<<"antes do extraVariables"<<endl;
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     cout<<"passou 1 variavel"<<endl;

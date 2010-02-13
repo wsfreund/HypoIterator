@@ -37,7 +37,6 @@ class HypoBase {
 
             cout<<"HypoBase"<<endl;
             hypoChain = new TChain("CollectionTree");
-            extraVariables = new TTree("HypoData", "Tree with Hypo data");
 
             hypoChain->Add(chainPath.c_str());
 
