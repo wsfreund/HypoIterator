@@ -30,7 +30,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     HIEDGE = userHIEDGE;
     vectorInput = dataVector;
     vectorDec = inputDec;
-    dataTree = 0;
+    dataHypo = 0;
     dataLabel = userDataLabel;
     title = userTitle;
     genGraph();
@@ -195,7 +195,7 @@ HypoErrorsGraph::HypoErrorsGraph* HypoErrorsGraph::operator=(const HypoErrorsGra
 }
 
 HypoErrorsGraph::~HypoErrorsGraph(){
-    if (dataTree!=0){
+    if (dataHypo!=0){
         delete vectorInput;
         delete vectorDec;
     }

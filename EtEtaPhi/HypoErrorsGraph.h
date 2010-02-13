@@ -25,6 +25,9 @@ class HypoErrorsGraph {
     /*const*/ std::string dataLabel;
     const HypoBase *dataHypo;
 
+    std::vector<float>* vectorInput;
+    std::vector<float>* vectorDec;
+
 
     TGraphAsymmErrors *graph;
 
