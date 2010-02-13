@@ -11,7 +11,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
     const_cast<TTree*>(dataTree)->SetBranchAddress(branchName.c_str(), &vectorInput);
-    HypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
+    const HypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
     if (pHypo)
         const_cast<TTree*>(dataTree)->SetBranchAddress("T2CaDec", &vectorDec);
     else{
@@ -118,7 +118,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEficErrors(const float* edges, float* 
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
-                dataTree->GetEntry(entry);
+                const_cast<*TTree>(dataTree)->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;
