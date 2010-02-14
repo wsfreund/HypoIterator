@@ -17,13 +17,13 @@ class T2CaRelEfic : public T2CaCommon {
     HypoErrorsGraph *etxEficGraph;
 
     unsigned NREGIONS;
-    std::string dataLabel;
+    const std::string dataLabel;
 
     public:
 
-    T2CaRelEfic(std::string &rPath, unsigned user_nRegions, std::string &dataLabel);
+    T2CaRelEfic(const std::string &rPath, unsigned user_nRegions, const std::string &dataLabel);
     CODE DrawEficVs(const std::string &vsWho, const std::string &opt);
-    ~T2CaRelEfic();
+    virtual ~T2CaRelEfic();
 
 };
 
