@@ -70,12 +70,18 @@ HypoBase::CODE T2CaCommon::exec(){
         clearVectors();
     }
     if (dataLabel == "elc"){
-        detRate = (float)detElc/(float)totalData;
-        faRate = (float)detJet/(float)totalData;
+        detRate = (float)detElc/(float)totalData*100;
+        detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
+        deteRatioRate = (float)(totalData - eRatioCuts)/(float)totalData*100;
+        detEtRate = (float)(totalData - etCuts)/(float)totalData*100;
+        detHadEtRate = (float)(totalData - hadEtCuts)/(float)totalData*100;
     }
     if (dataLabel == "jet"){
-        detRate = (float)detJet/(float)totalData;
-        faRate = (float)detElc/(float)totalData;
+        detRate = (float)detJet/(float)totalData*100;
+        detrCoreRate = (float)(rCoreCuts)/(float)totalData*100;
+        deteRatioRate = (float)(eRatioCuts)/(float)totalData*100;
+        detEtRate = (float)(etCuts)/(float)totalData*100;
+        detHadEtRate = (float)(hadEtCuts)/(float)totalData*100;
     }
     return HypoBase::OK;
 
@@ -133,20 +139,20 @@ T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, cons
     //if (cutPhi(dPhi)) return T2CaCommon::dPHI;
 
     if (cutrCore(rCore, etaBin)){
-        ++rCoreCut;
+        ++rCoreCuts;
         return T2CaCommon::rCORE;
     }
 
     if (cuteRatio(eRatio, F1, eta, etaBin)){
-        ++eRatioCut;   
+        ++eRatioCuts;   
         return T2CaCommon::eRATIO;
     }
     if (cuteT_T2Calo(eT_T2Calo, etaBin)){
-        ++etCut;
+        ++etCuts;
         return T2CaCommon::et_EM;
     }
     if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)){
-        ++hadEtCut;
+        ++hadEtCuts;
         return T2CaCommon::et_HAD;
     }
 

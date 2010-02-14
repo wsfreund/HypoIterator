@@ -16,7 +16,6 @@ using std::endl;
 class HypoErrorsGraph {
 
     protected:
-    enum PARTICLES {JET = -1, ELECTRON = 1};
     enum CODE {ERROR = 0, OK};
     /*const*/ unsigned NREGIONS;
     /*const*/ unsigned NPOINTS;
@@ -24,8 +23,8 @@ class HypoErrorsGraph {
     /*const*/ float HIEDGE;
     /*const*/ std::string title;
     /*const*/ std::string dataLabel;
-    const HypoBase *dataHypo;
-    const TTree *dataTree;
+    HypoBase *dataHypo;
+    TTree *dataTree;
 
     std::vector<float>* vectorInput;
     std::vector<int>* vectorDec;
@@ -36,13 +35,13 @@ class HypoErrorsGraph {
     CODE genGraph();
     CODE genEdges(float* edges);
     CODE incrementEdges(const float*  edges, float* centerBin);
-    CODE genEficErrors(const float* edges, float* efic, float* lowErrors, float* hiErrors) ;
+    CODE genEfficErrors(const float* edges, float* effic, float* lowErrors, float* hiErrors) ;
     bool isAtRegion(const float lowEdge, const float data, const float hiEdge);
     CODE checkAndGenErrors(const float &efic, float &error, float &lowError, float &hiError);
 
     public:
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *dataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, HypoBase *dataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userTitle);
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
 

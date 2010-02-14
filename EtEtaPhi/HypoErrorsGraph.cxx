@@ -1,28 +1,26 @@
 #include "HypoErrorsGraph.h"
 
-
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, const HypoBase *userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, HypoBase *userDataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
-    dataHypo = const_cast<HypoBase*>(userDataHypo);
-    const_cast<HypoBase*>(dataHypo)->getExtraVariables(dataTree);
+    dataHypo = userDataHypo;
+    dataHypo->getExtraVariables(dataTree);
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
-    const_cast<TTree*>(dataTree)->SetBranchAddress(branchName.c_str(), &vectorInput);
-    const HypoBase* pHypo = dynamic_cast<const T2CaCommon*>(dataHypo);
-    if (pHypo)
-        const_cast<TTree*>(dataTree)->SetBranchAddress("T2CaDec", &vectorDec);
+    dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
+    HypoBase* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
+    if (pHypo){
+        dataTree->SetBranchAddress("T2CaDec", &vectorDec);
         title = "T2Ca " + userTitle;
-    else{
+    }else{
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
-        if (pHypo)
-            const_cast<TTree*>(dataTree)->SetBranchAddress("Ringer_Dec", &vectorDec);
+        if (pHypo){
+            dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
             title = "Neural " + userTitle;
-    else{
-        else {
+        }else{
                 cout<<"Entered wrong type of Hypo"<<endl;
                 delete this;
         }
@@ -62,7 +60,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     //Generating x
     incrementEdges(edges, pX);
     //Generating effic, lowErrors, hiErrors
-    genefficErrors(pEdges, peffic, pLowErrors, pHiErrors); 
+    genEfficErrors(pEdges, peffic, pLowErrors, pHiErrors); 
     //No error on x
     float exl[NREGIONS], exh[NREGIONS];
     //Initializing them becouse the variable size:
@@ -73,13 +71,15 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
     //Setting graph parameters:
-    if (DataHypo !=0){
-        if (dataHypo->getDataLabel == "elc"){
+    if (dataHypo !=0){
+        std::string hypoLabel;
+        dataHypo->getDataLabel(hypoLabel);
+        if (hypoLabel == "elc"){
             graph->SetLineColor(4);
             graph->SetMarkerColor(4);
             graph->SetMarkerStyle(20);
         }
-        else if (dataHypo->getDataLabel == "jet"){
+        else if (hypoLabel == "jet"){
             graph->SetMarkerColor(2);
             graph->SetLineColor(2);
             graph->SetMarkerStyle(21);
@@ -128,7 +128,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 }
 
 
-HypoErrorsGraph::CODE HypoErrorsGraph::genefficErrors(const float* edges, float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
+HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     if ( dataHypo!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
@@ -137,7 +137,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genefficErrors(const float* edges, float*
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
-                const_cast<TTree*>(dataTree)->GetEntry(entry);
+                dataTree->GetEntry(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;

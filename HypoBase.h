@@ -27,7 +27,6 @@ class HypoBase {
         unsigned detElc;
         unsigned detJet;
         float detRate;
-        float faRate;
         std::string dataLabel;
 
         TChain *hypoChain;
@@ -56,20 +55,19 @@ class HypoBase {
                     std::string input;
                     cout<<"No ID found, insert elc/jet"<<endl;
                     while( input == "elc" || input == "jet" ){
-                        std::getline(cin,input);
+                        std::getline(std::cin,input);
                     }
                     dataLabel = input;
                 }
             }
         }
 
-        virtual void getExtraVariables(const TTree*& refExtraVariables){ refExtraVariables = extraVariables; };
-        unsigned getTotalData(){ return totalData;};
-        unsigned getDetElc(){return detElc;};
-        unsigned getDetJet(){return detJet;};
-        float    getDetRate(){return detRate;};
-        float    getFaRate(){return faRate;};
-        float    getDataLabel(const std::string &hypoDataLabel){ hypodataLabel = dataLabel;};
+        virtual void getExtraVariables(TTree*& refExtraVariables) const{ refExtraVariables = extraVariables; };
+        unsigned getTotalData()const { return totalData;};
+        unsigned getDetElc()const {return detElc;};
+        unsigned getDetJet()const {return detJet;};
+        float    getDetRate()const {return detRate;};
+        virtual void getDataLabel(std::string &hypoDataLabel) const{ hypoDataLabel = dataLabel;};
 
         virtual CODE exec() = 0;
         virtual ~HypoBase(){ 

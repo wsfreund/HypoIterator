@@ -44,6 +44,10 @@ class T2CaCommon : public HypoBase {
     unsigned eRatioCuts;
     unsigned etCuts;
     unsigned hadEtCuts;
+    float detrCoreRate;
+    float deteRatioRate;
+    float detEtRate;
+    float detHadEtRate;
 
     //Functions
     CODE calcTransverseFraction();
@@ -62,11 +66,15 @@ class T2CaCommon : public HypoBase {
     T2CaCommon(const std::string &chainPath);
     CODE exec();
     CODE drawCutCounter();
-    void getExtraVariables(const TTree*& refExtraVariables){ refExtraVariables = extraVariables; };
-    unsigned getrCoreCuts();
-    unsigned geteRatioCuts();
-    unsigned getEmCuts();
-    unsigned getHadEtCuts();
+    void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; };
+    unsigned getrCoreCuts()const {return rCoreCuts;};
+    unsigned geteRatioCuts()const {return eRatioCuts;};
+    unsigned getEmCuts()const {return etCuts;};
+    unsigned getHadEtCuts()const {return hadEtCuts;};
+    float getDetrCoreRate()const {return detrCoreRate;};
+    float getDeteRatioRate()const {return deteRatioRate;};
+    float getDetEtRate()const {return detEtRate;};
+    float getDetHadEtRate()const {return detHadEtRate};
     ~T2CaCommon();
 
 };
