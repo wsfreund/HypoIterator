@@ -1,29 +1,29 @@
-#include "T2CaRelEfficCanvas.h"
+#include "RelEfficCanvas.h"
 
 HypoBase::CODE T2CaRelEfficCanvas::Draw(){
 
     relCanvas->Divide(2,2);
     relCanvas->cd(1);
     if (relEfficData)
-        relEfficData->DrawEfficVs("eta", );
+        relEfficData->DrawEfficVs("eta", "ACP");
     if (relEfficElc && relEfficJet){
-        relEfficElc->DrawEfficVs("eta",);
-        relEfficJet->DrawEfficVs("eta",)
+        relEfficElc->DrawEfficVs("eta","ACP");
+        relEfficJet->DrawEfficVs("eta","CP,SAME")
     }
     gPad->SetEditable(kFALSE);
     relCanvas->cd(2);
     if (relEfficData)
-        relEfficData->DrawEfficVs("phi", );
+        relEfficData->DrawEfficVs("phi", "ACP");
     if (relEfficElc && relEfficJet){
-        relEfficElc->DrawEfficVs("phi",);
-        relEfficJet->DrawEfficVs("phi",);
+        relEfficElc->DrawEfficVs("phi","ACP");
+        relEfficJet->DrawEfficVs("phi","CP,SAME");
     }
     relCanvas->cd(3);
     if (relEfficData)
-        relEfficData->DrawEfficVs("et", );
+        relEfficData->DrawEfficVs("et", "ACP");
     if (relEfficElc && relEfficJet){
-        relEfficElc->DrawEfficVs("et", );
-        relEfficElc->DrawEfficVs("et", );
+        relEfficElc->DrawEfficVs("et", "ACP");
+        relEfficElc->DrawEfficVs("et", "CP","SAME");
     }
     relCanvas->cd(4);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
@@ -45,7 +45,7 @@ HypoBase::CODE T2CaRelEfficCanvas::Draw(){
             line3.Form("rCore Cut Detection Rate = %.4f", detrCoreRate);
             line4.Form("eRatio Cut Detection Rate = %.4f", deteRatioRate);
             line5.Form("Et_{Em} Cut Detection Rate = %.4f", detEtRate);
-            line6.Form("Et_{Had} Cut Detection Rate = %.4f", detHadEtRate;);
+            line6.Form("Et_{Had} Cut Detection Rate = %.4f", detHadEtRate);
             pt->AddText("");
             pt->AddText(line1);
             pt->AddText("");
@@ -93,22 +93,55 @@ HypoBase::CODE T2CaRelEfficCanvas::Draw(){
             line5.Form("rCore Electron Rate = %.4f", detrCoreRateElc);
             line6.Form("rCore Jet Rate = %.4f", detrCoreRateJet);
             line7.Form("eRatio Cut Efficience = %.4f", deteRatioRate);
-            line5.Form("eRatio Electron Rate = %.4f", detrCoreRateElc);
-            line6.Form("rCore Jet Rate = %.4f", detrCoreRateJet);
-            line5.Form("Et_{Em} Cut Efficience = %.4f", detEtRate);
-            line6.Form("Et_{Had} Cut Efficience = %.4f", detHadEtRate;);
+            line8.Form("eRatio Electron Rate = %.4f", deteRatioRateElc);
+            line9.Form("eRatio Jet Rate = %.4f", deteRatioRateJet);
+            line10.Form("Et_{Em} Cut Efficience = %.4f", etEffic);
+            line11.Form("Et_{Em} Electron Rate = %.4f", detEtRateElc);
+            line12.Form("Et_{Em} Jet Rate = %.4f", detEtRateJet);
+            line13.Form("Et_{Had} Cut Efficience = %.4f", hadEtEffic);
+            line14.Form("Et_{Had} Electron Rate = %.4f", detHadEtRateElc);
+            line15.Form("Et_{Had} Jet Rate = %.4f", detHadEtRateJet);
             pt->AddText("");
             pt->AddText(line1);
             pt->AddText("");
-            pt->AddText(line2);
+            TText* p1 = pt->AddText(line2);
+            TText* p2 = pt->AddText(line3);
+            p1->SetTextColor(4);
+            p2->SetTextColor(2);
             pt->AddText("");
-            pt->AddText("T2Calo Cuts:");
-            pt->AddText(line3);
             pt->AddText(line4);
-            pt->AddText(line5);
-            pt->AddText(line6);
+            p1 = pt->AddText(line5);
+            p2 = pt->AddText(line6);
+            p1->SetTextColor(4);
+            p2->SetTextColor(2);
+            pt->AddText("");
+            pt->AddText(line7);
+            p1 = pt->AddText(line8);
+            p2 = pt->AddText(line9);
+            p1->SetTextColor(4);
+            p2->SetTextColor(2);
+            pt->AddText("");
+            pt->AddText(line10);
+            p1 = pt->AddText(line11);
+            p2 = pt->AddText(line12);
+            p1->SetTextColor(4);
+            p2->SetTextColor(2);
+            pt->AddText("");
+            pt->AddText(line13);
+            p1 = pt->AddText(line14);
+            p2 = pt->AddText(line15);
+            p1->SetTextColor(4);
+            p2->SetTextColor(2);
+        }
+    }
+    TText *p1 = pt->AddText(0.5, 0.98, "Signal Processing Laboratory - COPPE/UFRJ");
+    p1->SetTextSize(0.01);
+    pt->SetFillColor(30);
+    pt->SetTextAlign(12);
 
+    pt->SetLabel("HypoIterator v4.0.0");
 
+    pt->Draw();
 
 }
 
