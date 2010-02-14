@@ -32,25 +32,24 @@ class T2CaCommon : public HypoBase {
     std::vector<float>  *energyS1;
     std::vector<float>  *eta0;
     std::vector<float>  *phi0;
-
+    //Ringer eta and phi for matching:
     std::vector<float> *ringer_eta;
     std::vector<float> *ringer_phi;
-
     //Vector with T2Calo Cuts;
     std::vector<int> *t2CaAns;
-
     //Tree holding extraVariables:
     TTree *extraVariables;
+    //Analysis Variables:
+    unsigned rCoreCuts;
+    unsigned eRatioCuts;
+    unsigned etCuts;
+    unsigned hadEtCuts;
 
     //Functions
-
     CODE calcTransverseFraction();
-
     CODE fillDecision(PCUTS entry);
-
-    //Corte
+    //Cuts
     virtual PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
-
     virtual bool cutEta(const float dEta);
     virtual bool cutPhi(const float dPhi);
     virtual bool cutrCore(const float rCore, const size_t etaBin);
@@ -60,14 +59,14 @@ class T2CaCommon : public HypoBase {
     virtual bool cutF1(const float F1);
 
     public:
-
     T2CaCommon(const std::string &chainPath);
-
     CODE exec();
     CODE drawCutCounter();
     void getExtraVariables(const TTree*& refExtraVariables){ refExtraVariables = extraVariables; };
-
-
+    unsigned getrCoreCuts();
+    unsigned geteRatioCuts();
+    unsigned getEmCuts();
+    unsigned getHadEtCuts();
     ~T2CaCommon();
 
 };

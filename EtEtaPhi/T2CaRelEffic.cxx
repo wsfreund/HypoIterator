@@ -10,7 +10,7 @@ T2CaRelEffic::T2CaRelEffic(const std::string &rPath, unsigned user_nRegions, con
 
 }
 
-HypoBase::CODE T2CaRelEffic::DrawEficVs(const std::string &vsWho, const std::string &opt){
+HypoBase::CODE T2CaRelEffic::DrawEfficVs(const std::string &vsWho, const std::string &opt){
 
     if ( vsWho == "eta")
         etaxEficGraph->Draw(opt);
@@ -19,8 +19,11 @@ HypoBase::CODE T2CaRelEffic::DrawEficVs(const std::string &vsWho, const std::str
     else if (vsWho == "et")
         etxEficGraph->Draw(opt);
     else if (vsWho == "all"){
+        TCanvas *etaEfic = new TCanvas("Efficiency x Eta","Efficiency x Eta");
         etaxEficGraph->Draw(opt);
+        TCanvas *etaEfic = new TCanvas("Efficiency x Phi","Efficiency x Phi");
         phixEficGraph->Draw(opt);
+        TCanvas *etaEfic = new TCanvas("Efficiency x Et","Efficiency x Et");
         etxEficGraph->Draw(opt);
     }
     return HypoBase::OK;

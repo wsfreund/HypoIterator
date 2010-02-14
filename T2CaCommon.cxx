@@ -69,7 +69,14 @@ HypoBase::CODE T2CaCommon::exec(){
         extraVariables->Fill();
         clearVectors();
     }
-
+    if (dataLabel == "elc"){
+        detRate = (float)detElc/(float)totalData;
+        faRate = (float)detJet/(float)totalData;
+    }
+    if (dataLabel == "jet"){
+        detRate = (float)detJet/(float)totalData;
+        faRate = (float)detElc/(float)totalData;
+    }
     return HypoBase::OK;
 
 }
@@ -90,9 +97,11 @@ inline HypoBase::CODE T2CaCommon::calcTransverseFraction(){
 
 HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
 
+    ++totalData;
     switch (entry){
         case T2CaCommon::AP:
             decision->push_back(HypoBase::ELECTRON);
+            ++detElc;
             break;
         case T2CaCommon::dETA:
         case T2CaCommon::dPHI:
@@ -102,6 +111,7 @@ HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
         case T2CaCommon::et_HAD:
         case T2CaCommon::c_F1:
             decision->push_back(HypoBase::JET);
+            ++detJet;
             break;
         default:
             return HypoBase::ERROR;
@@ -118,28 +128,30 @@ T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, cons
         if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
     }
 
-    //Corte Eta
     //if (cutEta(dEta)) return T2CaCommon::dETA;
 
-    //Corte Phi
     //if (cutPhi(dPhi)) return T2CaCommon::dPHI;
 
-    //Corte rCore
-    if (cutrCore(rCore, etaBin)) return T2CaCommon::rCORE;
+    if (cutrCore(rCore, etaBin)){
+        ++rCoreCut;
+        return T2CaCommon::rCORE;
+    }
 
-    //Corte eRatio
-    if (cuteRatio(eRatio, F1, eta, etaBin)) return T2CaCommon::eRATIO;
+    if (cuteRatio(eRatio, F1, eta, etaBin)){
+        ++eRatioCut;   
+        return T2CaCommon::eRATIO;
+    }
+    if (cuteT_T2Calo(eT_T2Calo, etaBin)){
+        ++etCut;
+        return T2CaCommon::et_EM;
+    }
+    if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)){
+        ++hadEtCut;
+        return T2CaCommon::et_HAD;
+    }
 
-    //Corte Energia Tranversa EM
-    if (cuteT_T2Calo(eT_T2Calo, etaBin)) return T2CaCommon::et_EM;
-
-    //Corte Energia Tranversa HAD
-    if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin)) return T2CaCommon::et_HAD;
-
-    //Corte Fração de energia
     //if (cutF1(F1)) return T2CaCommon::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
 
-    //Chegou até aqui passou yeah
     return T2CaCommon::AP;
 
 }

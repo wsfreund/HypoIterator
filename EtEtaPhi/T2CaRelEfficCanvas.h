@@ -12,10 +12,12 @@ class T2CaRelEfficCanvas : public T2CaRelEffic {
 
     T2CaRelEfficCanvas(const std::string rPath, unsigned nRegions, const std::strings &userDataLabel):
         T2CaRelEffic(rPath, nRegions, userDataLabel){
-        relCanvas = new TCanvas("Relative Efficiency", "Analysis Graphics");
+        relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     }
     CODE Draw();
-    ~T2CaRelEfficCanvas();
+    ~T2CaRelEfficCanvas(){
+        delete relCanvas;
+    }
 
 };
 
