@@ -1,5 +1,5 @@
-#ifndef T2CARELEFIC_H
-#define T2CARELEFIC_H
+#ifndef T2CARELEFFIC_H
+#define T2CARELEFFIC_H
 #include "../T2CaCommon.h"
 #include <cstring>
 #include "HypoErrorsGraph.h"
@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-class T2CaRelEfic : public T2CaCommon {
+class T2CaRelEffic : public T2CaCommon {
 
     protected:
 
@@ -21,9 +21,9 @@ class T2CaRelEfic : public T2CaCommon {
 
     public:
 
-    T2CaRelEfic(const std::string &rPath, unsigned user_nRegions, const std::string &dataLabel);
+    T2CaRelEffic(const std::string &rPath, unsigned user_nRegions, const std::string &dataLabel);
     CODE DrawEficVs(const std::string &vsWho, const std::string &opt);
-    virtual ~T2CaRelEfic();
+    virtual ~T2CaRelEffic();
 
 };
 

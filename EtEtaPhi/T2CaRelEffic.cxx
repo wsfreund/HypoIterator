@@ -1,6 +1,6 @@
-#include "T2CaRelEfic.h"
+#include "T2CaRelEffic.h"
 
-T2CaRelEfic::T2CaRelEfic(const std::string &rPath, unsigned user_nRegions, const std::string &userDataLabel):
+T2CaRelEffic::T2CaRelEffic(const std::string &rPath, unsigned user_nRegions, const std::string &userDataLabel):
     T2CaCommon(rPath),
     NREGIONS(user_nRegions),
     dataLabel(userDataLabel){
@@ -10,7 +10,7 @@ T2CaRelEfic::T2CaRelEfic(const std::string &rPath, unsigned user_nRegions, const
 
 }
 
-HypoBase::CODE T2CaRelEfic::DrawEficVs(const std::string &vsWho, const std::string &opt){
+HypoBase::CODE T2CaRelEffic::DrawEficVs(const std::string &vsWho, const std::string &opt){
 
     if ( vsWho == "eta")
         etaxEficGraph->Draw(opt);
@@ -30,7 +30,7 @@ HypoBase::CODE T2CaRelEfic::DrawEficVs(const std::string &vsWho, const std::stri
 
 
 
-T2CaRelEfic::~T2CaRelEfic(){
+T2CaRelEffic::~T2CaRelEffic(){
 
     delete etaxEficGraph;
     delete phixEficGraph;
