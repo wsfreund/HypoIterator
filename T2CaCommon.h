@@ -74,7 +74,7 @@ class T2CaCommon : public HypoBase {
     float getDetrCoreRate()const {return detrCoreRate;};
     float getDeteRatioRate()const {return deteRatioRate;};
     float getDetEtRate()const {return detEtRate;};
-    float getDetHadEtRate()const {return detHadEtRate};
+    float getDetHadEtRate()const {return detHadEtRate;};
     ~T2CaCommon();
 
 };
