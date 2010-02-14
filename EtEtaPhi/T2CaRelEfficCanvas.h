@@ -8,7 +8,7 @@
 #include "TPaveText.h"
 #include "TString.h"
 
-class relEfficCanvas {
+class RelEfficCanvas {
 
     TCanvas *relCanvas;
     HypoBase *relEfficData;
@@ -17,13 +17,13 @@ class relEfficCanvas {
 
     public:
 
-    relEfficCanvas(HypoBase *userRelEfficData):
+    RelEfficCanvas(HypoBase *userRelEfficData):
         relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
         relEfficData = userRelEfficData;
         relEfficElc = 0;
         relEfficJet = 0;
     }
-    relEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet){
+    RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet){
         relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
         relEfficData = 0;
         relEfficElc = userRelEfficElc;
@@ -31,7 +31,7 @@ class relEfficCanvas {
     }
     CODE Draw();
     float calcSP(float detelc, float detjet);
-    ~T2CaRelEfficCanvas(){
+    ~RelEfficCanvas(){
         delete relCanvas;
     }
 

@@ -1,6 +1,6 @@
 #include "RelEfficCanvas.h"
 
-HypoBase::CODE T2CaRelEfficCanvas::Draw(){
+HypoBase::CODE RelEfficCanvas::Draw(){
 
     relCanvas->Divide(2,2);
     relCanvas->cd(1);
