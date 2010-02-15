@@ -2,11 +2,11 @@
 #define HYPOBASE_H
 
 #include<vector>
-#include<iostream>
 #include<cmath>
 #include<TChain.h>
 #include<TH1I.h>
 #include<TTree.h>
+#include<cstring>
 #include<iostream>
 using std::cout;
 using std::endl;

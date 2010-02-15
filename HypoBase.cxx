@@ -9,19 +9,20 @@ HypoBase::HypoBase(const std::string &chainPath){
     lvl2_phi  = new std::vector<float>;
     decision  = new std::vector<int>;
     et        = new std::vector<float>;
-    size_t comp = chainPath.find("electrons");
+    size_t comp = chainPath.find("singlepart");
     if (comp != std::string::npos){
         dataLabel = "elc";
     } else {
-        comp = chainPath.find("jet");
+        comp = chainPath.find("jf17");
         if (comp!= std::string::npos){
             dataLabel = "jet";
         }else{
             std::string input;
-            cout<<"No ID found, insert elc/jet"<<endl;
-            while( input == "elc" || input == "jet" ){
-                std::getline(std::cin,input);
+            while( (input != "elc") && (input != "jet") ){
+                cout<<"No ID found, insert elc/jet"<<endl;
+                std::getline(std::cin, input);
             }
+            cout<<"Data will be treated as "<<input<<endl;
             dataLabel = input;
         }
     }
