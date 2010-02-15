@@ -1,9 +1,10 @@
 #ifndef RELEFFICCANVAS_H
 #define RELEFFICCANVAS_H
 
+#include <typeinfo>
 #include "RelEfficBase.h"
 #include "T2CaRelEffic.h"
-//#include "NeuralCaRelEffic.h"
+//#include "NeuralRelEffic.h"
 #include "TCanvas.h"
 #include "TPaveText.h"
 #include "TString.h"
@@ -23,6 +24,7 @@ class RelEfficCanvas {
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
     int Draw();
     ~RelEfficCanvas(){
+        relCanvas->Close();
         delete relCanvas;
     }
 

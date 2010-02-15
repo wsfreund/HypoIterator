@@ -14,6 +14,15 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     ringer_eta = new std::vector<float>;
     ringer_phi = new std::vector<float>;
 
+    rCoreCuts = 0;
+    eRatioCuts = 0;
+    etCuts = 0;
+    hadEtCuts = 0;
+    detrCoreRate = 0;
+    deteRatioRate = 0;
+    detEtRate = 0;
+    detHadEtRate = 0;
+
     hypoChain->SetBranchStatus("T2CaEta",        true);
     hypoChain->SetBranchStatus("T2CaPhi",        true);
     hypoChain->SetBranchStatus("T2CaRcore",      true);
@@ -55,7 +64,6 @@ HypoBase::CODE T2CaCommon::exec(){
 
     int n_entries = static_cast<int>(hypoChain->GetEntries());
     for(int i=0; i<n_entries; ++i){
-     
         hypoChain->GetEntry(i);
         calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI i;
 
@@ -69,17 +77,19 @@ HypoBase::CODE T2CaCommon::exec(){
         clearVectors();
     }
     fillHypoRate();
-    if (dataLabel == "elc"){
-        detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
-        deteRatioRate = (float)(totalData - eRatioCuts)/(float)totalData*100;
-        detEtRate = (float)(totalData - etCuts)/(float)totalData*100;
-        detHadEtRate = (float)(totalData - hadEtCuts)/(float)totalData*100;
-    }
-    if (dataLabel == "jet"){
-        detrCoreRate = (float)(rCoreCuts)/(float)totalData*100;
-        deteRatioRate = (float)(eRatioCuts)/(float)totalData*100;
-        detEtRate = (float)(etCuts)/(float)totalData*100;
-        detHadEtRate = (float)(hadEtCuts)/(float)totalData*100;
+    if (totalData!=0){
+        if (dataLabel == "elc"){
+            detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
+            deteRatioRate = (float)(totalData - eRatioCuts)/(float)totalData*100;
+            detEtRate = (float)(totalData - etCuts)/(float)totalData*100;
+            detHadEtRate = (float)(totalData - hadEtCuts)/(float)totalData*100;
+        }
+        if (dataLabel == "jet"){
+            detrCoreRate = (float)(rCoreCuts)/(float)totalData*100;
+            deteRatioRate = (float)(eRatioCuts)/(float)totalData*100;
+            detEtRate = (float)(etCuts)/(float)totalData*100;
+            detHadEtRate = (float)(hadEtCuts)/(float)totalData*100;
+        }
     }
     return HypoBase::OK;
 

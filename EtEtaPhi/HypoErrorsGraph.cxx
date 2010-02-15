@@ -21,8 +21,8 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
             dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
             title = userTitle;
         }else{
-                cout<<"Entered wrong type of Hypo"<<endl;
-                delete this;
+            cout<<"Entered wrong type of Hypo"<<endl;
+            delete this;
         }
     }
     genGraph();

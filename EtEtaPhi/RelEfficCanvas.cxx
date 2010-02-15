@@ -1,14 +1,12 @@
 #include "RelEfficCanvas.h"
 
 RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficData){
-    relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     relEfficData = userRelEfficData;
     relEfficElc = 0;
     relEfficJet = 0;
 }
 
 RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet){
-    relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     relEfficData = 0;
     relEfficElc = userRelEfficElc;
     relEfficJet = userRelEfficJet;
@@ -17,14 +15,12 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *user
 
 int RelEfficCanvas::Draw(){
 
-    cout<<typeid(*relEfficData).name()<<endl;
+    relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
 
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
-    cout<<typeid(*t2relEfficData).name()<<endl;
-
     relCanvas->Divide(2,2);
     relCanvas->cd(1);
     if (t2relEfficData)
@@ -148,7 +144,8 @@ int RelEfficCanvas::Draw(){
         p1->SetTextColor(4);
         p2->SetTextColor(2);
     }
-    TText *p1 = pt->AddText(0.5, 0.98, "Signal Processing Laboratory - COPPE/UFRJ");
+    TString line666("Signal Processing Laboratory - COPPE/UFRJ");
+    TText *p1 = pt->AddText(line666);
     p1->SetTextSize(0.01);
     pt->SetFillColor(30);
     pt->SetTextAlign(12);
@@ -156,7 +153,9 @@ int RelEfficCanvas::Draw(){
     pt->SetLabel("HypoIterator v4.0.0");
 
     pt->Draw();
-    
+    gPad->SetEditable(kFALSE);
+    relCanvas->cd();
+
     return 0;
 
 }

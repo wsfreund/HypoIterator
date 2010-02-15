@@ -2,6 +2,9 @@
 
 HypoBase::HypoBase(const std::string &chainPath){
     extraVariables = 0;
+    totalData = 0;
+    detElc = 0;
+    detJet = 0;
     hypoChain = new TChain("CollectionTree");
     hypoChain->Add(chainPath.c_str());
     hypoChain->SetBranchStatus("*", false);
@@ -94,11 +97,12 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
 }
 
 HypoBase::CODE HypoBase::fillHypoRate(){
-
-    if (dataLabel == "elc")
-        detRate = (float)detElc/(float)totalData*100;
-    else if (dataLabel == "jet")
-        detRate = (float)detJet/(float)totalData*100;
+    if (totalData !=0){
+        if (dataLabel == "elc")
+            detRate = (float)detElc/(float)totalData*100;
+        else if (dataLabel == "jet")
+            detRate = (float)detJet/(float)totalData*100;
+    }
     return HypoBase::OK;
 }
 

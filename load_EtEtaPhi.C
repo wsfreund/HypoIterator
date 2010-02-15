@@ -1,5 +1,8 @@
 {
-gROOT->ProcessLine(".L Efic.h+");
-gROOT->ProcessLine(".L T2CaloCommon.cxx+");
-gRoot->ProcessLine(".L EtEthaPhi/T2CaEtaPhi.cxx+")
+gROOT->ProcessLine(".L HypoBase.cx++");
+gROOT->ProcessLine(".L T2CaCommon.cxx+");
+gROOT->ProcessLine(".L EtEtaPhi/HypoErrorsGraph.cxx+");
+gROOT->ProcessLine(".L EtEtaPhi/RelEfficBase.h+");
+gROOT->ProcessLine(".L EtEtaPhi/T2CaRelEffic.cxx+");
+gROOT->ProcessLine(".L EtEtaPhi/RelEfficCanvas.cxx+");
 }
