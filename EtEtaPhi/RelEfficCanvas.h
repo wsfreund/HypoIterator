@@ -1,7 +1,7 @@
 #ifndef RELEFFICCANVAS_H
 #define RELEFFICCANVAS_H
 
-#include "HypoBase.h"
+#include "RelEfficBase.h"
 #include "T2CaRelEffic.h"
 //#include "NeuralCaRelEffic.h"
 #include "TCanvas.h"
@@ -11,18 +11,17 @@
 class RelEfficCanvas {
 
     protected:
-    enum CODE {ERROR=0, OK};
     TCanvas *relCanvas;
-    HypoBase *relEfficData;
-    HypoBase *relEfficElc;
-    HypoBase *relEfficJet;
+    RelEfficBase *relEfficData;
+    RelEfficBase *relEfficElc;
+    RelEfficBase *relEfficJet;
 
+    float calcSP(float detelc, float detjet);
     public:
 
-    RelEfficCanvas(HypoBase *userRelEfficData);
-    RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet);
-    CODE Draw();
-    float calcSP(float detelc, float detjet);
+    RelEfficCanvas(RelEfficBase *userRelEfficData);
+    RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
+    int Draw();
     ~RelEfficCanvas(){
         delete relCanvas;
     }

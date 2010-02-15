@@ -1,13 +1,13 @@
 #include "RelEfficCanvas.h"
 
-RelEfficCanvas::RelEfficCanvas(HypoBase *userRelEfficData){
+RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficData){
     relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     relEfficData = userRelEfficData;
     relEfficElc = 0;
     relEfficJet = 0;
 }
 
-RelEfficCanvas::RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet){
+RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet){
     relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     relEfficData = 0;
     relEfficElc = userRelEfficElc;
@@ -15,7 +15,7 @@ RelEfficCanvas::RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEffic
 }   
 
 
-RelEfficCanvas::CODE RelEfficCanvas::Draw(){
+int RelEfficCanvas::Draw(){
 
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
@@ -153,7 +153,7 @@ RelEfficCanvas::CODE RelEfficCanvas::Draw(){
 
     pt->Draw();
     
-    return RelEfficCanvas::OK;
+    return 0;
 
 }
 
