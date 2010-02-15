@@ -86,11 +86,13 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             cout<<"WARNING :: Deleting event!"<<endl;
             eraseVectors(0);
             break;
-        }else if ( i == matchingPair){
+        }else {
+            unsigned uMatching = matchingPair;
+            if ( i == imatching){
             eraseVectors(i);
             break;
         }else{ 
-            swapVectors(i,matchingPair);
+            swapVectors(i,uMatching);
         }
     }
 
