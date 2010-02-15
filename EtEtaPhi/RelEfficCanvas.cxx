@@ -17,13 +17,14 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *user
 
 int RelEfficCanvas::Draw(){
 
-    if (typeid(*relEfficData) == typeid(T2CaRelEffic))
-        cout<<"Ponteiro para T2CaRelEffic"<<endl;
+    cout<<typeid(*relEfficData).name()<<endl;
 
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
+    cout<<typeid(*t2relEfficData).name()<<endl;
+
     relCanvas->Divide(2,2);
     relCanvas->cd(1);
     if (t2relEfficData)

@@ -14,12 +14,12 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     HypoBase* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
     if (pHypo){
         dataTree->SetBranchAddress("T2CaDec", &vectorDec);
-        title = "T2Ca " + userTitle;
+        title = userTitle;
     }else{
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
         if (pHypo){
             dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
-            title = "Neural " + userTitle;
+            title = userTitle;
         }else{
                 cout<<"Entered wrong type of Hypo"<<endl;
                 delete this;
