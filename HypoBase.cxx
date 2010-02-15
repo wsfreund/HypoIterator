@@ -64,11 +64,6 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             float dphi = 999999.;
             int matchingPair = -1;
             for(size_t j=i; j<eta->size(); ++j){
-                cout<<"Starting loop over Ringer Eta:"<<j<<endl;
-                cout<<"Initial deta = "<<deta<<"    |  Initial   dphi = "<<dphi<<endl;
-                cout<<"|T2Ca Eta - Ringer Eta| = "<<abs(lvl2_eta->at(j) - eta->at(i))<<endl;
-                cout<<"|T2Ca Phi - Ringer Phi| = "<<abs(lvl2_phi->at(j) - phi->at(i))<<endl;
-                cout<<"|T2Ca Phi + Ringer Phi| = "<<abs(lvl2_phi->at(j) + phi->at(i))<<endl;
                 if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
                     deta = abs(lvl2_eta->at(j) - eta->at(i));
                 float fdphi = abs( lvl2_phi->at(j) - phi->at(i) );
@@ -77,7 +72,6 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                     fdphi = sdphi;
                 if (fdphi<dphi)
                     dphi = fdphi;
-                cout<<"Final deta = "<<deta<<"    |  Final  dphi = "<<dphi<<endl;
                 if ( deta < MAXDETA && dphi < MAXDPHI )
                     matchingPair = j;
             }
