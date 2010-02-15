@@ -31,7 +31,7 @@ int RelEfficCanvas::Draw(){
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("eta","ACP");
         t2relEfficJet->DrawEfficVs("eta","CP,SAME");
-    }else{
+    }
     gPad->SetEditable(kFALSE);
     relCanvas->cd(2);
     if (t2relEfficData)
