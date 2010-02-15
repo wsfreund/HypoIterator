@@ -62,12 +62,12 @@ class HypoBase {
             }
         }
 
-        virtual void getExtraVariables(TTree*& refExtraVariables) const{ refExtraVariables = extraVariables; };
-        unsigned getTotalData()const { return totalData;};
-        unsigned getDetElc()const {return detElc;};
-        unsigned getDetJet()const {return detJet;};
-        float    getDetRate()const {return detRate;};
-        virtual void getDataLabel(std::string &hypoDataLabel) const{ hypoDataLabel = dataLabel;};
+        virtual void getExtraVariables(TTree*& refExtraVariables) const{ refExtraVariables = extraVariables; }
+        unsigned getTotalData()const { return totalData;}
+        unsigned getDetElc()const {return detElc;}
+        unsigned getDetJet()const {return detJet;}
+        float    getDetRate()const {return detRate;}
+        virtual void getDataLabel(std::string &hypoDataLabel) const{ hypoDataLabel = dataLabel;}
 
         virtual CODE exec() = 0;
         virtual ~HypoBase(){ 

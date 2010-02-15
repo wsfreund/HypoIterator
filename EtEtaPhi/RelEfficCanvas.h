@@ -10,6 +10,8 @@
 
 class RelEfficCanvas {
 
+    protected:
+    enum CODE {ERROR=0, OK};
     TCanvas *relCanvas;
     HypoBase *relEfficData;
     HypoBase *relEfficElc;
@@ -17,18 +19,8 @@ class RelEfficCanvas {
 
     public:
 
-    RelEfficCanvas(HypoBase *userRelEfficData):
-        relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
-        relEfficData = userRelEfficData;
-        relEfficElc = 0;
-        relEfficJet = 0;
-    }
-    RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet){
-        relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
-        relEfficData = 0;
-        relEfficElc = userRelEfficElc;
-        relEfficJet = userRelEfficJet;
-    }
+    RelEfficCanvas(HypoBase *userRelEfficData);
+    RelEfficCanvas(HypoBase *userRelEfficElc, HypoBase *userRelEfficJet);
     CODE Draw();
     float calcSP(float detelc, float detjet);
     ~RelEfficCanvas(){
@@ -36,8 +28,6 @@ class RelEfficCanvas {
     }
 
 };
-
-
 
 
 #endif
