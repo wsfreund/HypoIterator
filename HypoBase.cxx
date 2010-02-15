@@ -91,12 +91,11 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             if ( i == uMatching){
                 eraseVectors(i);
                 break;
-            }
-        }else{ 
-            swapVectors(i,uMatching);
+            }else{ 
+                swapVectors(i,uMatching);
+            }   
         }
     }
-
     return HypoBase::OK;
 }
 
