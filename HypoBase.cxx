@@ -88,12 +88,12 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                 break;
             }else{ 
                 unsigned uMatching = matchingPair;
-                if ( uMatchin != i ) 
+                if ( uMatching != i ) 
                 swapVectors(i,uMatching);
             }
         }else{
-            eraseVectors(j);
-            break
+            eraseVectors(i);
+            break;
         }  
     }
     return HypoBase::OK;
