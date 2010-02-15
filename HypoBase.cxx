@@ -71,7 +71,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             cout<<"|T2Ca Phi + Ringer Phi| = "<<abs(lvl2_phi->at(j) + phi->at(i))<<endl;
             if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
                 deta = abs(lvl2_eta->at(j) - eta->at(i));
-            float fdphi = abs( lvl2_eta->at(j) - phi->at(i) );
+            float fdphi = abs( lvl2_phi->at(j) - phi->at(i) );
             float sdphi = abs( lvl2_phi->at(j) + phi->at(i) );
             if (sdphi<fdphi)
                 fdphi = sdphi;
@@ -81,17 +81,17 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             if ( deta < MAXDETA && dphi < MAXDPHI )
                 matchingPair = j;
         }
-        if ((int)i!=matchingPair && (int)i!=-1) 
+        if (matchingPair == -1){
+            cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
+            cout<<"WARNING :: Deleting event!"<<endl;
+            eraseVectors(0);
+            break;
+        }else if ( i == matchingPair){
+            eraseVectors(i);
+            break;
+        }else{ 
             swapVectors(i,matchingPair);
-        else{      
-            if (matchingPair == -1){
-                cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
-                cout<<"WARNING :: Deleting event!"<<endl;
-                eraseVectors(0);
-            }else
-                eraseVectors(i);
-            break;  
-        }       
+        }
     }
 
     return HypoBase::OK;
