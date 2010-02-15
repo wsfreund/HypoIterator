@@ -1,12 +1,14 @@
 #include "RelEfficCanvas.h"
 
 RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficData){
+    relCanvas = 0;
     relEfficData = userRelEfficData;
     relEfficElc = 0;
     relEfficJet = 0;
 }
 
 RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet){
+    relCanvas = 0;
     relEfficData = 0;
     relEfficElc = userRelEfficElc;
     relEfficJet = userRelEfficJet;
@@ -16,7 +18,6 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *user
 int RelEfficCanvas::Draw(){
 
     relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
-
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
@@ -146,7 +147,7 @@ int RelEfficCanvas::Draw(){
     }
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
     TText *p1 = pt->AddText(line666);
-    p1->SetTextSize(0.01);
+    p1->SetTextSize(0.3);
     pt->SetFillColor(30);
     pt->SetTextAlign(12);
 

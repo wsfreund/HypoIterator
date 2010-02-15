@@ -24,8 +24,10 @@ class RelEfficCanvas {
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
     int Draw();
     ~RelEfficCanvas(){
-        relCanvas->Close();
-        delete relCanvas;
+        if (relCanvas!=0){
+            relCanvas->Close();
+            delete relCanvas;
+        }
     }
 
 };

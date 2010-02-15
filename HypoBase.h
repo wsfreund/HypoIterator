@@ -32,6 +32,7 @@ class HypoBase {
     unsigned detElc;
     unsigned detJet;
     float detRate;
+    float faDetRate;
     std::string dataLabel;
 
     TChain *hypoChain;
@@ -47,6 +48,7 @@ class HypoBase {
     unsigned getDetElc() const{return detElc;}
     unsigned getDetJet() const{return detJet;}
     float    getDetRate() const{return detRate;}
+    float    getFARate() const{return faDetRate;}
     virtual void getDataLabel(std::string &hypoDataLabel) const{hypoDataLabel = dataLabel;}
 
 

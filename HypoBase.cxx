@@ -98,10 +98,14 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
 
 HypoBase::CODE HypoBase::fillHypoRate(){
     if (totalData !=0){
-        if (dataLabel == "elc")
-            detRate = (float)detElc/(float)totalData*100;
-        else if (dataLabel == "jet")
-            detRate = (float)detJet/(float)totalData*100;
+        if (dataLabel == "elc"){
+            detRate = (float)detElc/(float)totalData*100.;
+            faDetRate = (float)detJet/(float)totalData*100.;
+        }
+        else if (dataLabel == "jet"){
+            detRate = (float)detJet/(float)totalData*100.;
+            faDetRate = (float)detJet/(float)totalData*100.;
+        }
     }
     return HypoBase::OK;
 }

@@ -76,6 +76,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         dataHypo->getDataLabel(hypoLabel);
         if (hypoLabel == "elc"){
             graph->SetLineColor(4);
+            graph->SetLineWidth(0.5);
+            graph->SetMarkerSize(0.5);
             graph->SetMarkerColor(4);
             graph->SetMarkerStyle(20);
         }
@@ -108,6 +110,9 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         }
     }
     graph->SetTitle(title.c_str());
+    graph->GetXaxis()->SetTitle("");
+    graph->GetYaxis()->SetTitle("Efficiency");
+
     return HypoErrorsGraph::OK;
 }
 
@@ -146,7 +151,12 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
                     }
                 }
             }   
-            *effic = (float)regElectrons / (float)regData*100.;
+            std::string dataLabel;
+            dataHypo->getDataLabel(dataLabel);
+            if (dataLabel == "elc")
+                *effic = (float)regElectrons / (float)regData*100.;
+            else if (dataLabel == "jet")
+                *effic = (float)(regData - regElectrons)/(float)regData *100.;
             float error = 1/TMath::Sqrt(regData)*100.;
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
@@ -161,7 +171,10 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
                         ++regElectrons;
                 }
             }
-            *effic = (float)regElectrons / (float)regData*100.; 
+            if (dataLabel == "elc")
+                *effic = (float)regElectrons / (float)regData*100.;
+            else if (dataLabel == "jet")
+                *effic = (float)(regData - regElectrons)/(float)regData *100.;
             float error = (1/TMath::Sqrt(regData))*100.;
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
