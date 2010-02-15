@@ -17,6 +17,9 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *user
 
 int RelEfficCanvas::Draw(){
 
+    if (typeid(relEfficData) == T2CaRelEffic*)
+        cout<<"Ponteiro para T2CaRelEffic"<<endl;
+
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
@@ -28,7 +31,7 @@ int RelEfficCanvas::Draw(){
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("eta","ACP");
         t2relEfficJet->DrawEfficVs("eta","CP,SAME");
-    }
+    }else{
     gPad->SetEditable(kFALSE);
     relCanvas->cd(2);
     if (t2relEfficData)
