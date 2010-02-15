@@ -11,14 +11,14 @@
 class RelEfficBase {
 
     protected:
-    HypoErrorsGraph *etaxEficGraph;
-    HypoErrorsGraph *phixEficGraph;
-    HypoErrorsGraph *etxEficGraph;
+    HypoErrorsGraph *etaxEfficGraph;
+    HypoErrorsGraph *phixEfficGraph;
+    HypoErrorsGraph *etxEfficGraph;
     unsigned NREGIONS;
     public:
     RelEfficBase(unsigned userNREGIONS):
         NREGIONS(userNREGIONS){
-        etaxEficGraph = 0; phixEficGraph = 0; etxEficGraph = 0;}
+        etaxEfficGraph = 0; phixEfficGraph = 0; etxEfficGraph = 0;}
     virtual int DrawEfficVs(const std::string &vsWho, const std::string &opt) = 0;
     virtual ~RelEfficBase(){};
 

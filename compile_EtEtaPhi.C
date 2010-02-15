@@ -1,5 +1,5 @@
 {
-gROOT->ProcessLine(".L HypoBase.h++");
+gROOT->ProcessLine(".L HypoBase.cxx++");
 gROOT->ProcessLine(".L T2CaCommon.cxx++");
 gROOT->ProcessLine(".L EtEtaPhi/HypoErrorsGraph.cxx++");
 gROOT->ProcessLine(".L EtEtaPhi/RelEfficBase.h++");

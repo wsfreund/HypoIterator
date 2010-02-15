@@ -54,7 +54,6 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
 HypoBase::CODE T2CaCommon::exec(){
 
     int n_entries = static_cast<int>(hypoChain->GetEntries());
-
     for(int i=0; i<n_entries; ++i){
      
         hypoChain->GetEntry(i);
@@ -65,19 +64,18 @@ HypoBase::CODE T2CaCommon::exec(){
             t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
             fillDecision(roiAns); //Fill vector telling if the event was a electron or a jet;
         }//for j
-        ordenateRoi(ringer_eta, ringer_phi);
+        matchAndOrdenate(ringer_eta, ringer_phi);
         extraVariables->Fill();
         clearVectors();
     }
+    fillHypoRate();
     if (dataLabel == "elc"){
-        detRate = (float)detElc/(float)totalData*100;
         detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
         deteRatioRate = (float)(totalData - eRatioCuts)/(float)totalData*100;
         detEtRate = (float)(totalData - etCuts)/(float)totalData*100;
         detHadEtRate = (float)(totalData - hadEtCuts)/(float)totalData*100;
     }
     if (dataLabel == "jet"){
-        detRate = (float)detJet/(float)totalData*100;
         detrCoreRate = (float)(rCoreCuts)/(float)totalData*100;
         deteRatioRate = (float)(eRatioCuts)/(float)totalData*100;
         detEtRate = (float)(etCuts)/(float)totalData*100;
@@ -88,21 +86,16 @@ HypoBase::CODE T2CaCommon::exec(){
 }
 
 inline HypoBase::CODE T2CaCommon::calcTransverseFraction(){
-
-
     for(size_t j=0; j<lvl2_eta->size(); ++j){
         et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
         //          hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); //Antiga implementação no T2Calo
         hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
         F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
     }
-
     return  HypoBase::OK;
-
 }
 
 HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
-
     ++totalData;
     switch (entry){
         case T2CaCommon::AP:
@@ -122,22 +115,16 @@ HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
         default:
             return HypoBase::ERROR;
     }
-
     return HypoBase::OK;
-
 }
 
 T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
-
     size_t  etaBin = 0;
     for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
         if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
     }
-
     //if (cutEta(dEta)) return T2CaCommon::dETA;
-
     //if (cutPhi(dPhi)) return T2CaCommon::dPHI;
-
     if (cutrCore(rCore, etaBin)){
         ++rCoreCuts;
         return T2CaCommon::rCORE;
@@ -155,83 +142,57 @@ T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, cons
         ++hadEtCuts;
         return T2CaCommon::et_HAD;
     }
-
-    //if (cutF1(F1)) return T2CaCommon::c_F1; //Não tem esse corte na nova versão do T2Calo, ele fica dentro do  eRatio.
-
+    //if (cutF1(F1)) return T2CaCommon::c_F1; //T2Ca dont cut here anymore
     return T2CaCommon::AP;
-
 }
 
 inline bool T2CaCommon::cutEta(const float dEta){
-
-    if ( dEta > m_detacluster ) {
+    if ( dEta > m_detacluster )
         return true;
-    }       
     return false;
 }
 
 
 inline bool T2CaCommon::cutPhi(const float dPhi){
-
-    if ( dPhi > m_dphicluster ){
+    if ( dPhi > m_dphicluster )
         return true;
-    }       
     return false;
-
 }
 
 inline bool T2CaCommon::cutrCore(const float rCore, const size_t etaBin){
-
-    if ( rCore < m_carcorethr[etaBin] )  {
+    if ( rCore < m_carcorethr[etaBin] )
         return true;
-    }
     return false;
-
 }
 
 inline bool T2CaCommon::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
-
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
-
-    if ( (!inCrack) || ( F1 < m_F1thr) ){
-        if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
+    if ( (!inCrack) || ( F1 < m_F1thr) )
+        if (eRatio < m_caeratiothr[etaBin])// Two ifs just to be simmilar to T2Calo implementation
             return true;
-        }
-    }
-
     return false;
-
 }
 
 inline bool T2CaCommon::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
-
-
-    if ( eT_T2Calo < m_eTthr[etaBin] ){
+    if ( eT_T2Calo < m_eTthr[etaBin] )
         return true;
-    }
     return false;
 }
 
 inline bool T2CaCommon::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
-
-
     float hadET_cut;
-    if ( eT_T2Calo >  m_eT2thr[etaBin] ) hadET_cut = m_hadeT2thr[etaBin] ;
+    if ( eT_T2Calo >  m_eT2thr[etaBin] )
+        hadET_cut = m_hadeT2thr[etaBin] ;
     else hadET_cut = m_hadeTthr[etaBin];
-
-    if ( hadET_T2Calo > hadET_cut ) {
+    if ( hadET_T2Calo > hadET_cut )
         return true;
-    }
     return false;
 }
 
 inline bool T2CaCommon::cutF1(const float F1){
-
-    if ( F1 < m_F1thr){
+    if ( F1 < m_F1thr)
         return true;
-    }
     return false;
-
 }
 
 
@@ -286,7 +247,6 @@ HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2)
     decision->at(index2)=temp;
 
     return HypoBase::OK;
-
 }
 
 inline HypoBase::CODE T2CaCommon::clearVectors(){
@@ -298,32 +258,8 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
     decision->clear();
 
     return HypoBase::OK;
-
 }
 
-HypoBase::CODE T2CaCommon::ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi){
-
-    for(size_t j=0; j<lvl2_eta->size();++j){
-        if ( j < eta->size() ){
-            unsigned matchingPair =     j;
-            float    vError  =       sqrt (pow(( eta->at(j) - lvl2_eta->at(j) ),2)+pow(( phi->at(j) - lvl2_phi->at(j) ),2) );
-            for(size_t k= (j+1) ; k < (lvl2_eta->size()); ++k){
-                float actualError =  sqrt (pow(( eta->at(j) - lvl2_eta->at(k) ),2)+pow(( phi->at(j) - lvl2_phi->at(k) ),2) );
-                if ( actualError < vError ) {
-                    vError = actualError;
-                    matchingPair = k;
-                }
-            }
-            if (j!=matchingPair) {
-                swapVectors(j,matchingPair);
-            }
-        }else{
-            eraseVectors(j);
-            break;
-        }
-    }
-    return HypoBase::OK;
-}
 
 
 //Create T2Calo Graphic for debug comparision
@@ -372,7 +308,7 @@ HypoBase::CODE T2CaCommon::drawCutCounter(){
     hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
     hCuts->SetEntries(hCuts->GetBinContent(1));
     hCuts->Draw();
-
+    delete hCuts;
     return HypoBase::OK;
 
 }

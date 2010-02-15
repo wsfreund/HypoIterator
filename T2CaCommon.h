@@ -18,7 +18,6 @@ class T2CaCommon : public HypoBase {
     //Variables
     enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
 
-    CODE ordenateRoi(const std::vector<float> *eta, const std::vector<float> *phi);
     CODE clearVectors();
     CODE swapVectors(const size_t index1, const size_t index2);
     CODE eraseVectors(const size_t index);
