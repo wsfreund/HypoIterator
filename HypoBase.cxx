@@ -88,7 +88,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             break;
         }else {
             unsigned uMatching = matchingPair;
-            if ( i == umatching){
+            if ( i == uMatching){
                 eraseVectors(i);
                 break;
             }
