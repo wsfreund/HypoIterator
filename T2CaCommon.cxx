@@ -308,7 +308,6 @@ HypoBase::CODE T2CaCommon::drawCutCounter(){
     hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
     hCuts->SetEntries(hCuts->GetBinContent(1));
     hCuts->Draw();
-    delete hCuts;
     return HypoBase::OK;
 
 }

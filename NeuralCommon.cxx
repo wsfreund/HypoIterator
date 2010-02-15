@@ -73,7 +73,6 @@ HypoBase::CODE NeuralCommon::drawNetAns(){
 
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
     hNans->GetXaxis()->SetTitle("OutPut Neuron Value");
-    vector<float> *netAns = new std::vector<float>;
     int nEntries = static_cast<int>(extraVariables->GetEntries());
 
     for(int i=0; i<nEntries;++i){
@@ -82,7 +81,6 @@ HypoBase::CODE NeuralCommon::drawNetAns(){
             hNans->Fill(netAns->at(j));
     }
     hNans->Draw();
-    delete netAns;
     return HypoBase::OK;
 }
 
