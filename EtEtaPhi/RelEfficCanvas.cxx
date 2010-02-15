@@ -17,7 +17,7 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *user
 
 int RelEfficCanvas::Draw(){
 
-    if (typeid(relEfficData) == T2CaRelEffic*)
+    if (typeid(*relEfficData) == T2CaRelEffic)
         cout<<"Ponteiro para T2CaRelEffic"<<endl;
 
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
