@@ -62,7 +62,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
         cout<<"Stating loop over T2Ca Eta:"<<i<<endl;
         float deta = 999999.;
         float dphi = 999999.;
-        unsigned matchingPair = -1;
+        int matchingPair = -1;
         for(size_t j=i; j<eta->size(); ++j){
             cout<<"Starting loop over Ringer Eta:"<<j<<endl;
             cout<<"Initial deta = "<<deta<<"    |  Initial   dphi = "<<dphi<<endl;
@@ -80,12 +80,11 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             cout<<"Final deta = "<<deta<<"    |  Final  dphi = "<<dphi<<endl;
             if ( deta < MAXDETA && dphi < MAXDPHI )
                 matchingPair = j;
-            else
         }
-        if (i!=matchingPair && i!=-1) 
+        if ((int)i!=matchingPair && (int)i!=-1) 
             swapVectors(i,matchingPair);
         else{      
-            if (matchingPair = -1){
+            if (matchingPair == -1){
                 cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
                 cout<<"WARNING :: Deleting event!"<<endl;
                 eraseVectors(0);
