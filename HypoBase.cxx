@@ -80,6 +80,20 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             }
             if (matchingPair == -1){
                 cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
+                cout<<"T2Calo Cluster : "<<endl;
+                cout<<"     eta : ";
+                for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
+                    cout<<lvl2_eta->at(pos)<<" ";
+                cout<<endl<<"    phi : ";
+                for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
+                    cout<<lvl2_phi->at(pos)<<" ";
+                cout<<"Ringer Cluster : "<<endl;
+                cout<<"     eta : ";
+                for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
+                    cout<<eta->at(pos)<<" ";
+                cout<<endl<<"    phi : ";
+                for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
+                    cout<<phi->at(pos)<<" ";
                 cout<<"WARNING :: Deleting event!"<<endl;
                 eraseVectors(0);
                 break;

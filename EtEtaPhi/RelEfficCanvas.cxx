@@ -34,7 +34,7 @@ int RelEfficCanvas::Draw(){
     etaPad->GetXaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->CenterTitle();
-    etaPad->GetYaxis()->SetTitleOffset(.5);
+    etaPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
     }
@@ -57,7 +57,7 @@ int RelEfficCanvas::Draw(){
     phiPad->GetXaxis()->SetTitleSize(0.06);
     phiPad->GetYaxis()->SetTitleSize(0.06);
     phiPad->GetYaxis()->CenterTitle();
-    phiPad->GetYaxis()->SetTitleOffset(.5);
+    phiPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
     if (t2relEfficElc && t2relEfficJet){
@@ -79,7 +79,7 @@ int RelEfficCanvas::Draw(){
     etPad->GetXaxis()->SetTitleSize(0.05);
     etPad->GetYaxis()->SetTitleSize(0.06);
     etPad->GetYaxis()->CenterTitle();
-    etPad->GetYaxis()->SetTitleOffset(.5);
+    etPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
     if (t2relEfficElc && t2relEfficJet){
