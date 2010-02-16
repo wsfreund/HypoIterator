@@ -64,7 +64,6 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             float dphi = 999999.;
             int matchingPair = -1;
             for(size_t j=i; j<eta->size(); ++j){
-                if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
                 float tdeta = abs(lvl2_eta->at(j) - eta->at(i));
                 float tfdphi = abs( lvl2_phi->at(j) - phi->at(i) );
                 float tsdphi = abs( lvl2_phi->at(j) + phi->at(i) );
