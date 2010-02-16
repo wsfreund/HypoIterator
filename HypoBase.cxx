@@ -108,7 +108,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                     cout<<endl<<"     phi : ";
                     for (size_t pos=0; pos<phi->size(); ++pos)
                         cout<<phi->at(pos)<<" ";
-                    cout<<"WARNING :: Deleting event!"<<endl;
+                    cout<<endl<<"WARNING :: Deleting event!"<<endl;
                     eraseVectors(0);
                     break;
                 }
