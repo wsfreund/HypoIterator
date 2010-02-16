@@ -26,7 +26,7 @@ class RelEfficCanvas {
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
     int Draw();
     ~RelEfficCanvas(){
-        if (relCanvas!=0){
+        if (relCanvas){
             relCanvas->Close();
             delete relCanvas;
         }

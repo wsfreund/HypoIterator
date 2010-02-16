@@ -22,16 +22,19 @@ int RelEfficCanvas::Draw(){
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
+    
     relCanvas->Divide(2,2);
+    
+    // ETA 
+    
     relCanvas->cd(1);
     TH1F *etaPad = gPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
-    etaPad->SetTitle("T2Calo x Eta");
     etaPad->GetXaxis()->SetTitle("#eta");
     etaPad->GetYaxis()->SetTitle("Rating(%)");
-    etaPad->GetYaxis()->SetTitleSize(0.06);
+    etaPad->GetXaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->CenterTitle();
-    gPad->SetGrid();
+    etaPad->GetYaxis()->SetTitleOffset(.5);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
     }
@@ -39,47 +42,70 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("eta","LP");
         t2relEfficJet->DrawEfficVs("eta","LP,SAME");
     }
-    gPad->RedrawAxis();
+    gPad->SetTitle("T2Calo x Eta");
+    gPad->SetGrid();
+    gPad->SetFillColor(32);
     gPad->Modified();
     gPad->SetEditable(kFALSE);
     relCanvas->cd(2);
-    TH1F *phiPad gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
-    phiPad->SetTitle("T2Calo x Phi");
+
+    // PHI 
+    
+    TH1F *phiPad = gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
     phiPad->GetXaxis()->SetTitle("#phi");
+    phiPad->GetYaxis()->SetTitle("Rating(%)");
+    phiPad->GetXaxis()->SetTitleSize(0.06);
     phiPad->GetYaxis()->SetTitleSize(0.06);
-    phiPad->GetYaxis()->SetTile("Rating(%)");
     phiPad->GetYaxis()->CenterTitle();
-    phiPad->GetYaxis()->SetTitleSize(0.06);
-    gPad->SetGrid();
+    phiPad->GetYaxis()->SetTitleOffset(.5);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
     }
+    gPad->SetTitle("T2Calo x Phi");
     gPad->SetGrid();
+    gPad->SetFillColor(32);
     gPad->Modified();
     gPad->SetEditable(kFALSE);
+    
+    // ET
+    
     relCanvas->cd(3);
     TH1F *etPad = gPad->DrawFrame(10000, 0, 82000, 105);
-    etPad->SetTitle("T2Calo x Phi");
     etPad->GetXaxis()->SetTitle("Transverse Energy");
-    etPad->GetYaxis()->SetTitleSize(0.05);
-    etPad->GetYaxis()->SetTile("Rating(%)");
-    etPad->GetYaxis()->CenterTitle();
+    etPad->GetYaxis()->SetTitle("Rating(%)");
+    etPad->GetXaxis()->SetTitleSize(0.05);
     etPad->GetYaxis()->SetTitleSize(0.06);
-    gPad->SetGrid();
+    etPad->GetYaxis()->CenterTitle();
+    etPad->GetYaxis()->SetTitleOffset(.5);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
+    gPad->SetTitle("T2Calo x Et");
+    gPad->SetGrid();
+    gPad->SetFillColor(32);
     gPad->Modified();
     gPad->SetEditable(kFALSE);
+
+    // Info Stats
+
     relCanvas->cd(4);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
+    pt->SetFillColor(34);
+    pt->SetTextAlign(12);
+    ptT2Calo->SetTextAlign(12);
+    pt->SetLabel("HypoIterator v4.0.0");
+    ptT2Calo->SetLabel("T2Calo Cuts Rate");
+
+    ptT2Calo->SetFillColor(30);
+    // ONE DATA:
+    
     if (t2relEfficData){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
@@ -110,6 +136,10 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(line4);
         ptT2Calo->AddText(line5);
         ptT2Calo->AddText(line6);
+
+
+    //TWO DATA
+
     }else if (t2relEfficElc && t2relEfficJet){
         TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
         unsigned totalDataElc = t2relEfficElc->getTotalData();
@@ -180,20 +210,16 @@ int RelEfficCanvas::Draw(){
         p1->SetTextColor(4);
         p2->SetTextColor(2);
     }
-    ptT2Calo->SetFillColor(30);
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
     TText *p1 = pt->AddText(0.43, 0.02, line666);
     p1->SetTextSize(0.04);
-    pt->SetFillColor(34 );
-    pt->SetTextAlign(12);
-    ptT2Calo->SetTextAlign(12);
-    pt->SetLabel("HypoIterator v4.0.0");
-    ptT2Calo->SetLabel("T2Calo Cuts Rate");
+
     pt->Draw();
     ptT2Calo->Draw();
     gPad->SetFillColor(32);
     gPad->Modified();
     gPad->SetEditable(kFALSE);
+
     relCanvas->cd();
     relCanvas->Modified();
     relCanvas->Update();
