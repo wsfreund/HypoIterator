@@ -77,6 +77,11 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             }
             if (matchingPair == -1){
                 if ( i == (eta->size() -1) ){
+                    cout<<" I = "<<i<<endl;
+                    cout<<"lvl2_eta(i) = "<<lvl2_eta->at(i)<<endl;
+                    cout<<"lvl2_phi(i) = "<<lvl2_phi->at(i)<<endl;
+                    cout<<"eta(i) = "<<eta->at(i)<<endl;
+                    cout<<"phi(i) = "<<phi->at(i)<<endl;
                     if ( abs(lvl2_eta->at(i) - eta->at(i))< deta )
                         deta = abs(lvl2_eta->at(i) - eta->at(i));
                     float fdphi = abs( lvl2_phi->at(i) - phi->at(i) );
@@ -109,7 +114,6 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                 }
             }else{ 
                 unsigned uMatching = matchingPair;
-                cout<<uMatching<<" "<<matchingPair<<endl;
                 if ( uMatching != i ) 
                 swapVectors(i,uMatching);
             }
