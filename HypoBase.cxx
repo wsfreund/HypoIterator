@@ -65,17 +65,17 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             int matchingPair = -1;
             for(size_t j=i; j<eta->size(); ++j){
                 if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
-                    deta = abs(lvl2_eta->at(j) - eta->at(i));
-                float fdphi = abs( lvl2_phi->at(j) - phi->at(i) );
-                float sdphi = abs( lvl2_phi->at(j) + phi->at(i) );
-                if (sdphi<fdphi)
-                    fdphi = sdphi;
-                if (fdphi<dphi)
-                    dphi = fdphi;
-                if ( deta < MAXDETA && dphi < MAXDPHI )
-                    matchingPair = j;
+                float tdeta = abs(lvl2_eta->at(j) - eta->at(i));
+                float tfdphi = abs( lvl2_phi->at(j) - phi->at(i) );
+                float tsdphi = abs( lvl2_phi->at(j) + phi->at(i) );
+                float tdphi = (tfdphi<tsdphi)?tfdphi:tsdphi;
+                if (tdeta < deta && tdphi < dphi)
+                    deta = tdeta;
+                    dphi = tdphi;
+                    if ( deta < MAXDETA && dphi < MAXDPHI )
+                        matchingPair = j;
             }
-            if (matchingPair == -1){
+            /*if (matchingPair == -1){
                 if ( i == (eta->size() -1) ){
                     cout<<" I = "<<i<<endl;
                     cout<<"lvl2_eta(i) = "<<lvl2_eta->at(i)<<endl;
@@ -92,7 +92,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                         dphi = fdphi;
                     if ( deta < MAXDETA && dphi < MAXDPHI )
                         matchingPair = i;
-                } if (matchingPair == -1){
+                }*/ if (matchingPair == -1){
                     cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
                     cout<<"T2Calo Cluster : "<<endl;
                     cout<<"     eta : ";
