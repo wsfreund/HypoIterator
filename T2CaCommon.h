@@ -19,7 +19,7 @@ class T2CaCommon : public HypoBase {
     enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
 
     CODE clearVectors();
-    CODE swapVectors(const size_t index1, const size_t index2);
+    virtual CODE swapVectors(const size_t index1, const size_t index2);
     CODE eraseVectors(const size_t index);
 
     std::vector<float>  *hadET_T2Calo;
