@@ -86,7 +86,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                     if (fdphi<dphi)
                         dphi = fdphi;
                     if ( deta < MAXDETA && dphi < MAXDPHI )
-                        matchingPair = j;
+                        matchingPair = i;
                 } if (matchingPair == -1){
                     cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
                     cout<<"T2Calo Cluster : "<<endl;
