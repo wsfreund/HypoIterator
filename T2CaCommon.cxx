@@ -234,6 +234,15 @@ HypoBase::CODE T2CaCommon::eraseVectors(const size_t index){
 
 HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2){
 
+    cout<<"Inside swapVectors : "<<endl;
+    cout<<endl<<"     eta : ";
+    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
+        cout<<lvl2_eta->at(pos)<<" ";
+    cout<<endl<<"     phi : ";
+    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
+        cout<<lvl2_phi->at(pos)<<" ";
+    cout<<endl;
+
     float temp;
     temp=lvl2_eta->at(index1);
     lvl2_eta->at(index1)=lvl2_eta->at(index2);
@@ -243,7 +252,8 @@ HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2)
     lvl2_phi->at(index1)=lvl2_phi->at(index2);
     lvl2_phi->at(index2)=temp;
 
-    cout<<"T2Calo Cluster : "<<endl;
+    cout<<"Ending swapVectors : "<<endl;
+    cout<<endl<<"     eta : ";
     for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
         cout<<lvl2_eta->at(pos)<<" ";
     cout<<endl<<"     phi : ";
