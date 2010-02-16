@@ -18,7 +18,7 @@ class HypoBase {
     protected:
 
     enum CODE {ERROR=0, OK};
-    CODE matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi);
+    virtual CODE matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi);
     virtual CODE swapVectors(const size_t index1, const size_t index2) = 0;
     virtual CODE eraseVectors(const size_t index) = 0;
     virtual CODE exec() = 0;
