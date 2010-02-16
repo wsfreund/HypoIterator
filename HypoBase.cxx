@@ -58,54 +58,23 @@ HypoBase::HypoBase(const std::string &chainPath){
 
 HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi){
 
-    const float MAXDPHI = 0.1;
-    const float MAXDETA = 0.1;
-
-    cout<<"T2Calo Cluster : "<<endl;
-    cout<<"     eta : ";
-    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-        cout<<lvl2_eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-        cout<<lvl2_phi->at(pos)<<" ";
-    cout<<"Ringer Cluster : "<<endl;
-    cout<<"     eta : ";
-    for (size_t pos=0; pos<eta->size(); ++pos)
-        cout<<eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<phi->size(); ++pos)
-        cout<<phi->at(pos)<<" ";
-    cout<<endl;
     for(size_t i=0; i<lvl2_eta->size(); ++i){
-        cout<<"Start Match for T2Calo Clus :"<<i<<endl;
-        cout<<"T2Calo Eta = "<<lvl2_eta->at(i)<<endl;
-        cout<<"T2Calo Phi = "<<lvl2_phi->at(i)<<endl;
         if ( i < eta->size() ){
             float deta = 999999.;
             float dphi = 999999.;
             int matchingPair = -1;
             for(size_t j=i; j<eta->size(); ++j){
-                cout<<"Ringer position: "<<j<<endl;
-                cout<<"Ringer Eta = "<<eta->at(i)<<endl;
-                cout<<"Ringer Phi = "<<phi->at(i)<<endl;
                 if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
                     deta = abs(lvl2_eta->at(j) - eta->at(i));
                 float fdphi = abs( lvl2_phi->at(j) - phi->at(i) );
                 float sdphi = abs( lvl2_phi->at(j) + phi->at(i) );
-                cout<<"Calculated dEtas and dPhis :"<<endl;
-                cout<<"DETA = "<<deta<<endl;
-                cout<<"1DPHI = "<<fdphi<<endl;
-                cout<<"2DPHI = "<<sdphi<<endl;
                 if (sdphi<fdphi)
                     fdphi = sdphi;
                 if (fdphi<dphi)
                     dphi = fdphi;
-                cout<<"DPHI"<<dphi<<endl;
                 if ( deta < MAXDETA && dphi < MAXDPHI )
                     matchingPair = j;
-                cout<<"MatchingPair on evaluation: "<<matchingPair<<endl;
             }
-            cout<<"Ended search for T2Calo Clus :"<<i<<": its matchingPair is = "<<matchingPair<<endl;
             if (matchingPair == -1){
                 if ( i == eta->size() -1 ){
                     if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
@@ -142,47 +111,13 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                 unsigned uMatching = matchingPair;
                 cout<<uMatching<<" "<<matchingPair<<endl;
                 if ( uMatching != i ) 
-                cout<<"MatchingPair diferent from Clus position, SWAPPING!"<<endl;
                 swapVectors(i,uMatching);
-                cout<<"Clus after swap:"<<endl;
-                cout<<"     eta : ";
-                for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-                    cout<<lvl2_eta->at(pos)<<" ";
-                cout<<endl<<"     phi : ";
-                for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-                    cout<<lvl2_phi->at(pos)<<" ";
-                cout<<endl<<"Ringer Cluster : "<<endl;
-                cout<<"     eta : ";
-                for (size_t pos=0; pos<eta->size(); ++pos)
-                    cout<<eta->at(pos)<<" ";
-                cout<<endl<<"     phi : ";
-                for (size_t pos=0; pos<phi->size(); ++pos)
-                    cout<<phi->at(pos)<<" ";
-                cout<<endl;
             }
         }else{
-            cout<<"End of Ringer clus, clearing remeaning T2Calo Clus!"<<endl;
             eraseVectors(i);
             break;
         }  
     }
-
-    cout<<"Final T2Calo Cluster : "<<endl;
-    cout<<"     eta : ";
-    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-        cout<<lvl2_eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-        cout<<lvl2_phi->at(pos)<<" ";
-    cout<<"Final Ringer Cluster : "<<endl;
-    cout<<"     eta : ";
-    for (size_t pos=0; pos<eta->size(); ++pos)
-        cout<<eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<phi->size(); ++pos)
-        cout<<phi->at(pos)<<" ";
-    cout<<endl;
-
     return HypoBase::OK;
 }
 
