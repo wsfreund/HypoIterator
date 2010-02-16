@@ -73,6 +73,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                     dphi = tdphi;
                     if ( deta < MAXDETA && dphi < MAXDPHI )
                         matchingPair = j;
+                }
             }
             /*if (matchingPair == -1){
                 if ( i == (eta->size() -1) ){
