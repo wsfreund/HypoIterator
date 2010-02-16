@@ -77,7 +77,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             }
             if (matchingPair == -1){
                 if ( i == (eta->size() -1) ){
-                    if ( abs(lvl2_eta->at(j) - eta->at(i))< deta )
+                    if ( abs(lvl2_eta->at(i) - eta->at(i))< deta )
                         deta = abs(lvl2_eta->at(i) - eta->at(i));
                     float fdphi = abs( lvl2_phi->at(i) - phi->at(i) );
                     float sdphi = abs( lvl2_phi->at(i) + phi->at(i) );
