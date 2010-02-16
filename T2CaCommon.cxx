@@ -249,13 +249,6 @@ HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2)
     cout<<endl<<"     phi : ";
     for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
         cout<<lvl2_phi->at(pos)<<" ";
-    cout<<endl<<"Ringer Cluster : "<<endl;
-    cout<<"     eta : ";
-    for (size_t pos=0; pos<eta->size(); ++pos)
-        cout<<eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<phi->size(); ++pos)
-        cout<<phi->at(pos)<<" ";
 
     temp=et->at(index1);
     et->at(index1)=et->at(index2);
