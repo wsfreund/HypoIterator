@@ -111,7 +111,6 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                     cout<<endl<<"WARNING :: Deleting event!"<<endl;
                     eraseVectors(0);
                     break;
-                }
             }else{ 
                 unsigned uMatching = matchingPair;
                 if ( uMatching != i ){ 
