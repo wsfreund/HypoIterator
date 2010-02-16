@@ -87,7 +87,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                 cout<<endl<<"     phi : ";
                 for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
                     cout<<lvl2_phi->at(pos)<<" ";
-                cout<<"Ringer Cluster : "<<endl;
+                cout<<endl<<"Ringer Cluster : "<<endl;
                 cout<<"     eta : ";
                 for (size_t pos=0; pos<eta->size(); ++pos)
                     cout<<eta->at(pos)<<" ";
@@ -99,6 +99,7 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                 break;
             }else{ 
                 unsigned uMatching = matchingPair;
+                cout<<uMatching<<" "<<matchingPair<<endl;
                 if ( uMatching != i ) 
                 swapVectors(i,uMatching);
             }
