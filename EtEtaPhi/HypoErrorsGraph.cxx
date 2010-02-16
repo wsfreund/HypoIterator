@@ -75,9 +75,9 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         std::string hypoLabel;
         dataHypo->getDataLabel(hypoLabel);
         if (hypoLabel == "elc"){
+            graph->SetMarkerSize(0.8);
+            graph->SetLineWidth(0.4);
             graph->SetLineColor(4);
-            graph->SetLineWidth(0.5);
-            graph->SetMarkerSize(0.5);
             graph->SetMarkerColor(4);
             graph->SetMarkerStyle(20);
         }
@@ -110,8 +110,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         }
     }
     graph->SetTitle(title.c_str());
-    graph->GetXaxis()->SetTitle("");
-    graph->GetYaxis()->SetTitle("Efficiency");
 
     return HypoErrorsGraph::OK;
 }
@@ -153,10 +151,13 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
             }   
             std::string dataLabel;
             dataHypo->getDataLabel(dataLabel);
-            if (dataLabel == "elc")
-                *effic = (float)regElectrons / (float)regData*100.;
-            else if (dataLabel == "jet")
-                *effic = (float)(regData - regElectrons)/(float)regData *100.;
+            if (regData!=0){
+                if (dataLabel == "elc")
+                    *effic = (float)regElectrons / (float)regData*100.;
+                else if (dataLabel == "jet")
+                    *effic = (float)(regData - regElectrons)/(float)regData *100.;
+            }else
+                *effic = 0;
             float error = 1/TMath::Sqrt(regData)*100.;
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
@@ -171,10 +172,13 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
                         ++regElectrons;
                 }
             }
+            if (regData!=0){
             if (dataLabel == "elc")
                 *effic = (float)regElectrons / (float)regData*100.;
             else if (dataLabel == "jet")
                 *effic = (float)(regData - regElectrons)/(float)regData *100.;
+            }else 
+                *effic = 0;
             float error = (1/TMath::Sqrt(regData))*100.;
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }

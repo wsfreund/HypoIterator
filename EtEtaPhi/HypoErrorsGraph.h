@@ -51,6 +51,8 @@ class HypoErrorsGraph {
     TGraphAsymmErrors *& getGraph(){ return graph; };
     CODE Draw(const std::string &input);
 
+    void getGraph(TGraphAsymmErrors *&userGraph)const { userGraph = graph; };
+
     ~HypoErrorsGraph();
 
 };

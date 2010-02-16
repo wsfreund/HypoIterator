@@ -85,10 +85,10 @@ HypoBase::CODE T2CaCommon::exec(){
             detHadEtRate = (float)(totalData - hadEtCuts)/(float)totalData*100;
         }
         if (dataLabel == "jet"){
-            detrCoreRate = (float)(rCoreCuts)/(float)totalData*100;
-            deteRatioRate = (float)(eRatioCuts)/(float)totalData*100;
-            detEtRate = (float)(etCuts)/(float)totalData*100;
-            detHadEtRate = (float)(hadEtCuts)/(float)totalData*100;
+            detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
+            deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
+            detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
+            detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
         }
     }
     return HypoBase::OK;

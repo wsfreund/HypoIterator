@@ -6,6 +6,8 @@
 #include "T2CaRelEffic.h"
 //#include "NeuralRelEffic.h"
 #include "TCanvas.h"
+#include "TPad.h"
+#include "TMath.h"
 #include "TPaveText.h"
 #include "TString.h"
 
