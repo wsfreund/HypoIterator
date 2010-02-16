@@ -25,12 +25,15 @@ int RelEfficCanvas::Draw(){
     relCanvas->Divide(2,2);
     relCanvas->cd(1);
     TH1F *etaPad = gPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
+    etaPad->SetTitle("T2Calo x Eta");
+    etaPad->GetXaxis()->SetTitle("#eta");
+    etaPad->GetYaxis()->SetTitle("Rating(%)");
+    etaPad->GetYaxis()->SetTitleSize(0.06);
+    etaPad->GetYaxis()->SetTitleSize(0.06);
+    etaPad->GetYaxis()->CenterTitle();
     gPad->SetGrid();
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
-        etaPad->SetTitle("T2Calo x Eta");
-        etaPad->GetXaxis()->SetTitle("#eta");
-        etaPad->GetYaxis()->SetTitle("Rating");
     }
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("eta","LP");
@@ -40,7 +43,14 @@ int RelEfficCanvas::Draw(){
     gPad->Modified();
     gPad->SetEditable(kFALSE);
     relCanvas->cd(2);
-    gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    TH1F *phiPad gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    phiPad->SetTitle("T2Calo x Phi");
+    phiPad->GetXaxis()->SetTitle("#phi");
+    phiPad->GetYaxis()->SetTitleSize(0.06);
+    phiPad->GetYaxis()->SetTile("Rating(%)");
+    phiPad->GetYaxis()->CenterTitle();
+    phiPad->GetYaxis()->SetTitleSize(0.06);
+    gPad->SetGrid();
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
     if (t2relEfficElc && t2relEfficJet){
@@ -51,7 +61,13 @@ int RelEfficCanvas::Draw(){
     gPad->Modified();
     gPad->SetEditable(kFALSE);
     relCanvas->cd(3);
-    gPad->DrawFrame(10000, 0, 82000, 105);
+    TH1F *etPad = gPad->DrawFrame(10000, 0, 82000, 105);
+    etPad->SetTitle("T2Calo x Phi");
+    etPad->GetXaxis()->SetTitle("Transverse Energy");
+    etPad->GetYaxis()->SetTitleSize(0.05);
+    etPad->GetYaxis()->SetTile("Rating(%)");
+    etPad->GetYaxis()->CenterTitle();
+    etPad->GetYaxis()->SetTitleSize(0.06);
     gPad->SetGrid();
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
