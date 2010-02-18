@@ -163,7 +163,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* effic
             }else{
                 unsigned decrementEdges = lowEdge;
                 for(; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
-                    edges = *(edges+1);
+                    *edges = *(edges+1);
                 edges-=decrementEdges;
                 --NREGIONS;
             }
