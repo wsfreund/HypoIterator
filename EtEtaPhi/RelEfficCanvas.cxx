@@ -34,7 +34,7 @@ int RelEfficCanvas::Draw(){
     etaPad->GetXaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->CenterTitle();
-    phiPad->GetXaxis()->SetTitleOffset(.3);
+    etaPad->GetXaxis()->SetTitleOffset(.3);
     etaPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
