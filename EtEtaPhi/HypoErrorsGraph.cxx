@@ -152,10 +152,12 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 *pX = (*edges) + HALF_REGION_SIZE;
                 if (dataLabel == "elc"){
                     *effic = (float)regElectrons / (float)regData*100.;
-                    if (*effic <3) cout<<"Effic:"<<*effic<<"on position "<<lowEdge<<endl;
+                    if (*effic <3) cout<<"Effic:"<<*effic<<" on position "<<lowEdge<<endl;
                 }
-                else if (dataLabel == "jet")
+                else if (dataLabel == "jet"){
                     *effic = (float)regElectrons / (float)regData *100.;
+                    if (*effic <3) cout<<"Effic:"<<*effic<<" on position "<<lowEdge<<endl;
+                }
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
             }else{
@@ -201,13 +203,14 @@ inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, c
 }
 
 inline HypoErrorsGraph::CODE HypoErrorsGraph::checkAndGenErrors(const float &effic, float &error, float &lowError, float &hiError){
-    if ( error > effic )
-        error = effic;
     if ( error + effic > 100.)
         hiError = 100.-effic;
     else
         hiError = error;
-    lowError = error;
+    if ( effic - error < 0)
+        lowError = effic;
+    else
+        lowError = error;
     
     return HypoErrorsGraph::OK;
 }
