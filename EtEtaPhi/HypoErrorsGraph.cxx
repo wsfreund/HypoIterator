@@ -129,12 +129,14 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
     if ( dataHypo!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
+        float maxData = -99999.;
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge ){
             cout<<"Inicio loop lowEdge, Low Edge = "<<lowEdge<<": NREGIONS = "<<NREGIONS<<endl;
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
                 dataTree->GetEntry(entry);
+                if (vectorInput->at(entry)>maxData) maxData = vector->At(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;
@@ -166,6 +168,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 --NREGIONS, --lowEdge;
             }
         }
+        cout<<maxData<<endl;
     }/*else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++effic, ++lowEdgeErrors, ++hiEdgeErrors){
             unsigned regElectrons = 0;
@@ -195,12 +198,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
 
 
 inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, const float hiEdge){
-    cout<<"INSIDE isAtRegion"<<endl;
-    cout<<"Lower Edge = "<<lowEdge<<" : data = "<<data<<" : hiEdge = "<<hiEdge<<endl;
-    if ( ( data< hiEdge ) && ( data >= lowEdge ) ) {
-        cout<<"It is on region"<<endl;
+    if ( ( data< hiEdge ) && ( data >= lowEdge ) ) 
         return true;
-    }
     else return false;
 }
 
