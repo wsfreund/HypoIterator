@@ -195,8 +195,12 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
 
 
 inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, const float hiEdge){
-//    cout<<"INSIDE isAtRegion"
-    if ( ( data< hiEdge ) && ( data >= lowEdge ) ) return true;
+    cout<<"INSIDE isAtRegion"<<endl;
+    cout<<"Lower Edge = "<<lowEdge<<" : data = "<<data<<" : hiEdge = "<<hiEdge<<endl;
+    if ( ( data< hiEdge ) && ( data >= lowEdge ) ) {
+        cout<<"It is on region"<<endl;
+        return true;
+    }
     else return false;
 }
 
