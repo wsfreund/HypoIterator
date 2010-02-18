@@ -28,6 +28,7 @@ int RelEfficCanvas::Draw(){
     // ETA 
     
     TVirtualPad *etaPad = relCanvas->cd(1);
+    etaPad->SetFillColor(33);
     TH1F *th1EtaPad = etaPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
     th1EtaPad->GetXaxis()->SetTitle("#eta");
     th1EtaPad->GetYaxis()->SetTitle("Rating(%)");
@@ -54,6 +55,7 @@ int RelEfficCanvas::Draw(){
     // PHI 
     
     TH1F *th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    phiPad->SetFillColor(33);
     th1PhiPad->SetTitle("T2Calo Rate x Phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetYaxis()->SetTitle("Rating(%)");
@@ -76,14 +78,15 @@ int RelEfficCanvas::Draw(){
     // ET
     
     TVirtualPad *etPad = relCanvas->cd(3);
+    etPad->SetFillColor(33);
     TH1F *th1EtPad = gPad->DrawFrame(10000, 0, 82000, 105);
     th1EtPad->SetTitle("T2Calo Rate x Et");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetYaxis()->SetTitle("Rating(%)");
-    th1EtPad->GetXaxis()->SetTitleSize(0.05);
-    th1EtPad->GetYaxis()->SetTitleSize(0.045);
+    th1EtPad->GetXaxis()->SetTitleSize(0.045);
+    th1EtPad->GetYaxis()->SetTitleSize(0.06);
     th1EtPad->GetYaxis()->CenterTitle();
-    th1EtPad->GetXaxis()->SetTitleOffset(.6);
+    th1EtPad->GetXaxis()->SetTitleOffset(.7);
     th1EtPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
@@ -99,7 +102,7 @@ int RelEfficCanvas::Draw(){
     // Info Stats
 
     relCanvas->cd(4);
-    gPad->SetFillColor(18);
+    gPad->SetFillColor(33);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
     pt->SetFillColor(30);
@@ -225,6 +228,7 @@ int RelEfficCanvas::Draw(){
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
+    gPad->SetFillColor(18);
     relCanvas->Modified();
     relCanvas->Update();
 
