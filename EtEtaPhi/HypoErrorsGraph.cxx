@@ -153,7 +153,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 else if (dataLabel == "jet")
                     *effic = (float)(regData - regElectrons)/(float)regData *100.;
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
-                ++px; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
+                ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
             }else{
                 unsigned decrementEdges = lowEdge;
                 for(; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
@@ -184,7 +184,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
     }*/
-    effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS; px -= NREGIONS;
+    effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS; pX -= NREGIONS;
     return HypoErrorsGraph::OK;
 
 }
