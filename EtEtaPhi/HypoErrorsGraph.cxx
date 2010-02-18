@@ -59,11 +59,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         exl[i]=0.; exh[i]=0.; x[i]=0; effic[i]=0; hiErrors[i]=0; lowErrors[i]=0;
     }
     pX = x; peffic = effic; pHiErrors = hiErrors; pLowErrors = lowErrors;
-    //Generating x, effic, lowErrors, hiErrors
-    genEfficErrors(pEdges, px, peffic, pLowErrors, pHiErrors); 
-    //No error on x
-    float ;
-    //Initializing them becouse the variable size:
+    //Generating x, effic, lowErrors, hiErrors, also eliminate regions with no data.
+    genEfficErrors(pEdges, pX, peffic, pLowErrors, pHiErrors); 
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
     //Setting graph parameters:
@@ -187,7 +184,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* px,fl
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
     }*/
-    effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS;
+    effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS; px -= NREGIONS;
     return HypoErrorsGraph::OK;
 
 }
