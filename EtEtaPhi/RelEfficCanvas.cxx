@@ -54,8 +54,8 @@ int RelEfficCanvas::Draw(){
 
     // PHI 
     
-    TH1F *phiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
-    phiPad->SetTitle("T2Calo x Phi");
+    TH1F *th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    th1PhiPad->SetTitle("T2Calo x Phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetYaxis()->SetTitle("Rating(%)");
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);
@@ -79,7 +79,7 @@ int RelEfficCanvas::Draw(){
     
     TVirtualPad *etPad = relCanvas->cd(3);
     etPad->SetTitle("T2Calo x Et");
-    TH1F *etPad = gPad->DrawFrame(10000, 0, 82000, 105);
+    TH1F *th1EtPad = gPad->DrawFrame(10000, 0, 82000, 105);
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtPad->GetXaxis()->SetTitleSize(0.05);
