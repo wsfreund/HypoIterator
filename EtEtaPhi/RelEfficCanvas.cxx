@@ -226,6 +226,7 @@ int RelEfficCanvas::Draw(){
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
+    gPad->SetFillColor(37);
     relCanvas->Modified();
     relCanvas->Update();
 
