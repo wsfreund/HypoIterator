@@ -29,7 +29,7 @@ int RelEfficCanvas::Draw(){
     
     TVirtualPad *etaPad = relCanvas->cd(1);
     etaPad->SetFillColor(33);
-    TH1F *th1EtaPad = etaPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
+    TH1F *th1EtaPad = etaPad->DrawFrame(-2.6, 0, 2.6, 105);
     th1EtaPad->GetXaxis()->SetTitle("#eta");
     th1EtaPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtaPad->GetXaxis()->SetTitleSize(0.08);
@@ -86,7 +86,7 @@ int RelEfficCanvas::Draw(){
     th1EtPad->GetXaxis()->SetTitleSize(0.045);
     th1EtPad->GetYaxis()->SetTitleSize(0.06);
     th1EtPad->GetYaxis()->CenterTitle();
-    th1EtPad->GetXaxis()->SetTitleOffset(.7);
+    th1EtPad->GetXaxis()->SetTitleOffset(.75);
     th1EtPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
@@ -111,7 +111,7 @@ int RelEfficCanvas::Draw(){
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
 
-    ptT2Calo->SetFillColor(31);
+    ptT2Calo->SetFillColor(37);
     // ONE DATA:
     
     if (t2relEfficData){
