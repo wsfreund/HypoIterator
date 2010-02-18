@@ -159,9 +159,9 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             }else{
                 cout<<"regData NULA!!!"<<endl;
                 cout<<"Edges["<<lowEdge<<"] = "<<*edges<<" :: Edges["<<(lowEdge+1)<<"] = "<< *(edges+1)<<endl;
-                for(unsigned decrementEdges = lowEdge; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
+                for(unsigned decrementEdges = lowEdge; decrementEdges < NREGIONS; ++decrementEdges, ++edges)
                     *edges = *(edges+1);
-                edges-=(NREGIONS -1 - lowEdge);
+                edges-=(NREGIONS - lowEdge);
                 cout<<"After decrement Edges["<<lowEdge<<"] = "<<*edges<<endl;
                 --NREGIONS, --lowEdge;
             }
@@ -195,6 +195,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
 
 
 inline bool HypoErrorsGraph::isAtRegion(const float lowEdge, const float data, const float hiEdge){
+//    cout<<"INSIDE isAtRegion"
     if ( ( data< hiEdge ) && ( data >= lowEdge ) ) return true;
     else return false;
 }
