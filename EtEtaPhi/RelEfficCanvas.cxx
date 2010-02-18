@@ -34,7 +34,7 @@ int RelEfficCanvas::Draw(){
     th1EtaPad->GetXaxis()->SetTitleSize(0.08);
     th1EtaPad->GetYaxis()->SetTitleSize(0.06);
     th1EtaPad->GetYaxis()->CenterTitle();
-    th1EtaPad->GetXaxis()->SetTitleOffset(.6);
+    th1EtaPad->GetXaxis()->SetTitleOffset(.5);
     th1EtaPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
@@ -43,7 +43,7 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("eta","LP");
         t2relEfficJet->DrawEfficVs("eta","LP,SAME");
     }
-    etaPad->SetTitle("T2Calo x Eta");
+    etaPad->SetTitle("T2Calo Rate x Eta");
     etaPad->Modified();
     etaPad->SetGrid();
     etaPad->SetFillColor(18);
@@ -61,7 +61,7 @@ int RelEfficCanvas::Draw(){
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);
     th1PhiPad->GetYaxis()->SetTitleSize(0.06);
     th1PhiPad->GetYaxis()->CenterTitle();
-    th1PhiPad->GetXaxis()->SetTitleOffset(.5);
+    th1PhiPad->GetXaxis()->SetTitleOffset(.55);
     th1PhiPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
@@ -102,12 +102,12 @@ int RelEfficCanvas::Draw(){
     // Info Stats
 
     relCanvas->cd(4);
-    gPad->SetFillColor(31);
+    gPad->SetFillColor(18);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
     pt->SetFillColor(30);
     pt->SetTextAlign(12);
-    ptT2Calo->SetTextAlign(12);
+    ptT2Calo->SetTextAlign(31);
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
 
@@ -228,7 +228,7 @@ int RelEfficCanvas::Draw(){
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
-    gPad->SetFillColor(12);
+    gPad->SetFillColor(19);
     relCanvas->Modified();
     relCanvas->Update();
 
