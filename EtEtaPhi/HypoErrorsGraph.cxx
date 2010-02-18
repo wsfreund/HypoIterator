@@ -52,8 +52,6 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
 HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
 
     float edges[NPOINTS], *pEdges;
-    pEdges = edges;
-    genEdges(pEdges);
     
     float x[NREGIONS], effic[NREGIONS], hiErrors[NREGIONS], lowErrors[NREGIONS], *pX, *peffic, *pHiErrors, *pLowErrors;
     pX = x; peffic = effic; pHiErrors = hiErrors; pLowErrors = lowErrors;
@@ -68,6 +66,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
         exl[i]=0.;
         exh[i]=0.;
     }
+    pEdges = edges;
+    genEdges(pEdges);
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
     //Setting graph parameters:
@@ -131,12 +131,12 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 }
 
 
-HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
+HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     if ( dataHypo!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
-        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++effic, ++lowEdgeErrors, ++hiEdgeErrors, ++edges){
+        for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge ){
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
@@ -151,17 +151,24 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
             }   
             std::string dataLabel;
             dataHypo->getDataLabel(dataLabel);
+            float error =-1;
             if (regData!=0){
+                error = 1/TMath::Sqrt(regData)*100.;
                 if (dataLabel == "elc")
                     *effic = (float)regElectrons / (float)regData*100.;
                 else if (dataLabel == "jet")
                     *effic = (float)(regData - regElectrons)/(float)regData *100.;
-            }else
-                *effic = 0;
-            float error = 1/TMath::Sqrt(regData)*100.;
-            checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
+                checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
+                ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
+            }else{
+                unsigned decrementEdges = lowEdge;
+                for(; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
+                    edges = *(edges+1);
+                edges-=decrementEdges;
+                --NREGIONS;
+            }
         }
-    }else{
+    }/*else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++effic, ++lowEdgeErrors, ++hiEdgeErrors){
             unsigned regElectrons = 0;
             unsigned regData = 0;
@@ -182,7 +189,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(const float* edges, float*
             float error = (1/TMath::Sqrt(regData))*100.;
             checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
         }
-    }
+    }*/
     effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS;
     return HypoErrorsGraph::OK;
 
@@ -202,6 +209,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::checkAndGenErrors(const float &eff
     else
         hiError = error;
     lowError = error;
+    
     return HypoErrorsGraph::OK;
 }
 
