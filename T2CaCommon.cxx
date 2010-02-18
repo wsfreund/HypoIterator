@@ -81,8 +81,8 @@ HypoBase::CODE T2CaCommon::exec(){
         if (dataLabel == "elc"){
             detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
             deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
-            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts -etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
-            detHadEtRate = (float)(totalData - hadEtCuts - eRatio - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
+            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
+            detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
         }
         if (dataLabel == "jet"){
             detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
