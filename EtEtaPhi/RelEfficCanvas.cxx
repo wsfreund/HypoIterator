@@ -127,7 +127,7 @@ int RelEfficCanvas::Draw(){
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
-        float detHadEtRate = t2relEfficData->getDetEtRate();
+        float detHadEtRate = t2relEfficData->getDetHadEtRate();
         line2.Form("T2Calo Detection = %.4f", detRate);
         line3.Form("rCore = %.4f", detrCoreRate);
         line4.Form("eRatio = %.4f", deteRatioRate);
@@ -159,11 +159,11 @@ int RelEfficCanvas::Draw(){
         float detrCoreRateElc = t2relEfficData->getDetrCoreRate();
         float deteRatioRateElc = t2relEfficData->getDeteRatioRate();
         float detEtRateElc = t2relEfficData->getDetEtRate();
-        float detHadEtRateElc = t2relEfficData->getDetEtRate();
+        float detHadEtRateElc = t2relEfficData->getDetHadEtRate();
         float detrCoreRateJet = t2relEfficData->getDetrCoreRate();
         float deteRatioRateJet = t2relEfficData->getDeteRatioRate();
         float detEtRateJet = t2relEfficData->getDetEtRate();
-        float detHadEtRateJet = t2relEfficData->getDetEtRate();
+        float detHadEtRateJet = t2relEfficData->getDetHadEtRate();
         float rCoreEffic = calcSP(detrCoreRateElc, detrCoreRateJet);
         float eRatioEffic = calcSP(deteRatioRateElc, deteRatioRateJet);
         float etEffic = calcSP(detEtRateElc, detEtRateJet);
