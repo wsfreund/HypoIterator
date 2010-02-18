@@ -136,8 +136,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
                 dataTree->GetEntry(entry);
-                if (vectorInput->at(entry)>maxData) maxData = vectorInput->at(entry);
                 for(size_t i=0; i < vectorInput->size();++i){
+                    if (vectorInput->at(i)>maxData) maxData = vectorInput->at(i);
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;
                         if (vectorDec->at(i) == HypoBase::ELECTRON)
