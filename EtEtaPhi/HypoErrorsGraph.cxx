@@ -150,8 +150,10 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             if (regData!=0){
                 error = 1/TMath::Sqrt(regData)*100.;
                 *pX = (*edges) + HALF_REGION_SIZE;
-                if (dataLabel == "elc")
+                if (dataLabel == "elc"){
                     *effic = (float)regElectrons / (float)regData*100.;
+                    if (*effic <3) cout<<"Effic:"<<*effic<<"on position "<<lowEdge<<endl;
+                }
                 else if (dataLabel == "jet")
                     *effic = (float)regElectrons / (float)regData *100.;
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
