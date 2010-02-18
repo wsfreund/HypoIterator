@@ -105,12 +105,12 @@ int RelEfficCanvas::Draw(){
     gPad->SetFillColor(33);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
-    pt->SetFillColor(30);
+    pt->SetFillColor(34);
     pt->SetTextAlign(12);
     ptT2Calo->SetTextAlign(12);
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
-    ptT2Calo->SetFillColor(30);
+    ptT2Calo->SetFillColor(34);
     // ONE DATA:
     
     if (t2relEfficData){
