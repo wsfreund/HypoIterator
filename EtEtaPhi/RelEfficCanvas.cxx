@@ -69,11 +69,11 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
     }
-    phipad->Modified();
-    phipad->SetGrid();
-    phipad->SetFillColor(32);
-    phipad->Modified();
-    phipad->SetEditable(kFALSE);
+    phiPad->Modified();
+    phiPad->SetGrid();
+    phiPad->SetFillColor(32);
+    phiPad->Modified();
+    phiPad->SetEditable(kFALSE);
     
     // ET
     
