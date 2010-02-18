@@ -122,7 +122,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges,
 }
 
 
-HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* px,float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
+HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, float* effic, float* lowEdgeErrors, float* hiEdgeErrors){
 
     const float HALF_REGION_SIZE = ( HIEDGE - LOWEDGE ) / ( NREGIONS ) * .5;
 
