@@ -46,7 +46,7 @@ int RelEfficCanvas::Draw(){
     etaPad->SetTitle("T2Calo x Eta");
     etaPad->Modified();
     etaPad->SetGrid();
-    etaPad->SetFillColor(31);
+    etaPad->SetFillColor(18);
     etaPad->Modified();
     etaPad->SetEditable(kFALSE);
 
@@ -55,13 +55,13 @@ int RelEfficCanvas::Draw(){
     // PHI 
     
     TH1F *th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
-    th1PhiPad->SetTitle("T2Calo x Phi");
+    th1PhiPad->SetTitle("T2Calo Rate x Phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetYaxis()->SetTitle("Rating(%)");
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);
     th1PhiPad->GetYaxis()->SetTitleSize(0.06);
     th1PhiPad->GetYaxis()->CenterTitle();
-    th1PhiPad->GetXaxis()->SetTitleOffset(.6);
+    th1PhiPad->GetXaxis()->SetTitleOffset(.5);
     th1PhiPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
@@ -71,7 +71,7 @@ int RelEfficCanvas::Draw(){
     }
     phiPad->Modified();
     phiPad->SetGrid();
-    phiPad->SetFillColor(31);
+    phiPad->SetFillColor(18);
     phiPad->Modified();
     phiPad->SetEditable(kFALSE);
     
@@ -79,12 +79,13 @@ int RelEfficCanvas::Draw(){
     
     TVirtualPad *etPad = relCanvas->cd(3);
     TH1F *th1EtPad = gPad->DrawFrame(10000, 0, 82000, 105);
-    etPad->SetTitle("T2Calo x Et");
+    th1EtPad->SetTitle("T2Calo Rate x Et");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtPad->GetXaxis()->SetTitleSize(0.05);
     th1EtPad->GetYaxis()->SetTitleSize(0.06);
     th1EtPad->GetYaxis()->CenterTitle();
+    th1EtPad->GetXaxis()->SetTitleOffset(.5);
     th1EtPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
@@ -94,7 +95,7 @@ int RelEfficCanvas::Draw(){
     }
     etPad->Modified();
     etPad->SetGrid();
-    etPad->SetFillColor(31);
+    etPad->SetFillColor(18);
     etPad->Modified();
     etPad->SetEditable(kFALSE);
 
@@ -227,7 +228,7 @@ int RelEfficCanvas::Draw(){
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
-    gPad->SetFillColor(32);
+    gPad->SetFillColor(12);
     relCanvas->Modified();
     relCanvas->Update();
 
