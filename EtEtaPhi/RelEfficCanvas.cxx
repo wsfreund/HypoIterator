@@ -46,7 +46,7 @@ int RelEfficCanvas::Draw(){
     etaPad->SetTitle("T2Calo x Eta");
     etaPad->Modified();
     etaPad->SetGrid();
-    etaPad->SetFillColor(32);
+    etaPad->SetFillColor(31);
     etaPad->Modified();
     etaPad->SetEditable(kFALSE);
 
@@ -71,15 +71,15 @@ int RelEfficCanvas::Draw(){
     }
     phiPad->Modified();
     phiPad->SetGrid();
-    phiPad->SetFillColor(32);
+    phiPad->SetFillColor(31);
     phiPad->Modified();
     phiPad->SetEditable(kFALSE);
     
     // ET
     
     TVirtualPad *etPad = relCanvas->cd(3);
-    etPad->SetTitle("T2Calo x Et");
     TH1F *th1EtPad = gPad->DrawFrame(10000, 0, 82000, 105);
+    etPad->SetTitle("T2Calo x Et");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtPad->GetXaxis()->SetTitleSize(0.05);
@@ -94,22 +94,23 @@ int RelEfficCanvas::Draw(){
     }
     etPad->Modified();
     etPad->SetGrid();
-    etPad->SetFillColor(32);
+    etPad->SetFillColor(31);
     etPad->Modified();
     etPad->SetEditable(kFALSE);
 
     // Info Stats
 
     relCanvas->cd(4);
+    gPad->SetFillColor(31);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
-    pt->SetFillColor(34);
+    pt->SetFillColor(30);
     pt->SetTextAlign(12);
     ptT2Calo->SetTextAlign(12);
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
 
-    ptT2Calo->SetFillColor(41);
+    ptT2Calo->SetFillColor(29);
     // ONE DATA:
     
     if (t2relEfficData){
@@ -222,12 +223,11 @@ int RelEfficCanvas::Draw(){
 
     pt->Draw();
     ptT2Calo->Draw();
-    gPad->SetFillColor(32);
     gPad->Modified();
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
-    gPad->SetFillColor(37);
+    gPad->SetFillColor(32);
     relCanvas->Modified();
     relCanvas->Update();
 
