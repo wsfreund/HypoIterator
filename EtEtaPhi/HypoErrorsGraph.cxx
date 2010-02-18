@@ -130,6 +130,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
 
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge ){
+            cout<<"Inicio loop lowEdge, Low Edge = "<<lowEdge<<": NREGIONS = "<<NREGIONS<<endl;
             unsigned regElectrons = 0;
             unsigned regData = 0;
             for(Long64_t entry = 0; entry < n_entries; ++entry){
@@ -146,6 +147,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             dataHypo->getDataLabel(dataLabel);
             float error =-1;
             if (regData!=0){
+                cout<<"regData não nula!!!"<<endl;
                 error = 1/TMath::Sqrt(regData)*100.;
                 *pX = (*edges) + HALF_REGION_SIZE;
                 if (dataLabel == "elc")
@@ -155,11 +157,14 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
             }else{
+                cout<<"regData NULA!!!"<<endl;
+                cout<<"Edges["<<lowEdges<<"] = "<<*edges<<endl;
                 unsigned decrementEdges = lowEdge;
                 for(; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
                     *edges = *(edges+1);
                 edges-=decrementEdges;
-                --NREGIONS;
+                cout<<"After decrement Edges["<<lowEdges<<"] = "<<*edges<<endl;
+                --NREGIONS, --lowEdge;
             }
         }
     }/*else{
