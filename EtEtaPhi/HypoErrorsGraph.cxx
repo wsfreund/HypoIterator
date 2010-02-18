@@ -153,7 +153,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 if (dataLabel == "elc")
                     *effic = (float)regElectrons / (float)regData*100.;
                 else if (dataLabel == "jet")
-                    *effic = (float)(regData - regElectrons)/(float)regData *100.;
+                    *effic = (float)regElectrons / (float)regData *100.;
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
             }else{
@@ -161,7 +161,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 cout<<"Edges["<<lowEdge<<"] = "<<*edges<<" :: Edges["<<(lowEdge+1)<<"] = "<< *(edges+1)<<endl;
                 for(unsigned decrementEdges = lowEdge; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
                     *edges = *(edges+1);
-                edges-=(NREGIONS - lowEdge);
+                edges-=(NREGIONS -1 - lowEdge);
                 cout<<"After decrement Edges["<<lowEdge<<"] = "<<*edges<<endl;
                 --NREGIONS, --lowEdge;
             }
