@@ -27,15 +27,15 @@ int RelEfficCanvas::Draw(){
     
     // ETA 
     
-    relCanvas->cd(1);
-    TH1F *etaPad = gPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
-    etaPad->GetXaxis()->SetTitle("#eta");
-    etaPad->GetYaxis()->SetTitle("Rating(%)");
-    etaPad->GetXaxis()->SetTitleSize(0.08);
-    etaPad->GetYaxis()->SetTitleSize(0.06);
-    etaPad->GetYaxis()->CenterTitle();
-    etaPad->GetXaxis()->SetTitleOffset(.6);
-    etaPad->GetYaxis()->SetTitleOffset(.6);
+    TVirtualPad *etaPad = relCanvas->cd(1);
+    TH1F *th1EtaPad = etaPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
+    th1EtaPad->GetXaxis()->SetTitle("#eta");
+    th1EtaPad->GetYaxis()->SetTitle("Rating(%)");
+    th1EtaPad->GetXaxis()->SetTitleSize(0.08);
+    th1EtaPad->GetYaxis()->SetTitleSize(0.06);
+    th1EtaPad->GetYaxis()->CenterTitle();
+    th1EtaPad->GetXaxis()->SetTitleOffset(.6);
+    th1EtaPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
     }
@@ -43,59 +43,60 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("eta","LP");
         t2relEfficJet->DrawEfficVs("eta","LP,SAME");
     }
-    gPad->SetTitle("T2Calo x Eta");
-    gPad->Modified();
-    gPad->SetGrid();
-    gPad->SetFillColor(32);
-    gPad->Modified();
-    gPad->SetEditable(kFALSE);
-    relCanvas->cd(2);
+    etaPad->SetTitle("T2Calo x Eta");
+    etaPad->Modified();
+    etaPad->SetGrid();
+    etaPad->SetFillColor(32);
+    etaPad->Modified();
+    etaPad->SetEditable(kFALSE);
+
+    TVirtualPad *phiPad = relCanvas->cd(2);
 
     // PHI 
     
-    TH1F *phiPad = gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
-    gPad->SetTitle("T2Calo x Phi");
-    phiPad->GetXaxis()->SetTitle("#phi");
-    phiPad->GetYaxis()->SetTitle("Rating(%)");
-    phiPad->GetXaxis()->SetTitleSize(0.08);
-    phiPad->GetYaxis()->SetTitleSize(0.06);
-    phiPad->GetYaxis()->CenterTitle();
-    phiPad->GetXaxis()->SetTitleOffset(.6);
-    phiPad->GetYaxis()->SetTitleOffset(.6);
+    TH1F *phiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    phiPad->SetTitle("T2Calo x Phi");
+    th1PhiPad->GetXaxis()->SetTitle("#phi");
+    th1PhiPad->GetYaxis()->SetTitle("Rating(%)");
+    th1PhiPad->GetXaxis()->SetTitleSize(0.08);
+    th1PhiPad->GetYaxis()->SetTitleSize(0.06);
+    th1PhiPad->GetYaxis()->CenterTitle();
+    th1PhiPad->GetXaxis()->SetTitleOffset(.6);
+    th1PhiPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
     }
-    gPad->Modified();
-    gPad->SetGrid();
-    gPad->SetFillColor(32);
-    gPad->Modified();
-    gPad->SetEditable(kFALSE);
+    phipad->Modified();
+    phipad->SetGrid();
+    phipad->SetFillColor(32);
+    phipad->Modified();
+    phipad->SetEditable(kFALSE);
     
     // ET
     
-    relCanvas->cd(3);
-    gPad->SetTitle("T2Calo x Et");
+    TVirtualPad *etPad = relCanvas->cd(3);
+    etPad->SetTitle("T2Calo x Et");
     TH1F *etPad = gPad->DrawFrame(10000, 0, 82000, 105);
-    etPad->GetXaxis()->SetTitle("Transverse Energy");
-    etPad->GetYaxis()->SetTitle("Rating(%)");
-    etPad->GetXaxis()->SetTitleSize(0.05);
-    etPad->GetYaxis()->SetTitleSize(0.06);
-    etPad->GetYaxis()->CenterTitle();
-    etPad->GetYaxis()->SetTitleOffset(.6);
+    th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
+    th1EtPad->GetYaxis()->SetTitle("Rating(%)");
+    th1EtPad->GetXaxis()->SetTitleSize(0.05);
+    th1EtPad->GetYaxis()->SetTitleSize(0.06);
+    th1EtPad->GetYaxis()->CenterTitle();
+    th1EtPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
     if (t2relEfficElc && t2relEfficJet){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
-    gPad->Modified();
-    gPad->SetGrid();
-    gPad->SetFillColor(32);
-    gPad->Modified();
-    gPad->SetEditable(kFALSE);
+    etPad->Modified();
+    etPad->SetGrid();
+    etPad->SetFillColor(32);
+    etPad->Modified();
+    etPad->SetEditable(kFALSE);
 
     // Info Stats
 
