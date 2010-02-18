@@ -31,10 +31,10 @@ int RelEfficCanvas::Draw(){
     TH1F *etaPad = gPad->DrawFrame(-2.6, 0, 2.6, 105, "T2Calo x Eta");
     etaPad->GetXaxis()->SetTitle("#eta");
     etaPad->GetYaxis()->SetTitle("Rating(%)");
-    etaPad->GetXaxis()->SetTitleSize(0.06);
+    etaPad->GetXaxis()->SetTitleSize(0.08);
     etaPad->GetYaxis()->SetTitleSize(0.06);
     etaPad->GetYaxis()->CenterTitle();
-    etaPad->GetXaxis()->SetTitleOffset(.3);
+    etaPad->GetXaxis()->SetTitleOffset(.6);
     etaPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData){
         t2relEfficData->DrawEfficVs("eta", "LP");
@@ -54,12 +54,13 @@ int RelEfficCanvas::Draw(){
     // PHI 
     
     TH1F *phiPad = gPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 105);
+    gPad->SetTitle("T2Calo x Phi");
     phiPad->GetXaxis()->SetTitle("#phi");
     phiPad->GetYaxis()->SetTitle("Rating(%)");
-    phiPad->GetXaxis()->SetTitleSize(0.06);
+    phiPad->GetXaxis()->SetTitleSize(0.08);
     phiPad->GetYaxis()->SetTitleSize(0.06);
     phiPad->GetYaxis()->CenterTitle();
-    phiPad->GetXaxis()->SetTitleOffset(.3);
+    phiPad->GetXaxis()->SetTitleOffset(.6);
     phiPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("phi", "LP");
@@ -67,7 +68,6 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
     }
-    gPad->SetTitle("T2Calo x Phi");
     gPad->Modified();
     gPad->SetGrid();
     gPad->SetFillColor(32);
@@ -77,6 +77,7 @@ int RelEfficCanvas::Draw(){
     // ET
     
     relCanvas->cd(3);
+    gPad->SetTitle("T2Calo x Et");
     TH1F *etPad = gPad->DrawFrame(10000, 0, 82000, 105);
     etPad->GetXaxis()->SetTitle("Transverse Energy");
     etPad->GetYaxis()->SetTitle("Rating(%)");
@@ -90,7 +91,6 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
-    gPad->SetTitle("T2Calo x Et");
     gPad->Modified();
     gPad->SetGrid();
     gPad->SetFillColor(32);
@@ -108,7 +108,7 @@ int RelEfficCanvas::Draw(){
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
 
-    ptT2Calo->SetFillColor(30);
+    ptT2Calo->SetFillColor(41);
     // ONE DATA:
     
     if (t2relEfficData){
