@@ -46,7 +46,6 @@ int RelEfficCanvas::Draw(){
     etaPad->SetTitle("T2Calo Rate x Eta");
     etaPad->Modified();
     etaPad->SetGrid();
-    etaPad->SetFillColor(18);
     etaPad->Modified();
     etaPad->SetEditable(kFALSE);
 
@@ -71,7 +70,6 @@ int RelEfficCanvas::Draw(){
     }
     phiPad->Modified();
     phiPad->SetGrid();
-    phiPad->SetFillColor(18);
     phiPad->Modified();
     phiPad->SetEditable(kFALSE);
     
@@ -83,9 +81,9 @@ int RelEfficCanvas::Draw(){
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtPad->GetXaxis()->SetTitleSize(0.05);
-    th1EtPad->GetYaxis()->SetTitleSize(0.06);
+    th1EtPad->GetYaxis()->SetTitleSize(0.045);
     th1EtPad->GetYaxis()->CenterTitle();
-    th1EtPad->GetXaxis()->SetTitleOffset(.5);
+    th1EtPad->GetXaxis()->SetTitleOffset(.6);
     th1EtPad->GetYaxis()->SetTitleOffset(.6);
     if (t2relEfficData)
         t2relEfficData->DrawEfficVs("et", "LP");
@@ -95,7 +93,6 @@ int RelEfficCanvas::Draw(){
     }
     etPad->Modified();
     etPad->SetGrid();
-    etPad->SetFillColor(18);
     etPad->Modified();
     etPad->SetEditable(kFALSE);
 
@@ -107,11 +104,11 @@ int RelEfficCanvas::Draw(){
     TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
     pt->SetFillColor(30);
     pt->SetTextAlign(12);
-    ptT2Calo->SetTextAlign(31);
+    ptT2Calo->SetTextAlign(12);
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetLabel("T2Calo Cuts Rate");
 
-    ptT2Calo->SetFillColor(29);
+    ptT2Calo->SetFillColor(31);
     // ONE DATA:
     
     if (t2relEfficData){
@@ -123,7 +120,7 @@ int RelEfficCanvas::Draw(){
         if (dataLabel == "elc")
             dataLabel = "Electrons";
         if (dataLabel == "jet")
-            dataLabel == "Jets";
+            dataLabel = "Jets";
         line1.Form("Total Data:%s = %d", dataLabel.c_str(), totalData);
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
@@ -228,7 +225,6 @@ int RelEfficCanvas::Draw(){
     gPad->SetEditable(kFALSE);
 
     relCanvas->cd();
-    gPad->SetFillColor(19);
     relCanvas->Modified();
     relCanvas->Update();
 
