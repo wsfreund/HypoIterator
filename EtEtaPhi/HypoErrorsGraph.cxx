@@ -158,12 +158,12 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
             }else{
                 cout<<"regData NULA!!!"<<endl;
-                cout<<"Edges["<<lowEdges<<"] = "<<*edges<<endl;
+                cout<<"Edges["<<lowEdge<<"] = "<<*edges<<endl;
                 unsigned decrementEdges = lowEdge;
                 for(; decrementEdges < NREGIONS - 1; ++decrementEdges, ++edges)
                     *edges = *(edges+1);
                 edges-=decrementEdges;
-                cout<<"After decrement Edges["<<lowEdges<<"] = "<<*edges<<endl;
+                cout<<"After decrement Edges["<<lowEdge<<"] = "<<*edges<<endl;
                 --NREGIONS, --lowEdge;
             }
         }
