@@ -144,7 +144,7 @@ int RelEfficCanvas::Draw(){
             ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
             ptT2Calo->SetLabel("T2Calo Cuts Detection Rate Rate");
         }
-        else if (dataLabel == "elc"){
+        else if (dataLabel == "jet"){
             ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate:");
             ptT2Calo->SetLabel("T2Calo Cuts False Alarm Rate");
         }
