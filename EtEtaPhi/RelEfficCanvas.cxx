@@ -32,11 +32,12 @@ int RelEfficCanvas::Draw(){
     
     TVirtualPad *etaPad = relCanvas->cd(1);
     etaPad->SetFillColor(33);
+    TH1F *th1EtaPad;
     if (t2relEfficData){
         if (dataLabel == "elc")
-            TH1F *th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
+            th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
         if (dataLabel == "jet")
-            TH1F *th1EtaPad = etaPad->DrawFrame(-2.5, 10, 2.5, 40);
+            th1EtaPad = etaPad->DrawFrame(-2.5, 10, 2.5, 40);
         t2relEfficData->DrawEfficVs("eta", "LP");
     }
     if (t2relEfficElc && t2relEfficJet){
@@ -59,14 +60,15 @@ int RelEfficCanvas::Draw(){
     // PHI 
 
     TVirtualPad *phiPad = relCanvas->cd(2);
+    TH1F *th1PhiPad;
     
     if (t2relEfficData){
-        if (dataLabel = "elc"){
-            TH1F *th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
+        if (dataLabel == "elc"){
+            th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
             th1PhiPad->GetYaxis()->SetTitle("Detection (%)");
         }
-        else{
-            TH1F *th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
+        else if (dataLabel == "jet"){
+            th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
             th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("phi", "LP");
@@ -102,13 +104,14 @@ int RelEfficCanvas::Draw(){
     // ET
     
     TVirtualPad *etPad = relCanvas->cd(3);
+    TH1F *th1EtPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
-            TH1F *th1EtPad = gPad->DrawFrame(15000, 90, 80000, 100);
+            th1EtPad = gPad->DrawFrame(15000, 90, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("Detection (%)");
         }
         else if (dataLabel == "jet"){
-            TH1F *th1EtPad = gPad->DrawFrame(15000, 0, 80000, 100);
+            th1EtPad = gPad->DrawFrame(15000, 0, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("et", "LP");
