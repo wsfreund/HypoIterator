@@ -22,8 +22,8 @@ int RelEfficCanvas::Draw(){
     T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
+    std::string dataLabel;
    if (t2relEfficData){ 
-        std::string dataLabel;
         t2relEfficData->getDataLabel(dataLabel);
    }
     relCanvas->Divide(2,2);
@@ -135,13 +135,14 @@ int RelEfficCanvas::Draw(){
     relCanvas->cd(4);
     gPad->SetFillColor(33);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
+    TPaveText *ptT2Calo;
     if (t2relEfficData){
         if (dataLabel == "elc"){
-            TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
+            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
             ptT2Calo->SetLabel("T2Calo Cuts Detection Rate Rate");
         }
         else if (dataLabel == "elc"){
-            TPaveText *ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate:");
+            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate:");
             ptT2Calo->SetLabel("T2Calo Cuts False Alarm Rate");
         }
     }
@@ -173,10 +174,10 @@ int RelEfficCanvas::Draw(){
         }
         if (dataLabel == "jet"){
             line2.Form("T2Calo False Alarm Rate = %.4f%", (100. - detRate));
-            line3.Form("rCore = %.4f%", (100. - detrCoreRate);
-            line4.Form("eRatio = %.4f%", (100. - deteRatioRate);
-            line5.Form("Et_{Em} = %.4f%", (100. - detEtRate);
-            line6.Form("Et_{Had} = %.4f%", (100. -detHadEtRate);
+            line3.Form("rCore = %.4f%", (100. - detrCoreRate));
+            line4.Form("eRatio = %.4f%", (100. - deteRatioRate));
+            line5.Form("Et_{Em} = %.4f%", (100. - detEtRate));
+            line6.Form("Et_{Had} = %.4f%", (100. -detHadEtRate));
         }
         pt->AddText("");
         pt->AddText(line1);
