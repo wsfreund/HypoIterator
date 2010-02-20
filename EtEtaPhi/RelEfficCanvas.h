@@ -10,7 +10,7 @@
 #include "TMath.h"
 #include "TPaveText.h"
 #include "TString.h"
-#include "TLabel.h"
+#include "TLatex.h"
 
 class RelEfficCanvas {
 
