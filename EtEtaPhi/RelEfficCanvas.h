@@ -11,6 +11,7 @@
 #include "TMath.h"
 #include "TPaveText.h"
 #include "TString.h"
+#include "TLabel.h"
 
 class RelEfficCanvas {
 
