@@ -79,11 +79,11 @@ int RelEfficCanvas::Draw(){
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
     double yl = -2;
-    phiAxisLabel.DrawLatex(-pi,yl,"-#pi");
-    phiAxisLabel.DrawLatex(-pi/2,yl,"-#frac{#pi}{2}");
+    phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
+    phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
-    phiAxisLabel.DrawLatex(pi/2,yl,"#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(pi,yl,"#pi"); 
+    phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
+    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
     th1PhiPad->SetTitle("T2Calo Rate x #phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);

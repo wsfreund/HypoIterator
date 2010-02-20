@@ -1,7 +1,6 @@
 #ifndef RELEFFICCANVAS_H
 #define RELEFFICCANVAS_H
 
-#include <typeinfo>
 #include "RelEfficBase.h"
 #include "T2CaRelEffic.h"
 //#include "NeuralRelEffic.h"
