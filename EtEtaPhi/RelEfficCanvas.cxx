@@ -188,6 +188,7 @@ int RelEfficCanvas::Draw(){
             line5.Form("Et_{Em} = %.4f%", detEtRate);
             line6.Form("Et_{Had} = %.4f%", detHadEtRate);
         }
+        cout<<"Forgive me..."<<endl;
         if (dataLabel == "jet"){
             line2.Form("T2Calo False Alarm Rate = %.4f%", (100. - detRate));
             line3.Form("rCore = %.4f%", (100. - detrCoreRate));
@@ -195,6 +196,7 @@ int RelEfficCanvas::Draw(){
             line5.Form("Et_{Em} = %.4f%", (100. - detEtRate));
             line6.Form("Et_{Had} = %.4f%", (100. -detHadEtRate));
         }
+        cout<<"Forgive me not"<<endl;
         pt->AddText("");
         pt->AddText(line1);
         pt->AddText("");
@@ -206,6 +208,7 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(line5);
         ptT2Calo->AddText(line6);
     //TWO DATA
+        cout<<"FORGIVE ME "<<endl;
     }else if (t2relEfficElc && t2relEfficJet){
         TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
         unsigned totalDataElc = t2relEfficElc->getTotalData();
