@@ -34,19 +34,24 @@ int RelEfficCanvas::Draw(){
     etaPad->SetFillColor(33);
     TH1F *th1EtaPad;
     if (t2relEfficData){
-        if (dataLabel == "elc")
+        if (dataLabel == "elc"){
             th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
-        if (dataLabel == "jet")
+            th1EtaPad->GetYaxis()->SetTitle("Detection (%)");
+        }
+        if (dataLabel == "jet"){
             th1EtaPad = etaPad->DrawFrame(-2.5, 10, 2.5, 40);
+            th1EtaPad->GetYaxis()->SetTitle("False Alarm (%)");
+        }
         t2relEfficData->DrawEfficVs("eta", "LP");
     }
     if (t2relEfficElc && t2relEfficJet){
+        th1EtaPad = etaPad->DrawFrame(-2.5, 0, 2.5, 100);
+        th1EtaPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("eta","LP");
         t2relEfficJet->DrawEfficVs("eta","LP,SAME");
     }
     th1EtaPad->SetTitle("T2Calo Rate x #eta");
     th1EtaPad->GetXaxis()->SetTitle("#eta");
-    th1EtaPad->GetYaxis()->SetTitle("Rating(%)");
     th1EtaPad->GetXaxis()->SetTitleSize(0.08);
     th1EtaPad->GetYaxis()->SetTitleSize(0.06);
     th1EtaPad->GetYaxis()->CenterTitle();
@@ -83,6 +88,8 @@ int RelEfficCanvas::Draw(){
         t2relEfficData->DrawEfficVs("phi", "LP");
     }
     if (t2relEfficElc && t2relEfficJet){
+        th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 100);
+        th1PhiPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
     }
@@ -117,6 +124,8 @@ int RelEfficCanvas::Draw(){
         t2relEfficData->DrawEfficVs("et", "LP");
     }
     if (t2relEfficElc && t2relEfficJet){
+        th1EtPad = gPad->DrawFrame(15000, 0, 80000, 100);
+        th1EtPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
@@ -159,6 +168,7 @@ int RelEfficCanvas::Draw(){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
+        line1.Form("Total Data = %d", totalData);
         if (dataLabel == "elc")
             line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
         if (dataLabel == "jet")
