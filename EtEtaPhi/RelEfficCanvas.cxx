@@ -69,7 +69,7 @@ int RelEfficCanvas::Draw(){
     TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
-    double yl = 0.02;
+    double yl = 1;
     phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
@@ -108,12 +108,14 @@ int RelEfficCanvas::Draw(){
     
     // ET
     
+    cout<<"I did what I though that was right"<<endl;
     TVirtualPad *etPad = relCanvas->cd(3);
     TH1F *th1EtPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1EtPad = etPad->DrawFrame(15000, 90, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("Detection (%)");
+            cout<<"All for the love of my life"<<endl;
         }
         else if (dataLabel == "jet"){
             th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
@@ -122,11 +124,12 @@ int RelEfficCanvas::Draw(){
         t2relEfficData->DrawEfficVs("et", "LP");
     }
     if (t2relEfficElc && t2relEfficJet){
-        th1EtPad = gPad->DrawFrame(15000, 0, 80000, 100);
+        th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
         th1EtPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
+    cout<<"NO INNER PEACE"<<endl;
     th1EtPad->SetTitle("T2Calo Rate x Et");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetXaxis()->SetTitleSize(0.045);
@@ -141,6 +144,7 @@ int RelEfficCanvas::Draw(){
 
     // Info Stats
 
+    cout<<"QUESTION OF HEAVEN"<<endl;
     relCanvas->cd(4);
     gPad->SetFillColor(33);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
