@@ -62,6 +62,15 @@ int RelEfficCanvas::Draw(){
     TVirtualPad *phiPad = relCanvas->cd(2);
     TH1F *th1PhiPad;
     
+    TLatex phiAxisLabel;
+    phiAxisLabel.SetTextSize(0.04);
+    phiAxisLabel.SetTextAlign(23);
+    double yl = 0.02;
+    phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
+    phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
+    phiAxisLabel.DrawLatex(0,yl,"0");
+    phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
+    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
@@ -73,19 +82,6 @@ int RelEfficCanvas::Draw(){
         }
         t2relEfficData->DrawEfficVs("phi", "LP");
     }
-    if (t2relEfficElc && t2relEfficJet){
-        t2relEfficElc->DrawEfficVs("phi","LP");
-        t2relEfficJet->DrawEfficVs("phi","LP,SAME");
-    }
-    TLatex phiAxisLabel;
-    phiAxisLabel.SetTextSize(0.04);
-    phiAxisLabel.SetTextAlign(23);
-    double yl = 0.02;
-    phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
-    phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(0,yl,"0");
-    phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
     th1PhiPad->SetTitle("T2Calo Rate x #phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);
@@ -95,6 +91,10 @@ int RelEfficCanvas::Draw(){
     th1PhiPad->GetXaxis()->SetLabelOffset(999);
     th1PhiPad->GetXaxis()->SetNdivisions(-4);
     th1PhiPad->GetYaxis()->SetTitleOffset(.6);
+    if (t2relEfficElc && t2relEfficJet){
+        t2relEfficElc->DrawEfficVs("phi","LP");
+        t2relEfficJet->DrawEfficVs("phi","LP,SAME");
+    }
     phiPad->SetFillColor(33);
     phiPad->Modified();
     phiPad->SetGrid();
