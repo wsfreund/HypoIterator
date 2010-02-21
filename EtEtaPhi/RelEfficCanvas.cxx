@@ -69,7 +69,7 @@ int RelEfficCanvas::Draw(){
     TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
-    double yl = 1;
+    double yl = -3;
     phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
@@ -183,18 +183,18 @@ int RelEfficCanvas::Draw(){
         cout<<"Vai caceta!!!"<<endl;
         if (dataLabel == "elc"){
             line2.Form("T2Calo Detection Rate = %.4f ", detRate);
-            line3.Form("rCore = %.4f ", detrCoreRate);
-            line4.Form("eRatio = %.4f ", deteRatioRate);
-            line5.Form("Et_{Em} = %.4f ", detEtRate);
-            line6.Form("Et_{Had} = %.4f ", detHadEtRate);
+            line3.Form("rCore = %.4f%%", detrCoreRate);
+            line4.Form("eRatio = %.4f%%", deteRatioRate);
+            line5.Form("Et_{Em} = %.4f%%", detEtRate);
+            line6.Form("Et_{Had} = %.4f%%", detHadEtRate);
         }
         cout<<"Forgive me..."<<endl;
         if (dataLabel == "jet"){
             line2.Form("T2Calo False Alarm Rate = %.4f%", (100. - detRate));
-            line3.Form("rCore = %.4f%", (100. - detrCoreRate));
-            line4.Form("eRatio = %.4f%", (100. - deteRatioRate));
-            line5.Form("Et_{Em} = %.4f%", (100. - detEtRate));
-            line6.Form("Et_{Had} = %.4f %", (100. -detHadEtRate));
+            line3.Form("rCore = %.4f%%", (100. - detrCoreRate));
+            line4.Form("eRatio = %.4f%%", (100. - deteRatioRate));
+            line5.Form("Et_{Em} = %.4f%%", (100. - detEtRate));
+            line6.Form("Et_{Had} = %.4f%%", (100. -detHadEtRate));
         }
         cout<<"Forgive me not"<<endl;
         pt->AddText("");
