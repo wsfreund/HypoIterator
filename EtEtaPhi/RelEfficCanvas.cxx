@@ -276,6 +276,7 @@ int RelEfficCanvas::Draw(){
         p1->SetTextColor(4);
         p2->SetTextColor(2);
     }
+    cout<<"My last testament"<<endl;
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
     TText *p1 = pt->AddText(0.43, 0.02, line666);
     p1->SetTextSize(0.04);
@@ -290,6 +291,7 @@ int RelEfficCanvas::Draw(){
     relCanvas->Modified();
     relCanvas->Update();
 
+    cout<<"Escalation 666"<<endl;
     return 0;
 
 }
