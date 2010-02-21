@@ -62,7 +62,7 @@ int RelEfficCanvas::Draw(){
     TVirtualPad *phiPad = relCanvas->cd(2);
     TH1F *th1PhiPad;
     
-    TLatex phiAxisLabel;
+    /*TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
     double yl = 0.02;
@@ -70,7 +70,7 @@ int RelEfficCanvas::Draw(){
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
     phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
+    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi");*/ 
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
@@ -82,19 +82,19 @@ int RelEfficCanvas::Draw(){
         }
         t2relEfficData->DrawEfficVs("phi", "LP");
     }
+    if (t2relEfficElc && t2relEfficJet){
+        t2relEfficElc->DrawEfficVs("phi","LP");
+        t2relEfficJet->DrawEfficVs("phi","LP,SAME");
+    }
     th1PhiPad->SetTitle("T2Calo Rate x #phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
     th1PhiPad->GetXaxis()->SetTitleSize(0.08);
     th1PhiPad->GetYaxis()->SetTitleSize(0.06);
     th1PhiPad->GetYaxis()->CenterTitle();
     th1PhiPad->GetXaxis()->SetTitleOffset(.55);
-    th1PhiPad->GetXaxis()->SetLabelOffset(999);
+   // th1PhiPad->GetXaxis()->SetLabelOffset(999);
     th1PhiPad->GetXaxis()->SetNdivisions(-4);
     th1PhiPad->GetYaxis()->SetTitleOffset(.6);
-    if (t2relEfficElc && t2relEfficJet){
-        t2relEfficElc->DrawEfficVs("phi","LP");
-        t2relEfficJet->DrawEfficVs("phi","LP,SAME");
-    }
     phiPad->SetFillColor(33);
     phiPad->Modified();
     phiPad->SetGrid();
@@ -141,11 +141,11 @@ int RelEfficCanvas::Draw(){
     TPaveText *ptT2Calo;
     if (t2relEfficData){
         if (dataLabel == "elc"){
-            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate:");
+            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate");
             ptT2Calo->SetLabel("T2Calo Cuts Detection Rate Rate");
         }
         else if (dataLabel == "jet"){
-            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate:");
+            ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate");
             ptT2Calo->SetLabel("T2Calo Cuts False Alarm Rate");
         }
     }
@@ -159,11 +159,10 @@ int RelEfficCanvas::Draw(){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
-        std::string label;
         if (dataLabel == "elc")
-            line1.Form("Total Data : #color[2]{Electrons} = %d", label.c_str(), totalData);
+            line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
         if (dataLabel == "jet")
-            line1.Form("Total Data : #color[4]{Jets} = %d", label.c_str(), totalData);
+            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
