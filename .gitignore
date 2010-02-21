@@ -8,5 +8,6 @@
 .cdtproject
 .project
 .settings/*
-
+*.eps
+*.pdf
 .tm_project2.cache

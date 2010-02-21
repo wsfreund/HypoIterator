@@ -159,11 +159,11 @@ int RelEfficCanvas::Draw(){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
+        std::string label;
         if (dataLabel == "elc")
-            dataLabel = "Electrons";
+            line1.Form("Total Data : #color[2]{Electrons} = %d", label.c_str(), totalData);
         if (dataLabel == "jet")
-            dataLabel = "Jets";
-        line1.Form("Total Data : %s = %d", dataLabel.c_str(), totalData);
+            line1.Form("Total Data : #color[4]{Jets} = %d", label.c_str(), totalData);
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
