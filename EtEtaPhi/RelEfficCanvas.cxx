@@ -108,14 +108,12 @@ int RelEfficCanvas::Draw(){
     
     // ET
     
-    cout<<"I did what I though that was right"<<endl;
     TVirtualPad *etPad = relCanvas->cd(3);
     TH1F *th1EtPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1EtPad = etPad->DrawFrame(15000, 90, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("Detection (%)");
-            cout<<"All for the love of my life"<<endl;
         }
         else if (dataLabel == "jet"){
             th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
@@ -129,7 +127,6 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
-    cout<<"NO INNER PEACE"<<endl;
     th1EtPad->SetTitle("T2Calo Rate x Et");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetXaxis()->SetTitleSize(0.045);
@@ -144,7 +141,6 @@ int RelEfficCanvas::Draw(){
 
     // Info Stats
 
-    cout<<"QUESTION OF HEAVEN"<<endl;
     relCanvas->cd(4);
     gPad->SetFillColor(33);
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
@@ -159,23 +155,20 @@ int RelEfficCanvas::Draw(){
             ptT2Calo->SetLabel("T2Calo Cuts False Alarm Rate");
         }
     }
-    //pt->SetFillColor(34);
+    pt->SetFillColor(18);
     pt->SetTextAlign(12);
     ptT2Calo->SetTextAlign(12);
     pt->SetLabel("HypoIterator v4.0.0");
-    //ptT2Calo->SetFillColor(34);
+    ptT2Calo->SetFillColor(18);
     // ONE DATA:
-    cout<<"MISTA VERI PAKENEE!!!"<<endl;
     if (t2relEfficData){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
-        line1.Form("Total Data = %d", totalData);
-        /*
         if (dataLabel == "elc")
             line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
         if (dataLabel == "jet")
-            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);*/
+            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
@@ -196,7 +189,6 @@ int RelEfficCanvas::Draw(){
             line5.Form("Et_{Em} = %.4f%%", (100. - detEtRate));
             line6.Form("Et_{Had} = %.4f%%", (100. -detHadEtRate));
         }
-        cout<<"Forgive me not"<<endl;
         pt->AddText("");
         pt->AddText(line1);
         pt->AddText("");
@@ -279,7 +271,6 @@ int RelEfficCanvas::Draw(){
         p1->SetTextColor(4);
         p2->SetTextColor(2);
     }
-    cout<<"My last testament"<<endl;
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
     TText *p1 = pt->AddText(0.43, 0.02, line666);
     p1->SetTextSize(0.04);
@@ -294,7 +285,6 @@ int RelEfficCanvas::Draw(){
     relCanvas->Modified();
     relCanvas->Update();
 
-    cout<<"Escalation 666"<<endl;
     return 0;
 
 }
