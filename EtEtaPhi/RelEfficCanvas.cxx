@@ -165,19 +165,22 @@ int RelEfficCanvas::Draw(){
     pt->SetLabel("HypoIterator v4.0.0");
     //ptT2Calo->SetFillColor(34);
     // ONE DATA:
+    cout<<"MISTA VERI PAKENEE!!!"<<endl;
     if (t2relEfficData){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
-        //line1.Form("Total Data = %d", totalData);
+        line1.Form("Total Data = %d", totalData);
+        /*
         if (dataLabel == "elc")
             line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
         if (dataLabel == "jet")
-            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);
+            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);*/
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
         float detHadEtRate = t2relEfficData->getDetHadEtRate();
+        cout<<"Vai caceta!!!"<<endl;
         if (dataLabel == "elc"){
             line2.Form("T2Calo Detection Rate = %.4f%", detRate);
             line3.Form("rCore = %.4f%", detrCoreRate);
