@@ -80,7 +80,7 @@ int RelEfficCanvas::Draw(){
     TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
-    double yl = -2;
+    double yl = 0.02;
     phiAxisLabel.DrawLatex(-TMath::Pi(),yl,"-#pi");
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
