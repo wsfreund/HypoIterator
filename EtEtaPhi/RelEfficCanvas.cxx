@@ -57,7 +57,6 @@ int RelEfficCanvas::Draw(){
     th1EtaPad->GetYaxis()->CenterTitle();
     th1EtaPad->GetXaxis()->SetTitleOffset(.5);
     th1EtaPad->GetYaxis()->SetTitleOffset(.6);
-    etaPad->Modified();
     etaPad->SetGrid();
     etaPad->Modified();
     etaPad->SetEditable(kFALSE);
@@ -67,7 +66,7 @@ int RelEfficCanvas::Draw(){
     TVirtualPad *phiPad = relCanvas->cd(2);
     TH1F *th1PhiPad;
     
-    /*TLatex phiAxisLabel;
+    TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
     double yl = 0.02;
@@ -75,13 +74,13 @@ int RelEfficCanvas::Draw(){
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
     phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi");*/ 
+    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
             th1PhiPad->GetYaxis()->SetTitle("Detection (%)");
         }
-        else if (dataLabel == "jet"){
+        if (dataLabel == "jet"){
             th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
             th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
@@ -103,7 +102,6 @@ int RelEfficCanvas::Draw(){
     th1PhiPad->GetXaxis()->SetNdivisions(-4);
     th1PhiPad->GetYaxis()->SetTitleOffset(.6);
     phiPad->SetFillColor(33);
-    phiPad->Modified();
     phiPad->SetGrid();
     phiPad->Modified();
     phiPad->SetEditable(kFALSE);
@@ -114,11 +112,11 @@ int RelEfficCanvas::Draw(){
     TH1F *th1EtPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
-            th1EtPad = gPad->DrawFrame(15000, 90, 80000, 100);
+            th1EtPad = etPad->DrawFrame(15000, 90, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("Detection (%)");
         }
         else if (dataLabel == "jet"){
-            th1EtPad = gPad->DrawFrame(15000, 0, 80000, 100);
+            th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
             th1EtPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("et", "LP");
@@ -137,7 +135,6 @@ int RelEfficCanvas::Draw(){
     th1EtPad->GetXaxis()->SetTitleOffset(.75);
     th1EtPad->GetYaxis()->SetTitleOffset(.6);
     etPad->SetFillColor(33);
-    etPad->Modified();
     etPad->SetGrid();
     etPad->Modified();
     etPad->SetEditable(kFALSE);
@@ -168,7 +165,7 @@ int RelEfficCanvas::Draw(){
         TString line1, line2, line3, line4, line5, line6;
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
-        line1.Form("Total Data = %d", totalData);
+        //line1.Form("Total Data = %d", totalData);
         if (dataLabel == "elc")
             line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
         if (dataLabel == "jet")
