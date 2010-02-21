@@ -182,11 +182,11 @@ int RelEfficCanvas::Draw(){
         float detHadEtRate = t2relEfficData->getDetHadEtRate();
         cout<<"Vai caceta!!!"<<endl;
         if (dataLabel == "elc"){
-            line2.Form("T2Calo Detection Rate = %.4f%", detRate);
-            line3.Form("rCore = %.4f%", detrCoreRate);
-            line4.Form("eRatio = %.4f%", deteRatioRate);
-            line5.Form("Et_{Em} = %.4f%", detEtRate);
-            line6.Form("Et_{Had} = %.4f%", detHadEtRate);
+            line2.Form("T2Calo Detection Rate = %.4f ", detRate);
+            line3.Form("rCore = %.4f ", detrCoreRate);
+            line4.Form("eRatio = %.4f ", deteRatioRate);
+            line5.Form("Et_{Em} = %.4f ", detEtRate);
+            line6.Form("Et_{Had} = %.4f ", detHadEtRate);
         }
         cout<<"Forgive me..."<<endl;
         if (dataLabel == "jet"){
@@ -194,7 +194,7 @@ int RelEfficCanvas::Draw(){
             line3.Form("rCore = %.4f%", (100. - detrCoreRate));
             line4.Form("eRatio = %.4f%", (100. - deteRatioRate));
             line5.Form("Et_{Em} = %.4f%", (100. - detEtRate));
-            line6.Form("Et_{Had} = %.4f%", (100. -detHadEtRate));
+            line6.Form("Et_{Had} = %.4f %", (100. -detHadEtRate));
         }
         cout<<"Forgive me not"<<endl;
         pt->AddText("");
