@@ -66,7 +66,7 @@ int RelEfficCanvas::Draw(){
     TVirtualPad *phiPad = relCanvas->cd(2);
     TH1F *th1PhiPad;
     
-    TLatex phiAxisLabel;
+    /*TLatex phiAxisLabel;
     phiAxisLabel.SetTextSize(0.04);
     phiAxisLabel.SetTextAlign(23);
     double yl = -3;
@@ -74,7 +74,7 @@ int RelEfficCanvas::Draw(){
     phiAxisLabel.DrawLatex(-TMath::Pi()/2,yl,"-#frac{#pi}{2}");
     phiAxisLabel.DrawLatex(0,yl,"0");
     phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
-    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); 
+    phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi");*/ 
     if (t2relEfficData){
         if (dataLabel == "elc"){
             th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
@@ -148,13 +148,12 @@ int RelEfficCanvas::Draw(){
     if (t2relEfficData){
         if (dataLabel == "elc"){
             ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate");
-            ptT2Calo->SetLabel("T2Calo Cuts Detection Rate Rate");
         }
         else if (dataLabel == "jet"){
             ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate");
-            ptT2Calo->SetLabel("T2Calo Cuts False Alarm Rate");
         }
     }
+    ptT2Calo->SetLabel("T2Calo Cuts");
     pt->SetFillColor(18);
     pt->SetTextAlign(12);
     ptT2Calo->SetTextAlign(12);
@@ -166,14 +165,13 @@ int RelEfficCanvas::Draw(){
         unsigned totalData = t2relEfficData->getTotalData();
         float detRate = t2relEfficData->getDetRate();
         if (dataLabel == "elc")
-            line1.Form("Total Data : #color[2]{Electrons} = %d", totalData);
+            line1.Form("Total Data : Electrons = %d", totalData);
         if (dataLabel == "jet")
-            line1.Form("Total Data : #color[4]{Jets} = %d", totalData);
+            line1.Form("Total Data : Jets = %d", totalData);
         float detrCoreRate = t2relEfficData->getDetrCoreRate();
         float deteRatioRate = t2relEfficData->getDeteRatioRate();
         float detEtRate = t2relEfficData->getDetEtRate();
         float detHadEtRate = t2relEfficData->getDetHadEtRate();
-        cout<<"Vai caceta!!!"<<endl;
         if (dataLabel == "elc"){
             line2.Form("T2Calo Detection Rate = %.4f ", detRate);
             line3.Form("rCore = %.4f%%", detrCoreRate);
@@ -181,7 +179,6 @@ int RelEfficCanvas::Draw(){
             line5.Form("Et_{Em} = %.4f%%", detEtRate);
             line6.Form("Et_{Had} = %.4f%%", detHadEtRate);
         }
-        cout<<"Forgive me..."<<endl;
         if (dataLabel == "jet"){
             line2.Form("T2Calo False Alarm Rate = %.4f%", (100. - detRate));
             line3.Form("rCore = %.4f%%", (100. - detrCoreRate));
