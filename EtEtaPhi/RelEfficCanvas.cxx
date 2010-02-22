@@ -127,7 +127,7 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     }
-    th1EtPad->SetTitle("T2Calo Rate x Et");
+    th1EtPad->SetTitle("T2Calo Rate x E_{T}");
     th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
     th1EtPad->GetXaxis()->SetTitleSize(0.045);
     th1EtPad->GetYaxis()->SetTitleSize(0.06);
@@ -173,14 +173,14 @@ int RelEfficCanvas::Draw(){
         float detEtRate = t2relEfficData->getDetEtRate();
         float detHadEtRate = t2relEfficData->getDetHadEtRate();
         if (dataLabel == "elc"){
-            line2.Form("T2Calo Detection Rate = %.4f%%", detRate);
+            line2.Form("#scale[1.2]{T2Calo Detection Rate = %.4f%%}", detRate);
             line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
             line4.Form("eRatio Detection Rate  = %.4f%%", deteRatioRate);
             line5.Form("Et_{Em} Detection Rate = %.4f%%", detEtRate);
             line6.Form("Et_{Had} Detection Rate = %.4f%%", detHadEtRate);
         }
         if (dataLabel == "jet"){
-            line2.Form("T2Calo False Alarm Rate = %.4f%%", (100. - detRate));
+            line2.Form("#scale[1.2]{T2Calo False Alarm Rate = %.4f%%}", (100. - detRate));
             line3.Form("rCore False Alarm Rate = %.4f%%", (100. - detrCoreRate));
             line4.Form("eRatio False Alarm Rate = %.4f%%", (100. - deteRatioRate));
             line5.Form("Et_{Em} False Alarm Rate = %.4f%%", (100. - detEtRate));
