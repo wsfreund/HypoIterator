@@ -43,13 +43,16 @@ int RelEfficCanvas::Draw(){
             th1EtaPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("eta", "LP");
-    }
-    if (t2relEfficElc && t2relEfficJet){
+    } else if (t2relEfficElc && t2relEfficJet){
         th1EtaPad = etaPad->DrawFrame(-2.5, 0, 2.5, 100);
         th1EtaPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("eta","LP");
         t2relEfficJet->DrawEfficVs("eta","LP,SAME");
+    } else {
+        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        return 1;
     }
+
     th1EtaPad->SetTitle("T2Calo Rate x #eta");
     th1EtaPad->GetXaxis()->SetTitle("#eta");
     th1EtaPad->GetXaxis()->SetTitleSize(0.08);
@@ -85,12 +88,14 @@ int RelEfficCanvas::Draw(){
             th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("phi", "LP");
-    }
-    if (t2relEfficElc && t2relEfficJet){
+    } else if (t2relEfficElc && t2relEfficJet){
         th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 0, TMath::Pi(), 100);
         th1PhiPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("phi","LP");
         t2relEfficJet->DrawEfficVs("phi","LP,SAME");
+    } else {
+        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        return 1;
     }
     th1PhiPad->SetTitle("T2Calo Rate x #phi");
     th1PhiPad->GetXaxis()->SetTitle("#phi");
@@ -112,23 +117,26 @@ int RelEfficCanvas::Draw(){
     TH1F *th1EtPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
-            th1EtPad = etPad->DrawFrame(15000, 90, 80000, 100);
+            th1EtPad = etPad->DrawFrame(15, 90, 80, 100);
             th1EtPad->GetYaxis()->SetTitle("Detection (%)");
         }
         else if (dataLabel == "jet"){
-            th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
+            th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
             th1EtPad->GetYaxis()->SetTitle("False Alarm (%)");
         }
         t2relEfficData->DrawEfficVs("et", "LP");
     }
-    if (t2relEfficElc && t2relEfficJet){
-        th1EtPad = etPad->DrawFrame(15000, 0, 80000, 100);
+    else if (t2relEfficElc && t2relEfficJet){
+        th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
         th1EtPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
+    } else {
+        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        return 1;
     }
     th1EtPad->SetTitle("T2Calo Rate x E_{T}");
-    th1EtPad->GetXaxis()->SetTitle("Transverse Energy");
+    th1EtPad->GetXaxis()->SetTitle("Transverse Energy (GeV)");
     th1EtPad->GetXaxis()->SetTitleSize(0.045);
     th1EtPad->GetYaxis()->SetTitleSize(0.06);
     th1EtPad->GetYaxis()->CenterTitle();
@@ -218,21 +226,21 @@ int RelEfficCanvas::Draw(){
         float eRatioEffic = calcSP(deteRatioRateElc, deteRatioRateJet);
         float etEffic = calcSP(detEtRateElc, detEtRateJet);
         float hadEtEffic = calcSP(detHadEtRateElc, detHadEtRateJet);
-        line2.Form("T2Calo Efficience = %.4f", effic);
-        line3.Form("Electrons Efficience = %.4f", detRateElc);
-        line4.Form("Jets Efficience = %.4f", detRateJet);
-        line4.Form("rCore Efficience = %.4f", rCoreEffic);
-        line5.Form("rCore Electron Rate = %.4f", detrCoreRateElc);
-        line6.Form("rCore Jet Rate = %.4f", detrCoreRateJet);
-        line7.Form("eRatio Efficience = %.4f", eRatioEffic);
-        line8.Form("eRatio Electron Rate = %.4f", deteRatioRateElc);
-        line9.Form("eRatio Jet Rate = %.4f", deteRatioRateJet);
-        line10.Form("Et_{Em} Efficience = %.4f", etEffic);
-        line11.Form("Et_{Em} Electron Rate = %.4f", detEtRateElc);
-        line12.Form("Et_{Em} Jet Rate = %.4f", detEtRateJet);
-        line13.Form("Et_{Had} Efficience = %.4f", hadEtEffic);
-        line14.Form("Et_{Had} Electron Rate = %.4f", detHadEtRateElc);
-        line15.Form("Et_{Had} Jet Rate = %.4f", detHadEtRateJet);
+        line2.Form("T2Calo Efficience = %.4f%%", effic);
+        line3.Form("Electrons Efficience = %.4f%%", detRateElc);
+        line4.Form("Jets Efficience = %.4f%%", detRateJet);
+        line4.Form("rCore Efficience = %.4f%%", rCoreEffic);
+        line5.Form("rCore Electron Rate = %.4f%%", detrCoreRateElc);
+        line6.Form("rCore Jet Rate = %.4f%%", detrCoreRateJet);
+        line7.Form("eRatio Efficience = %.4f%%", eRatioEffic);
+        line8.Form("eRatio Electron Rate = %.4f%%", deteRatioRateElc);
+        line9.Form("eRatio Jet Rate = %.4f%%", deteRatioRateJet);
+        line10.Form("Et_{Em} Efficience = %.4f%%", etEffic);
+        line11.Form("Et_{Em} Electron Rate = %.4f%%", detEtRateElc);
+        line12.Form("Et_{Em} Jet Rate = %.4f%%", detEtRateJet);
+        line13.Form("Et_{Had} Efficience = %.4f%%", hadEtEffic);
+        line14.Form("Et_{Had} Electron Rate = %.4f%%", detHadEtRateElc);
+        line15.Form("Et_{Had} Jet Rate = %.4f%%", detHadEtRateJet);
         pt->AddText("");
         pt->AddText(line1);
         pt->AddText("");
@@ -266,6 +274,9 @@ int RelEfficCanvas::Draw(){
         p2 = ptT2Calo->AddText(line15);
         p1->SetTextColor(4);
         p2->SetTextColor(2);
+    } else {
+        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        return 1;
     }
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
     TText *p1 = pt->AddText(0.43, 0.02, line666);
