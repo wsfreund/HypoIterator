@@ -197,7 +197,6 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(line5);
         ptT2Calo->AddText(line6);
     //TWO DATA
-        cout<<"FORGIVE ME "<<endl;
     }else if (t2relEfficElc && t2relEfficJet){
         TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
         unsigned totalDataElc = t2relEfficElc->getTotalData();
