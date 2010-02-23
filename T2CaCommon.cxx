@@ -57,9 +57,6 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     exec();
 }
 
-
-
-
 HypoBase::CODE T2CaCommon::exec(){
 
     int n_entries = static_cast<int>(hypoChain->GetEntries());

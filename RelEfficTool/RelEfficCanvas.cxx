@@ -130,7 +130,7 @@ int RelEfficCanvas::Draw(){
         th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
         th1EtPad->GetYaxis()->SetTitle("Rating (%)");
         t2relEfficElc->DrawEfficVs("et", "LP");
-        t2relEfficElc->DrawEfficVs("et", "LP,SAME");
+        t2relEfficJet->DrawEfficVs("et", "LP,SAME");
     } else {
         cout<<"Unknown T2Calo or Ringer Type"<<endl;
         return 1;

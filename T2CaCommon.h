@@ -65,15 +65,15 @@ class T2CaCommon : public HypoBase {
     T2CaCommon(const std::string &chainPath);
     CODE exec();
     CODE drawCutCounter();
-    void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; };
-    unsigned getrCoreCuts()const {return rCoreCuts;};
-    unsigned geteRatioCuts()const {return eRatioCuts;};
-    unsigned getEmCuts()const {return etCuts;};
-    unsigned getHadEtCuts()const {return hadEtCuts;};
-    float getDetrCoreRate()const {return detrCoreRate;};
-    float getDeteRatioRate()const {return deteRatioRate;};
-    float getDetEtRate()const {return detEtRate;};
-    float getDetHadEtRate()const {return detHadEtRate;};
+    void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
+    unsigned getrCoreCuts()const {return rCoreCuts;}
+    unsigned geteRatioCuts()const {return eRatioCuts;}
+    unsigned getEmCuts()const {return etCuts;}
+    unsigned getHadEtCuts()const {return hadEtCuts;}
+    float getDetrCoreRate()const {return detrCoreRate;}
+    float getDeteRatioRate()const {return deteRatioRate;}
+    float getDetEtRate()const {return detEtRate;}
+    float getDetHadEtRate()const {return detHadEtRate;}
     ~T2CaCommon();
 
 };
