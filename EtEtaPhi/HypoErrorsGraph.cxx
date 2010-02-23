@@ -167,7 +167,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 --NREGIONS, --lowEdge;
             }
         }
-    }/*else{
+    }else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++effic, ++lowEdgeErrors, ++hiEdgeErrors){
             unsigned regElectrons = 0;
             unsigned regData = 0;
@@ -178,17 +178,24 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                         ++regElectrons;
                 }
             }
+            float error =-1;
             if (regData!=0){
-            if (dataLabel == "elc")
-                *effic = (float)regElectrons / (float)regData*100.;
-            else if (dataLabel == "jet")
-                *effic = (float)(regData - regElectrons)/(float)regData *100.;
-            }else 
-                *effic = 0;
-            float error = (1/TMath::Sqrt(regData))*100.;
-            checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
+                error = 1/TMath::Sqrt(regData)*100.;
+                *pX = (*edges) + HALF_REGION_SIZE;
+                if (dataLabel == "elc")
+                    *effic = (float)regElectrons / (float)regData*100.;
+                else if (dataLabel == "jet")
+                    *effic = (float)regElectrons / (float)regData *100.;
+                checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
+                ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
+            }else{
+                for(unsigned decrementEdges = lowEdge; decrementEdges < NREGIONS; ++decrementEdges, ++edges)
+                    *edges = *(edges+1);
+                edges-=(NREGIONS - lowEdge);
+                --NREGIONS, --lowEdge;
+            }
         }
-    }*/
+    }
     effic -= NREGIONS; lowEdgeErrors-=NREGIONS; hiEdgeErrors-=NREGIONS; edges -=NREGIONS; pX -= NREGIONS;
     return HypoErrorsGraph::OK;
 
