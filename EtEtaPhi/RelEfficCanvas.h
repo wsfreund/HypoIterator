@@ -28,8 +28,10 @@ class RelEfficCanvas {
     int Draw();
     ~RelEfficCanvas(){
         if (relCanvas){
-            relCanvas->Close();
-            delete relCanvas;
+            if (relCanvas->GetCanvasImp()){
+                relCanvas->Closed();
+                delete relCanvas;
+            }
         }
     }
 

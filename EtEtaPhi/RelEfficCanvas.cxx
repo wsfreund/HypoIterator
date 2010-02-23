@@ -31,7 +31,6 @@ int RelEfficCanvas::Draw(){
     // ETA 
     
     TVirtualPad *etaPad = relCanvas->cd(1);
-    etaPad->SetFillColor(33);
     TH1F *th1EtaPad;
     if (t2relEfficData){
         if (dataLabel == "elc"){
@@ -60,6 +59,7 @@ int RelEfficCanvas::Draw(){
     th1EtaPad->GetYaxis()->CenterTitle();
     th1EtaPad->GetXaxis()->SetTitleOffset(.5);
     th1EtaPad->GetYaxis()->SetTitleOffset(.6);
+    etaPad->SetFillColor(33);
     etaPad->SetGrid();
     etaPad->Modified();
     etaPad->SetEditable(kFALSE);
@@ -132,7 +132,7 @@ int RelEfficCanvas::Draw(){
         t2relEfficElc->DrawEfficVs("et", "LP");
         t2relEfficElc->DrawEfficVs("et", "LP,SAME");
     } else {
-        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        cout<<"Unknown T2Calo or Ringer Type"<<endl;
         return 1;
     }
     th1EtPad->SetTitle("T2Calo Rate x E_{T}");
@@ -160,10 +160,10 @@ int RelEfficCanvas::Draw(){
         else if (dataLabel == "jet"){
             ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate");
         }
-    }
+    }else
+        ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts");
     ptT2Calo->SetLabel("T2Calo Cuts");
     pt->SetFillColor(18);
-    pt->SetTextAlign(12);
     ptT2Calo->SetTextAlign(12);
     pt->SetLabel("HypoIterator v4.0.0");
     ptT2Calo->SetFillColor(18);
@@ -194,6 +194,7 @@ int RelEfficCanvas::Draw(){
             line5.Form("Et_{Em} False Alarm Rate = %.4f%%", (100. - detEtRate));
             line6.Form("Et_{Had} False Alarm Rate = %.4f%%", (100. -detHadEtRate));
         }
+        pt->SetTextAlign(12);
         pt->AddText("");
         pt->AddText(line1);
         pt->AddText("");
@@ -206,80 +207,66 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(line6);
     //TWO DATA
     }else if (t2relEfficElc && t2relEfficJet){
-        TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
+        TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16;
         unsigned totalDataElc = t2relEfficElc->getTotalData();
         unsigned totalDataJet = t2relEfficJet->getTotalData();
         float detRateElc = t2relEfficElc->getDetRate();
         float detRateJet = t2relEfficJet->getDetRate();
-        float totalData = totalDataElc + totalDataJet;
+        unsigned totalData = totalDataElc + totalDataJet;
         float effic = calcSP(detRateElc, detRateJet);
-        line1.Form("Total Data = %d:Electrons = %d:Jets = %d",totalData, totalDataElc,totalDataJet);
-        float detrCoreRateElc = t2relEfficData->getDetrCoreRate();
-        float deteRatioRateElc = t2relEfficData->getDeteRatioRate();
-        float detEtRateElc = t2relEfficData->getDetEtRate();
-        float detHadEtRateElc = t2relEfficData->getDetHadEtRate();
-        float detrCoreRateJet = t2relEfficData->getDetrCoreRate();
-        float deteRatioRateJet = t2relEfficData->getDeteRatioRate();
-        float detEtRateJet = t2relEfficData->getDetEtRate();
-        float detHadEtRateJet = t2relEfficData->getDetHadEtRate();
+        line1.Form("Total Data = %d : #color[4]{Electrons = %d} : #color[2]{Jets = %d}",totalData, totalDataElc,totalDataJet);
+        float detrCoreRateElc = t2relEfficElc->getDetrCoreRate();
+        float deteRatioRateElc = t2relEfficElc->getDeteRatioRate();
+        float detEtRateElc = t2relEfficElc->getDetEtRate();
+        float detHadEtRateElc = t2relEfficElc->getDetHadEtRate();
+        float detrCoreRateJet = t2relEfficJet->getDetrCoreRate();
+        float deteRatioRateJet = t2relEfficJet->getDeteRatioRate();
+        float detEtRateJet = t2relEfficJet->getDetEtRate();
+        float detHadEtRateJet = t2relEfficJet->getDetHadEtRate();
         float rCoreEffic = calcSP(detrCoreRateElc, detrCoreRateJet);
         float eRatioEffic = calcSP(deteRatioRateElc, deteRatioRateJet);
         float etEffic = calcSP(detEtRateElc, detEtRateJet);
         float hadEtEffic = calcSP(detHadEtRateElc, detHadEtRateJet);
-        line2.Form("T2Calo Efficience = %.4f%%", effic);
-        line3.Form("Electrons Efficience = %.4f%%", detRateElc);
-        line4.Form("Jets Efficience = %.4f%%", detRateJet);
-        line4.Form("rCore Efficience = %.4f%%", rCoreEffic);
-        line5.Form("rCore Electron Rate = %.4f%%", detrCoreRateElc);
-        line6.Form("rCore Jet Rate = %.4f%%", detrCoreRateJet);
-        line7.Form("eRatio Efficience = %.4f%%", eRatioEffic);
-        line8.Form("eRatio Electron Rate = %.4f%%", deteRatioRateElc);
-        line9.Form("eRatio Jet Rate = %.4f%%", deteRatioRateJet);
-        line10.Form("Et_{Em} Efficience = %.4f%%", etEffic);
-        line11.Form("Et_{Em} Electron Rate = %.4f%%", detEtRateElc);
-        line12.Form("Et_{Em} Jet Rate = %.4f%%", detEtRateJet);
-        line13.Form("Et_{Had} Efficience = %.4f%%", hadEtEffic);
-        line14.Form("Et_{Had} Electron Rate = %.4f%%", detHadEtRateElc);
-        line15.Form("Et_{Had} Jet Rate = %.4f%%", detHadEtRateJet);
-        pt->AddText("");
-        pt->AddText(line1);
-        pt->AddText("");
-        TText* p1 = pt->AddText(line2);
-        TText* p2 = pt->AddText(line3);
-        p1->SetTextColor(4);
-        p2->SetTextColor(2);
-        pt->AddText(""); pt->AddText(""); pt->AddText(""); pt->AddText(""); pt->AddText(""); pt->AddText("");
-        ptT2Calo->AddText("");
-        ptT2Calo->AddText("T2Calo Cuts:");
-        ptT2Calo->AddText(line4);
-        p1 = ptT2Calo->AddText(line5);
-        p2 = ptT2Calo->AddText(line6);
-        p1->SetTextColor(4);
-        p2->SetTextColor(2);
-        ptT2Calo->AddText("");
-        ptT2Calo->AddText(line7);
-        p1 = ptT2Calo->AddText(line8);
-        p2 = ptT2Calo->AddText(line9);
-        p1->SetTextColor(4);
-        p2->SetTextColor(2);
-        ptT2Calo->AddText("");
-        ptT2Calo->AddText(line10);
-        p1 = ptT2Calo->AddText(line11);
-        p2 = ptT2Calo->AddText(line12);
-        p1->SetTextColor(4);
-        p2->SetTextColor(2);
-        ptT2Calo->AddText("");
-        ptT2Calo->AddText(line13);
-        p1 = ptT2Calo->AddText(line14);
-        p2 = ptT2Calo->AddText(line15);
-        p1->SetTextColor(4);
-        p2->SetTextColor(2);
+        line2.Form("#scale[1.05]{T2Calo Efficience = %.4f%%}", effic);
+        line3.Form("#color[4]{#scale[1]{Det Rate = %.4f%%}}", detRateElc);
+        line4.Form("#color[2]{#scale[1]{FA = %.4f%%}}", (100. - detRateJet ));
+        line5.Form("#scale[1.1]{rCore Efficience = #scale[1.2]{%.4f%%}}", rCoreEffic);
+        line6.Form("#scale[1.0]{#color[4]{rCore Det Rate = #scale[1.2]{%.4f%%}}}", detrCoreRateElc);
+        line7.Form("#scale[1.0]{#color[2]{rCore FA = #scale[1.2]{%.4f%%}}}", (100. - detrCoreRateJet ));
+        line8.Form("#scale[1.1]{eRatio Efficience = #scale[1.2]{%.4f%%}}", eRatioEffic);
+        line9.Form("#scale[1.0]{#color[4]{eRatio Det Rate = #scale[1.2]{%.4f%%}}}", deteRatioRateElc);
+        line10.Form("#scale[1.0]{#color[2]{eRatio FA = #scale[1.2]{%.4f%%}}}", ( 100. - deteRatioRateJet ));
+        line11.Form("#scale[1.1]{Et_{Em} Efficience = #scale[1.2]{%.4f%%}}", etEffic);
+        line12.Form("#scale[1.0]{#color[4]{Et_{Em} Det Rate = #scale[1.2]{%.4f%%}}}", detEtRateElc);
+        line13.Form("#scale[1.0]{#color[2]{Et_{Em} FA = #scale[1.2]{%.4f%%}}}", ( 100. - detEtRateJet));
+        line14.Form("#scale[1.1]{Et_{Had} Efficience = #scale[1.2]{%.4f%%}}", hadEtEffic);
+        line15.Form("#scale[1.0]{#color[4]{Et_{Had} Det Rate = #scale[1.2]{%.4f%%}}}", detHadEtRateElc);
+        line16.Form("#scale[1.0]{#color[2]{Et_{Had} FA = #scale[1.2]{%.4f%%}}}", ( 100. - detHadEtRateJet));
+        pt->SetTextAlign(21);
+        pt->AddText(0.5,0.9,line1);
+        pt->AddText(0.5,0.8,line2);
+        pt->AddText(0.3,0.70,line3);
+        pt->AddText(0.7,0.70,line4);
+        pt->SetTextAlign(22);
+        float y = 0.90; const float yDecrement = (.95 - .05)/8; float x1 = 0.2; float x2 = 0.4; float x3 = 0.6; 
+        ptT2Calo->AddText(x2, y, line5);  y-=yDecrement;
+        ptT2Calo->AddText(x1, y, line6);
+        ptT2Calo->AddText(x3, y, line7);  y-=yDecrement;
+        ptT2Calo->AddText(x2, y, line8);  y-=yDecrement;
+        ptT2Calo->AddText(x1, y, line9);   
+        ptT2Calo->AddText(x3, y, line10);  y-=yDecrement;
+        ptT2Calo->AddText(x2, y, line11); y-=yDecrement;
+        ptT2Calo->AddText(x1, y, line12);
+        ptT2Calo->AddText(x3, y, line13); y-=yDecrement;
+        ptT2Calo->AddText(x2, y, line14); y-=yDecrement;
+        ptT2Calo->AddText(x1, y, line15);
+        ptT2Calo->AddText(x3, y, line16);
     } else {
-        cout<<"Not know T2Calo or Ringer Type"<<endl;
+        cout<<"Unknown T2Calo or Ringer Type"<<endl;
         return 1;
     }
     TString line666("Signal Processing Laboratory - COPPE/UFRJ");
-    TText *p1 = pt->AddText(0.43, 0.02, line666);
+    TText *p1 = pt->AddText(0.7, 0.02, line666);
     p1->SetTextSize(0.04);
 
     pt->Draw();
