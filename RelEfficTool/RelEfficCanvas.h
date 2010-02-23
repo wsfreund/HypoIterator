@@ -11,6 +11,7 @@
 #include "TPaveText.h"
 #include "TString.h"
 #include "TLatex.h"
+#include "TROOT.h"
 
 class RelEfficCanvas {
 
@@ -28,7 +29,7 @@ class RelEfficCanvas {
     int Draw();
     ~RelEfficCanvas(){
         if (relCanvas){
-            if (relCanvas->GetCanvasImp()){
+            if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
                 relCanvas->Closed();
                 delete relCanvas;
             }

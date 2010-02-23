@@ -288,7 +288,7 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
 
 
 //Create T2Calo Graphic for debug comparision
-HypoBase::CODE T2CaCommon::drawCutCounter(){
+HypoBase::CODE T2CaCommon::DrawCutCounter(){
 
     TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
@@ -337,6 +337,45 @@ HypoBase::CODE T2CaCommon::drawCutCounter(){
 
 }
 
+HypoBase::CODE T2CaCommon::DrawCutStats(){
+    TPaveText pt = TPaveText(.05,.05,.95,.95);
+    TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
+
+
+    if (dataLabel == "elc")
+        line1.Form("#scale[1.2]{Total Data : Electrons = %.d}", totalData);
+    else if (dataLabel == "jet")
+        line1.Form("#scale[1.2]{Total Data : Jets = %.d}", totalData);
+    line2.Form("rCore Cuts = %.d", rCoreCuts);
+    line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
+    line4.Form("eRatio Cuts %.d", eRatioCuts);
+    line5.Form("eRatio Detection Rate = %.4f%%", deteRatioCuts);
+    line6.Form("Et_em Cuts = %.d", etCuts);
+    line7.Form("Et_em Rate = %.4f%%", detEtRate);
+    line8.Form("Et_had Cuts = %.d", hadEtCuts);
+    line9.Form("Et_had Rate = %.4f%%", detHadEtRate);
+
+    pt.AddText("");
+    pt.AddText(line1);
+    pt.AddText("");
+    pt.AddText(line2);
+    pt.AddText(line3);
+    pt.AddText("");
+    pt.AddText(line4);
+    pt.AddText(line5);
+    pt.AddText("");
+    pt.AddText(line6);
+    pt.AddText(line7);
+    pt.AddText("");
+    pt.AddText(line8);
+    pt.AddText(line9);
+    pt.SetFillColor(30);
+    pt.SetTextAlign(22);
+    pt.SetLabel(dataLabel.c_str());
+    pt.Draw();
+
+    return Graphs::OK;
+}
 T2CaCommon::~T2CaCommon(){
 
     delete  hadET_T2Calo;

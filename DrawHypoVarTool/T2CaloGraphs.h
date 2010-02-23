@@ -1,34 +1,20 @@
-#ifndef T2CALO_GRAPHS
-#define T2CALO_GRAPHS
+#ifndef T2CAVARGRAPH_H
+#define T2CAVARGRAPH_H
 
-#include"Graphs.h"
-#include"../T2CaloConfig.h"
-#include"TPaveStats.h"
-#include"TH1F.h"
-#include<cstring>
-#include"TList.h"
-#include<iostream>
-#include<TPad.h>
+#include "../T2CaCommon.h"
+#include "HypoVarHist.h"
+#include <cstring>
+#include <iostream>
+#include <TPad.h>
 
-class T2CaloGraphs : public Graphs {
+class T2CaVarGraph : public T2CaCommon {
 
     protected:
 
-    TH1F *trCore;
-    TH1F *teRatio;
-    TH1F *tEt;
-    TH1F *tHadEt;
-
-    unsigned rCoreCuts;
-    unsigned eRatioCuts;
-    unsigned etCuts;
-    unsigned hadEtCuts;
-    unsigned totalData;
-
-    TPaveStats *psrCore;
-    TPaveStats *pseRatio;
-    TPaveStats *psEt; 
-    TPaveStats *psHadEt;
+    HypoVarHist *trCore;
+    HypoVarHist *teRatio;
+    HypoVarHist *tEt;
+    HypoVarHist *tHadEt;
 
     PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
 
@@ -42,14 +28,8 @@ class T2CaloGraphs : public Graphs {
 
     public:
 
-    T2CaloGraphs(const std::string &dataPath, const std::string &userDataLabel);
-
-    CODE drawCut(const std::string &cut);
-    CODE drawCut(const std::string &cut, const std::string &mode);
-    double getMaximum(const std::string &cut);
-
-
-    ~T2CaloGraphs();
+    T2CaVarGraph();
+    ~T2CaVarGraph();
 
 };
 

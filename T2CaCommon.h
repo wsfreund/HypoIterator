@@ -7,6 +7,7 @@
 #include "TChain.h"
 #include "TH1F.h"
 #include "TTree.h"
+#include "TPaveStats.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -64,7 +65,8 @@ class T2CaCommon : public HypoBase {
     public:
     T2CaCommon(const std::string &chainPath);
     CODE exec();
-    CODE drawCutCounter();
+    CODE DrawCutCounter();
+    virtual CODE DrawCutStats();
     void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}
