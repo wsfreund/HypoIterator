@@ -133,8 +133,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
 
     if ( dataHypo!=0){
         Long64_t n_entries = static_cast<Long64_t>( dataTree->GetEntries());
-
-        float maxData = -99999.;
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge ){
             unsigned regElectrons = 0;
             unsigned regData = 0;
@@ -143,8 +141,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 for(size_t i=0; i < vectorInput->size();++i){
                     if ( mev2gev )
                         vectorInput->at(i) *= 0.001;
-                    if (vectorInput->at(i)>maxData) maxData = vectorInput->at(i);
-                    
                     if ( isAtRegion(*edges, vectorInput->at(i), *(edges+1)) ){
                         ++regData;
                         if (vectorDec->at(i) == HypoBase::ELECTRON)
@@ -171,7 +167,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                 --NREGIONS, --lowEdge;
             }
         }
-        cout<<maxData<<endl;
     }/*else{
         for(unsigned lowEdge = 0; lowEdge < NREGIONS; ++lowEdge, ++effic, ++lowEdgeErrors, ++hiEdgeErrors){
             unsigned regElectrons = 0;

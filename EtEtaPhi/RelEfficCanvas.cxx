@@ -205,6 +205,9 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(line4);
         ptT2Calo->AddText(line5);
         ptT2Calo->AddText(line6);
+        TString line666("Signal Processing Laboratory - COPPE/UFRJ");
+        TText *p1 = pt->AddText(0.40, 0.02, line666);
+        p1->SetTextSize(0.04);
     //TWO DATA
     }else if (t2relEfficElc && t2relEfficJet){
         TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16;
@@ -261,13 +264,13 @@ int RelEfficCanvas::Draw(){
         ptT2Calo->AddText(x2, y, line14); y-=yDecrement;
         ptT2Calo->AddText(x1, y, line15);
         ptT2Calo->AddText(x3, y, line16);
+        TString line666("Signal Processing Laboratory - COPPE/UFRJ");
+        TText *p1 = pt->AddText(0.7, 0.02, line666);
+        p1->SetTextSize(0.04);
     } else {
         cout<<"Unknown T2Calo or Ringer Type"<<endl;
         return 1;
     }
-    TString line666("Signal Processing Laboratory - COPPE/UFRJ");
-    TText *p1 = pt->AddText(0.7, 0.02, line666);
-    p1->SetTextSize(0.04);
 
     pt->Draw();
     ptT2Calo->Draw();
