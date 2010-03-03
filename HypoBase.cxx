@@ -22,7 +22,7 @@ HypoBase::HypoBase(const std::string &chainPath){
         }else{
             std::string input;
             while( (input != "elc") && (input != "jet") ){
-                cout<<"No ID found, insert elc/jet"<<endl;
+                cout<<"No ID found. What kind of data should be used?[elc/jet]"<<endl;
                 std::getline(std::cin, input);
             }
             cout<<"Data will be treated as "<<input<<endl;

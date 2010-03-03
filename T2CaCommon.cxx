@@ -341,18 +341,17 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
     TPaveText pt = TPaveText(.05,.05,.95,.95);
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
 
-
     if (dataLabel == "elc")
-        line1.Form("#scale[1.2]{Total Data : Electrons = %.d}", totalData);
+        line1.Form("#scale[1.2]{Total Data : Electrons = %d}", totalData);
     else if (dataLabel == "jet")
-        line1.Form("#scale[1.2]{Total Data : Jets = %.d}", totalData);
-    line2.Form("rCore Cuts = %.d", rCoreCuts);
+        line1.Form("#scale[1.2]{Total Data : Jets = %d}", totalData);
+    line2.Form("rCore Cuts = %d", rCoreCuts);
     line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
-    line4.Form("eRatio Cuts %.d", eRatioCuts);
-    line5.Form("eRatio Detection Rate = %.4f%%", deteRatioCuts);
-    line6.Form("Et_em Cuts = %.d", etCuts);
+    line4.Form("eRatio Cuts %d", eRatioCuts);
+    line5.Form("eRatio Detection Rate = %.4f%%", deteRatioRate);
+    line6.Form("Et_em Cuts = %d", etCuts);
     line7.Form("Et_em Rate = %.4f%%", detEtRate);
-    line8.Form("Et_had Cuts = %.d", hadEtCuts);
+    line8.Form("Et_had Cuts = %d", hadEtCuts);
     line9.Form("Et_had Rate = %.4f%%", detHadEtRate);
 
     pt.AddText("");
@@ -374,7 +373,7 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
     pt.SetLabel(dataLabel.c_str());
     pt.Draw();
 
-    return Graphs::OK;
+    return HypoBase::OK;
 }
 T2CaCommon::~T2CaCommon(){
 

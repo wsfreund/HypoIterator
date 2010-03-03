@@ -23,13 +23,13 @@ int RelEfficCanvas::Draw(){
     T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
     std::string dataLabel;
-   if (t2relEfficData){ 
+    if (t2relEfficData){ 
         t2relEfficData->getDataLabel(dataLabel);
-   }
+    }
     relCanvas->Divide(2,2);
-    
+
     // ETA 
-    
+
     TVirtualPad *etaPad = relCanvas->cd(1);
     TH1F *th1EtaPad;
     if (t2relEfficData){
