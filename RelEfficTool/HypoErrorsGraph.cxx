@@ -80,6 +80,8 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
             graph->SetMarkerStyle(20);
         }
         else if (hypoLabel == "jet"){
+            graph->SetMarkerSize(0.8);
+            graph->SetLineWidth(0.4);
             graph->SetMarkerColor(2);
             graph->SetLineColor(2);
             graph->SetMarkerStyle(21);
