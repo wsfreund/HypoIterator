@@ -90,7 +90,6 @@ int RelEfficCanvas::Draw(const int numPads){
           if (dataLabel == "jet"){
               th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
               th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
-              t2relEfficJet->getGraph("phi")->SetLineStyle(kDashed);
           }
           t2relEfficData->DrawEfficVs("phi", "LP");
       } else if (t2relEfficElc && t2relEfficJet){
@@ -98,6 +97,7 @@ int RelEfficCanvas::Draw(const int numPads){
           th1PhiPad->GetYaxis()->SetTitle("Rating (%)");
           t2relEfficElc->DrawEfficVs("phi","LP");
           t2relEfficJet->DrawEfficVs("phi","LP,SAME");
+          t2relEfficJet->getGraph("phi")->SetLineStyle(kDashed);
       } else {
           cout<<"Not know T2Calo or Ringer Type"<<endl;
           return 1;
