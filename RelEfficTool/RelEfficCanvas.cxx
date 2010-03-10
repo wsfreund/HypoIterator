@@ -296,7 +296,7 @@ int RelEfficCanvas::Draw(const int numPads){
       
       TVirtualPad *etPad = relCanvas->cd(1);
       TH1F *th1EtPad;
-      legend = new TLegend(.88,.83,.995,.98);
+      legend = new TLegend(.90,.83,.995,.98);
       if (t2relEfficData){
           if (dataLabel == "elc"){
               th1EtPad = etPad->DrawFrame(15, 90, 80, 100);
