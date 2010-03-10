@@ -221,6 +221,18 @@ int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode, const
     return 0;
 }
 
+TH1F* T2CaVarGraph::getHist(const std::string &var){
+    if (var == "rcore")
+        return trCore->getHist();
+    else if (var == "eratio")
+        return teRatio->getHist();
+    else if (var == "et")
+        return tEt->getHist();
+    else if (var == "hadet")
+        return tHadEt->getHist();
+    return 0;
+}
+
 T2CaVarGraph::~T2CaVarGraph(){
     delete trCore;
     delete teRatio;

@@ -36,6 +36,7 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     CODE exec();
     CODE DrawCutStats();
     int DrawVar(const std::string &var, const std::string &mode="", const bool scaled = true);
+    TH1F * getHist(const std::string &var);
     ~T2CaVarGraph();
 
 };

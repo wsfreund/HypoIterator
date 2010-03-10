@@ -6,11 +6,11 @@ dataLabel(userDataLabel){
     std::string label;
 
     if (dataLabel == "elc")
-        label = "Electrons";
+        label = "Electrons (NO Pile-up)";
     else if (dataLabel == "pile elc")
         label = "Electrons (Pile-up)";
     else if (dataLabel == "jet")
-        label = "Jets";
+        label = "Jets (NO Pile-up)";
     else if (dataLabel == "pile elc")
         label = "Jets (Pile-up)";
 

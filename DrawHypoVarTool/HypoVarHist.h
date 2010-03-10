@@ -22,7 +22,7 @@ public:
     ~HypoVarHist();
     int Draw(const std::string method = "", bool scaled = true);
     int Fill(float fillValue); 
-    double getMaximum() const {return hist->GetMaximum();}
+    TH1F *getHist() {return hist;}
 };
 
 

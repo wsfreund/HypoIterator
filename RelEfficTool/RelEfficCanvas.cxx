@@ -36,7 +36,7 @@ int RelEfficCanvas::Draw(const int numPads){
       TVirtualPad *etaPad = relCanvas->cd(1);
       TH1F *th1EtaPad;
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          i (dataLabel == "elc"){
               th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
               th1EtaPad->GetYaxis()->SetTitle("Detection (%)");
           }
