@@ -33,8 +33,9 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     public:
 
     T2CaVarGraph(const std::string &chainPath, bool shunt = false);
+    CODE exec();
     CODE DrawCutStats();
-    int DrawVar(const std::string &var, const std::string &mode="");
+    int DrawVar(const std::string &var, const std::string &mode="", const bool scaled = true);
     ~T2CaVarGraph();
 
 };

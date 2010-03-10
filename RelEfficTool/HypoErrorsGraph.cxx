@@ -29,7 +29,6 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
             delete this;
         }
     }
-    genGraph();
 }
 
 HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
@@ -48,7 +47,6 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     dataHypo = 0;
     dataLabel = userDataLabel;
     title = userTitle;
-    genGraph();
     mev2gev = false;
 }
     
@@ -68,6 +66,7 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     genEfficErrors(pEdges, pX, peffic, pLowErrors, pHiErrors); 
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
+    graph->SetFillColor(19);
     //Setting graph parameters:
     if (dataHypo !=0){
         std::string hypoLabel;
@@ -124,7 +123,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::genEdges(float* edges){
 
 inline HypoErrorsGraph::CODE HypoErrorsGraph::incrementEdges(const float* edges, float* centerBin){
     for(unsigned i = 0; i < NREGIONS;++i, ++edges, ++centerBin)
-    edges -= NREGIONS; centerBin-= NREGIONS;// it only iterates for NREGIONS eventhough edges is NPOINTS size.
+    edges -= NREGIONS; centerBin-= NREGIONS;// it only iterates for NREGIONS even though edges is NPOINTS size.
     return HypoErrorsGraph::OK;
 }
 
@@ -225,6 +224,7 @@ inline HypoErrorsGraph::CODE HypoErrorsGraph::checkAndGenErrors(const float &eff
 
 
 HypoErrorsGraph::CODE HypoErrorsGraph::Draw(const std::string &input){
+    genGraph();
     graph->Draw(input.c_str());
     return HypoErrorsGraph::OK;
 }

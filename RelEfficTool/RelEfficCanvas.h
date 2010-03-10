@@ -12,11 +12,14 @@
 #include "TString.h"
 #include "TLatex.h"
 #include "TROOT.h"
+#include "TLegend.h"
 
 class RelEfficCanvas {
 
     protected:
     TCanvas *relCanvas;
+    TCanvas *infoCanvas;
+    TLegend *legend;
     RelEfficBase *relEfficData;
     RelEfficBase *relEfficElc;
     RelEfficBase *relEfficJet;
@@ -26,16 +29,23 @@ class RelEfficCanvas {
 
     RelEfficCanvas(RelEfficBase *userRelEfficData);
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
-    int Draw();
+    int Draw(const int numPads = 4);
     ~RelEfficCanvas(){
+        if (legend)
+          delete legend;
         if (relCanvas){
             if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
                 relCanvas->Closed();
                 delete relCanvas;
             }
         }
+        if (infoCanvas){
+          if (gROOT->GetListOfCanvases()->FindObject("Analysis Information")){
+            infoCanvas->Closed();
+            delete infoCanvas;
+          }
+        }
     }
-
 };
 
 

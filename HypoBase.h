@@ -21,7 +21,6 @@ class HypoBase {
     virtual CODE matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi);
     virtual CODE swapVectors(const size_t index1, const size_t index2) = 0;
     virtual CODE eraseVectors(const size_t index) = 0;
-    virtual CODE exec() = 0;
     CODE fillHypoRate();
     std::vector<float>      *lvl2_eta;
     std::vector<float>      *lvl2_phi;
@@ -50,6 +49,7 @@ class HypoBase {
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
     virtual void getDataLabel(std::string &hypoDataLabel) const{hypoDataLabel = dataLabel;}
+    virtual CODE exec() = 0;
 
 
     virtual ~HypoBase();

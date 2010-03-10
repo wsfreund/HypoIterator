@@ -36,7 +36,7 @@ class HypoErrorsGraph {
     CODE genGraph();
     CODE genEdges(float* edges);
     CODE incrementEdges(const float*  edges, float* centerBin);
-    CODE genEfficErrors(float* edges, float* pX, float* effic, float* lowErrors, float* hiErrors) ;
+    CODE genEfficErrors(float* edges, float* pX, float* effic, float* lowErrors, float* hiErrors);
     bool isAtRegion(const float lowEdge, const float data, const float hiEdge);
     CODE checkAndGenErrors(const float &efic, float &error, float &lowError, float &hiError);
 
@@ -49,10 +49,10 @@ class HypoErrorsGraph {
     HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
     HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);
     
-    TGraphAsymmErrors *& getGraph(){ return graph; };
+    TGraphAsymmErrors *getGraph(){ return graph; }
     CODE Draw(const std::string &input);
 
-    void getGraph(TGraphAsymmErrors *&userGraph)const { userGraph = graph; };
+    void getGraph(TGraphAsymmErrors *&userGraph)const { userGraph = graph; }
 
     ~HypoErrorsGraph();
 

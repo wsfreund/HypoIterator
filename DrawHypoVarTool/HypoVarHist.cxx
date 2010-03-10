@@ -14,35 +14,36 @@ dataLabel(userDataLabel){
     else if (dataLabel == "pile elc")
         label = "Jets (Pile-up)";
 
-    hist = new TH1F((dataLabel + " " + varName).c_str(), (varName + " Hist").c_str(), nBins, xLow, xHi);
+    hist = new TH1F(label.c_str(), (varName + " Hist").c_str(), nBins, xLow, xHi);
     if ( dataLabel == "elc" || dataLabel == "jet")
         hist->SetLineColor(kBlue);
     if ( dataLabel == "pile elc" || dataLabel == "pile jet")
         hist->SetLineColor(kRed);
+    hist->SetStats(true);
 }
 
 int HypoVarHist::Draw(const std::string method, bool scaled){
-    cout<<"On HypoVarHist Draw"<<endl;
-    if(scaled)  
+    if(scaled){  
         hist->Scale(1/hist->Integral());
-    cout<<"Scaled"<<endl;
+    }
     hist->Draw(method.c_str());
-    cout<<"Drawed"<<endl;
     gPad->Update();
+    histStats = (TPaveStats*)hist->GetListOfFunctions()->FindObject("stats");
     if ( dataLabel == "elc" || dataLabel == "jet"){
-        histStats = (TPaveStats*)hist->GetListOfFunctions()->FindObject("stats");
-        histStats->SetX1NDC(0.8); histStats->SetX2NDC(0.98);
-        histStats->SetTextColor(kBlue);
-        histStats->Draw();
+        if (histStats){
+          histStats->SetX1NDC(0.8); histStats->SetX2NDC(0.98);
+          histStats->SetTextColor(kBlue);
+          histStats->Draw();
+        }
     }
     else if ( dataLabel == "pile elc" || dataLabel == "pile jet"){
-        histStats = (TPaveStats*)hist->GetListOfFunctions()->FindObject("stats");
-        histStats->SetX1NDC(0.55); histStats->SetX2NDC(0.75);
-        histStats->SetTextColor(kRed);
-        histStats->Draw();
+        if (histStats){
+          histStats->SetX1NDC(0.55); histStats->SetX2NDC(0.75);
+          histStats->SetTextColor(kRed);
+          histStats->Draw();
+        }
     }
     gPad->Update();
-    cout<<"Draw PaveText"<<endl;
     return 0;
 }
 

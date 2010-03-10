@@ -21,14 +21,14 @@ class RelEfficBase {
         NREGIONS(userNREGIONS){
         etaxEfficGraph = 0; phixEfficGraph = 0; etxEfficGraph = 0;}
     virtual int DrawEfficVs(const std::string &vsWho, const std::string &opt) = 0;
-    virtual void getGraph(const std::string &dataType, TGraphAsymmErrors *&userGraph){
+    virtual TGraphAsymmErrors* getGraph(const std::string &dataType){
         if(dataType == "eta")
-            etaxEfficGraph->getGraph(userGraph);
+            return etaxEfficGraph->getGraph();
         if(dataType == "phi")
-            phixEfficGraph->getGraph(userGraph);
+            return phixEfficGraph->getGraph();
         if(dataType == "et")
-            etxEfficGraph->getGraph(userGraph); 
-
+            return etxEfficGraph->getGraph(); 
+        return 0;
     }
 
     virtual ~RelEfficBase(){};

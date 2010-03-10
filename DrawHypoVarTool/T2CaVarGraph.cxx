@@ -31,8 +31,40 @@ T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, bool shunt):T2CaCommon(
     tHadEt = new HypoVarHist(100, -0.01, .1, dataLabel, std::string("HAD E_{T}"));
 }
 
+HypoBase::CODE T2CaVarGraph::exec(){
+    int n_entries = static_cast<int>(hypoChain->GetEntries());
+    for(int i=0; i<n_entries; ++i){
+        hypoChain->GetEntry(i);
+        calcTransverseFraction();//calculate the Transverse Energy and Energy Fraction F1 for its ROI i;
 
-T2CaVarGraph::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
+        for(size_t j=0; j<lvl2_eta->size(); ++j){
+            T2CaCommon::PCUTS  roiAns = applyCuts( lvl2_eta->at(j) , rCore->at(j), F1->at(j), energyRatio->at(j), et->at(j), hadET_T2Calo->at(j) ); // apply cut for each ROI j;
+            t2CaAns->push_back(roiAns); //Fill passed cuts with the event answer given by T2Calo.
+            fillDecision(roiAns); //Fill vector telling if the event was a electron or a jet;
+        }//for j
+        matchAndOrdenate(ringer_eta, ringer_phi);
+        extraVariables->Fill();
+        clearVectors();
+    }
+    fillHypoRate();
+    if (totalData!=0){
+        if (dataLabel == "elc"){
+            detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
+            deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
+            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
+            detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
+        }
+        if (dataLabel == "jet"){
+            detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
+            deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
+            detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
+            detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
+        }
+    }
+    return HypoBase::OK;
+}
+
+T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
     T2CaCommon::PCUTS pass = T2CaCommon::AP;
     if (useShunt){
         size_t      etaBin = 0;
@@ -177,17 +209,15 @@ HypoBase::CODE T2CaVarGraph::DrawCutStats(){
     return HypoBase::OK;
 }
 
-int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode){
-    cout<<"Drawing "+var<<" with mode "+mode<<endl;
+int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode, const bool scaled){
     if (var == "rcore")
-        trCore->Draw(mode);
+        trCore->Draw(mode, scaled);
     else if (var == "eratio")
-        teRatio->Draw(mode);
+        teRatio->Draw(mode, scaled);
     else if (var == "et")
-        tEt->Draw(mode);
+        tEt->Draw(mode, scaled);
     else if (var == "hadet")
-        tHadEt->Draw(mode);
-    cout<<"Ended"<<endl;
+        tHadEt->Draw(mode, scaled);
     return 0;
 }
 
