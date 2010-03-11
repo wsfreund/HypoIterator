@@ -7,6 +7,7 @@
 #include "HypoVarHist.h"
 #include <cstring>
 #include <iostream>
+#include "TGraph.h"
 #include <TPad.h>
 #include "TString.h"
 #include "TPaveText.h"
@@ -19,6 +20,7 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     HypoVarHist *teRatio;
     HypoVarHist *tEt;
     HypoVarHist *tHadEt;
+
 
     bool useShunt;
 
@@ -36,7 +38,7 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     CODE exec();
     CODE DrawCutStats();
     int DrawVar(const std::string &var, const std::string &mode="", const bool scaled = true);
-    TH1F * getHist(const std::string &var);
+    TH1F *getHist(const std::string &var);
     ~T2CaVarGraph();
 
 };

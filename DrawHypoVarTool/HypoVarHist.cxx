@@ -14,7 +14,7 @@ dataLabel(userDataLabel){
     else if (dataLabel == "pile elc")
         label = "Jets (Pile-up)";
 
-    hist = new TH1F(label.c_str(), (varName + " Hist").c_str(), nBins, xLow, xHi);
+    hist = new TH1F(label.c_str(), (varName + " Hist;"+varName).c_str(), nBins, xLow, xHi);
     if ( dataLabel == "elc" || dataLabel == "jet")
         hist->SetLineColor(kBlue);
     if ( dataLabel == "pile elc" || dataLabel == "pile jet")

@@ -27,7 +27,7 @@ T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, bool shunt):T2CaCommon(
 
     trCore = new HypoVarHist(100, 0.5, 1.02, dataLabel, std::string("rCore"));
     teRatio = new HypoVarHist(100, -0.02, 1.02, dataLabel, std::string("eRatio"));
-    tEt = new HypoVarHist(100, 0., 50.e3, dataLabel, std::string("E_{T}"));
+    tEt = new HypoVarHist(100, 0., 50, dataLabel, std::string("E_{T}"));
     tHadEt = new HypoVarHist(100, -0.01, .1, dataLabel, std::string("HAD E_{T}"));
 }
 
@@ -61,6 +61,7 @@ HypoBase::CODE T2CaVarGraph::exec(){
             detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
         }
     }
+    
     return HypoBase::OK;
 }
 
@@ -141,7 +142,7 @@ inline bool T2CaVarGraph::cuteRatio(const float eRatio, const float F1, const fl
 }
 
 inline bool T2CaVarGraph::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
-    tEt->Fill(eT_T2Calo);
+    tEt->Fill(eT_T2Calo*.001);//Filling into GeV units
     if ( eT_T2Calo < m_eTthr[etaBin] ){
         return true;
     }
@@ -210,14 +211,18 @@ HypoBase::CODE T2CaVarGraph::DrawCutStats(){
 }
 
 int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode, const bool scaled){
-    if (var == "rcore")
+    if (var == "rcore"){
         trCore->Draw(mode, scaled);
-    else if (var == "eratio")
+    }
+    else if (var == "eratio"){
         teRatio->Draw(mode, scaled);
-    else if (var == "et")
+    }
+    else if (var == "et"){
         tEt->Draw(mode, scaled);
-    else if (var == "hadet")
+    }
+    else if (var == "hadet"){
         tHadEt->Draw(mode, scaled);
+    }
     return 0;
 }
 

@@ -29,7 +29,7 @@ HypoVarCanvas::HypoVarCanvas(HypoVarBase *hypoVar1, HypoVarBase *hypoVar2){
 }   
 
 
-int HypoVarCanvas::Draw(){
+int HypoVarCanvas::Draw(bool scaled){
 
     hypoVarCanvas = new TCanvas("Hypo Variables Analysis", "Hypo Variables Analysis");
     T2CaVarGraph *t2varPile   = dynamic_cast<T2CaVarGraph*>(hypoVarPile);
@@ -38,52 +38,76 @@ int HypoVarCanvas::Draw(){
     hypoVarCanvas->Divide(2,2);
 
     if (t2varPile && t2varCommon){
+        //RCORE
+        float rCoreCutPoint[2] = {m_carcorethr[0], m_carcorethr[0]};
+        float rCoreCutHeight[2] = {0.};
         TVirtualPad *rcorePad = hypoVarCanvas->cd(1);
-        cout<<"Common rcore maximum = "<<t2varCommon->getHist("rcore")->GetMaximum()/t2varCommon->getHist("rcore")->GetEntries()<<endl;
-        cout<<"Pile rcore maximum = "<<t2varPile->getHist("rcore")->GetMaximum()/t2varPile->getHist("rcore")->GetEntries()<<endl;
         if (t2varCommon->getHist("rcore")->GetMaximum()/ t2varCommon->getHist("rcore")->GetEntries()> t2varPile->getHist("rcore")->GetMaximum()/t2varPile->getHist("rcore")->GetEntries()){
-          t2varCommon->DrawVar("rcore");
-          t2varPile->DrawVar("rcore","sames");
+          t2varCommon->DrawVar("rcore", "", scaled);
+          t2varPile->DrawVar("rcore","sames", scaled);
+          rCoreCutHeight[1] = t2varCommon->getHist("rcore")->GetMaximum();
         } else {
-          t2varPile->DrawVar("rcore");
-          t2varCommon->DrawVar("rcore","sames");
+          t2varPile->DrawVar("rcore", "", scaled);
+          t2varCommon->DrawVar("rcore","sames",scaled);
+          rCoreCutHeight[1] = t2varPile->getHist("rcore")->GetMaximum();
         }
+        grCoreCut = new TGraph(2,rCoreCutPoint,rCoreCutHeight);
+        grCoreCut->Draw();
+        grCoreCut->SetLineStyle(kDashed);
         rcorePad->SetFillColor(33);
         rcorePad->Modified();
+        //ERATIO
+        float eRatioCutPoint[2] = {m_caeratiothr[0], m_caeratiothr[0]};
+        float eRatioCutHeight[2] = {0.};
         TVirtualPad *eratioPad = hypoVarCanvas->cd(2);
-        cout<<"Common eratio maximum = "<<t2varCommon->getHist("eratio")->GetMaximum()/t2varCommon->getHist("eratio")->GetEntries()<<endl;
-        cout<<"Pile eratio maximum = "<<t2varPile->getHist("eratio")->GetMaximum()/t2varPile->getHist("eratio")->GetEntries()<<endl;
         if (t2varCommon->getHist("eratio")->GetMaximum()/t2varCommon->getHist("eratio")->GetEntries() > t2varPile->getHist("eratio")->GetMaximum()/t2varPile->getHist("eratio")->GetEntries()){
-          t2varCommon->DrawVar("eratio");
-          t2varPile->DrawVar("eratio","sames");
+          t2varCommon->DrawVar("eratio", "", scaled);
+          t2varPile->DrawVar("eratio","sames", scaled);
+          eRatioCutHeight[1] = t2varCommon->getHist("eratio")->GetMaximum();
         } else {
-          t2varPile->DrawVar("eratio");
-          t2varCommon->DrawVar("eratio","sames");
+          t2varPile->DrawVar("eratio", "", scaled);
+          t2varCommon->DrawVar("eratio","sames", scaled);
+          eRatioCutHeight[1] = t2varPile->getHist("eratio")->GetMaximum();
         }
+        geRatioCut = new TGraph(2,eRatioCutPoint,eRatioCutHeight);
+        geRatioCut->Draw();
+        geRatioCut->SetLineStyle(kDashed);
         eratioPad->SetFillColor(33);
         eratioPad->Modified();
-        cout<<"Common et maximum = "<<t2varCommon->getHist("et")->GetMaximum()/t2varCommon->getHist("et")->GetEntries()<<endl;
-        cout<<"Pile et maximum = "<<t2varPile->getHist("et")->GetMaximum()/t2varPile->getHist("et")->GetEntries()<<endl;
         TVirtualPad *etPad = hypoVarCanvas->cd(3);
+        //ET
+        float etCutPoint[2] = {m_eTthr[0]*.001, m_eTthr[0]*.001};
+        float etCutHeight[2] = {0.};
         if (t2varCommon->getHist("et")->GetMaximum()/t2varCommon->getHist("et")->GetEntries()> t2varPile->getHist("et")->GetMaximum()/t2varPile->getHist("et")->GetEntries()){
           t2varCommon->DrawVar("et");
           t2varPile->DrawVar("et","sames");
+          etCutHeight[1] = t2varCommon->getHist("et")->GetMaximum();
         } else {
-          t2varPile->DrawVar("et");
-          t2varCommon->DrawVar("et","sames");
+          t2varPile->DrawVar("et", "", scaled);
+          t2varCommon->DrawVar("et","sames", scaled);
+          etCutHeight[1] = t2varPile->getHist("et")->GetMaximum();
         }
+        gEtCut = new TGraph(2,etCutPoint,etCutHeight);
+        gEtCut->Draw();
+        gEtCut->SetLineStyle(kDashed);
         etPad->SetFillColor(33);
         etPad->Modified();
-        cout<<"Common hadet maximum = "<<t2varCommon->getHist("hadet")->GetMaximum()/t2varCommon->getHist("hadet")->GetEntries()<<endl;
-        cout<<"Pile hadet maximum = "<<t2varPile->getHist("hadet")->GetMaximum()/t2varPile->getHist("hadet")->GetEntries()<<endl;
         TVirtualPad *hadEtPad = hypoVarCanvas->cd(4);
+        //HADET
+        float hadEtCutPoint[2] = {m_hadeTthr[0]*.001, m_hadeTthr[0]*.001};
+        float hadEtCutHeight[2] = {0.};
         if (t2varCommon->getHist("hadet")->GetMaximum()/t2varCommon->getHist("hadet")->GetEntries() > t2varPile->getHist("hadet")->GetMaximum()/t2varPile->getHist("hadet")->GetEntries()){
-          t2varCommon->DrawVar("hadet");
-          t2varPile->DrawVar("hadet","sames");
+          t2varCommon->DrawVar("hadet", "", scaled);
+          t2varPile->DrawVar("hadet","sames", scaled);
+          hadEtCutHeight[1] = t2varCommon->getHist("hadet")->GetMaximum();
         } else {
-          t2varPile->DrawVar("hadet");
-          t2varCommon->DrawVar("hadet","sames");
+          t2varPile->DrawVar("hadet", "", scaled);
+          t2varCommon->DrawVar("hadet","sames", scaled);
+          hadEtCutHeight[1] = t2varPile->getHist("hadet")->GetMaximum();
         }
+        gHadEtCut = new TGraph(2,hadEtCutPoint,hadEtCutHeight);
+        gHadEtCut->Draw();
+        gHadEtCut->SetLineStyle(kDashed);
         hadEtPad->SetFillColor(33);
         hadEtPad->Modified();
         TVirtualPad *t2caVarPad = hypoVarCanvas->cd();
