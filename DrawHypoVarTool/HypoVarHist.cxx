@@ -11,7 +11,7 @@ dataLabel(userDataLabel){
         label = "Electrons (Pile-up)";
     else if (dataLabel == "jet")
         label = "Jets (NO Pile-up)";
-    else if (dataLabel == "pile elc")
+    else if (dataLabel == "pile jet")
         label = "Jets (Pile-up)";
 
     std::string legend = varName;
