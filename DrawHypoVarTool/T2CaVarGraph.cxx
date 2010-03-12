@@ -95,7 +95,7 @@ T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, co
             pass = T2CaCommon::et_EM;
         }
         if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) ){
-        pass = T2CaCommon::et_HAD;
+            pass = T2CaCommon::et_HAD;
         }
     }else{
         size_t      etaBin = 0;
@@ -111,21 +111,23 @@ T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, co
             ++rCoreCuts;
             untouched = false;
         }
-        if (cuteRatio(eRatio, F1, eta, etaBin) && untouched){
-            pass = T2CaCommon::eRATIO;
-            ++eRatioCuts;
-            untouched = false;
-        }
-        if (cuteT_T2Calo(eT_T2Calo, etaBin) && untouched){
-            pass = T2CaCommon::et_EM;
-            ++etCuts;
-            untouched = false;
-        }
-        if (cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) &&untouched){
-            ++hadEtCuts;
-            pass = T2CaVarGraph::et_HAD;
-            untouched = false;
-        }
+        if (untouched)
+            if (cuteRatio(eRatio, F1, eta, etaBin) ){
+              pass = T2CaCommon::eRATIO;
+              ++eRatioCuts;
+              untouched = false;
+            }
+        if ( untouched )
+          if (cuteT_T2Calo(eT_T2Calo, etaBin)){
+              pass = T2CaCommon::et_EM;
+              ++etCuts;
+              untouched = false;
+          }
+        if ( untouched )
+          if ( cuthadET_T2Calo(hadET_T2Calo, eT_T2Calo, etaBin) ){
+              ++hadEtCuts;
+              pass = T2CaVarGraph::et_HAD;
+          }
     }
     return pass;
 }
