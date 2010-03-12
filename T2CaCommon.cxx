@@ -1,7 +1,15 @@
 #include "T2CaCommon.h"
 
-T2CaCommon::T2CaCommon(const std::string &chainPath):
-    HypoBase(chainPath){
+T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userData):
+  HypoBase(chainPath, userData):
+  rCoreCuts(0),
+  eRatioCuts(0),
+  etCUts(0),
+  hadEtCuts(0),
+  detrCoreRate(0.),
+  deteRatioRate(0.),
+  detEtRate(0.)
+  detHadEtRate(0.){
 
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
@@ -13,15 +21,6 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     t2CaAns = new std::vector<int>;
     ringer_eta = new std::vector<float>;
     ringer_phi = new std::vector<float>;
-
-    rCoreCuts = 0;
-    eRatioCuts = 0;
-    etCuts = 0;
-    hadEtCuts = 0;
-    detrCoreRate = 0;
-    deteRatioRate = 0;
-    detEtRate = 0;
-    detHadEtRate = 0;
 
     hypoChain->SetBranchStatus("T2CaEta",        true);
     hypoChain->SetBranchStatus("T2CaPhi",        true);
@@ -55,6 +54,61 @@ T2CaCommon::T2CaCommon(const std::string &chainPath):
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
 
     //exec();
+
+}
+
+T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id):
+  HypoBase(chainPath, userDataLabel, id):
+  rCoreCuts(0),
+  eRatioCuts(0),
+  etCUts(0),
+  hadEtCuts(0),
+  detrCoreRate(0.),
+  deteRatioRate(0.),
+  detEtRate(0.)
+  detHadEtRate(0.){
+
+    hadET_T2Calo = new std::vector<float>;
+    rCore = new std::vector<float>;
+    energyRatio = new std::vector<float>;
+    F1 = new std::vector<float>;
+    energy = new std::vector<float>;
+    ehad1 = new std::vector<float>;
+    energyS1 = new std::vector<float>;
+    t2CaAns = new std::vector<int>;
+    ringer_eta = new std::vector<float>;
+    ringer_phi = new std::vector<float>;
+
+    hypoChain->SetBranchStatus("T2CaEta",        true);
+    hypoChain->SetBranchStatus("T2CaPhi",        true);
+    hypoChain->SetBranchStatus("T2CaRcore",      true);
+    hypoChain->SetBranchStatus("T2CaEratio",     true);
+    hypoChain->SetBranchStatus("T2CaEmES1",      true);
+    hypoChain->SetBranchStatus("T2CaEmE",        true);
+    hypoChain->SetBranchStatus("T2CaHadES0",     true);
+
+    hypoChain->SetBranchStatus("Ringer_LVL2_Eta",true);
+    hypoChain->SetBranchStatus("Ringer_LVL2_Phi",true);
+
+    hypoChain->SetBranchAddress("T2CaEta",       &lvl2_eta);
+    hypoChain->SetBranchAddress("T2CaPhi",       &lvl2_phi);
+    hypoChain->SetBranchAddress("T2CaRcore",     &rCore);
+    hypoChain->SetBranchAddress("T2CaEratio",    &energyRatio);
+    hypoChain->SetBranchAddress("T2CaEmES1",     &energyS1);
+    hypoChain->SetBranchAddress("T2CaEmE",       &energy);
+    hypoChain->SetBranchAddress("T2CaHadES0",    &ehad1);
+    hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
+    hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
+
+    extraVariables = new TTree("HypoData", "Tree with Hypo data");
+
+    extraVariables->Branch("T2CaEta", &lvl2_eta);
+    extraVariables->Branch("T2CaPhi", &lvl2_phi);
+    extraVariables->Branch("T2CaDec", &decision);
+    extraVariables->Branch("T2CaOut", &t2CaAns);
+    extraVariables->Branch("T2CaEt",  &et);
+    extraVariables->Branch("T2CaF1",  &F1);
+    extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
 
 }
 

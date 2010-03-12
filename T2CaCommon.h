@@ -64,19 +64,20 @@ class T2CaCommon : public HypoBase {
     virtual bool cutF1(const float F1);
 
     public:
-    T2CaCommon(const std::string &chainPath);
+    T2CaCommon(const std::string &chainPath, const std::string &userDataLabel);
+    T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id);
     CODE exec();
     CODE DrawCutCounter();
     virtual CODE DrawCutStats();
     void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
-    unsigned getrCoreCuts()const {return rCoreCuts;}
-    unsigned geteRatioCuts()const {return eRatioCuts;}
-    unsigned getEmCuts()const {return etCuts;}
-    unsigned getHadEtCuts()const {return hadEtCuts;}
-    float getDetrCoreRate()const {return detrCoreRate;}
-    float getDeteRatioRate()const {return deteRatioRate;}
-    float getDetEtRate()const {return detEtRate;}
-    float getDetHadEtRate()const {return detHadEtRate;}
+    virtual unsigned getrCoreCuts()const {return rCoreCuts;}
+    virtual unsigned geteRatioCuts()const {return eRatioCuts;}
+    virtual unsigned getEmCuts()const {return etCuts;}
+    virtual unsigned getHadEtCuts()const {return hadEtCuts;}
+    virtual float getDetrCoreRate()const {return detrCoreRate;}
+    virtual float getDeteRatioRate()const {return deteRatioRate;}
+    virtual float getDetEtRate()const {return detEtRate;}
+    virtual float getDetHadEtRate()const {return detHadEtRate;}
     ~T2CaCommon();
 
 };

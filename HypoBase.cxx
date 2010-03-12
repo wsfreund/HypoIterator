@@ -1,9 +1,10 @@
 #include "HypoBase.h"
 
-HypoBase::HypoBase(const std::string &chainPath):
+HypoBase::HypoBase(const std::string &chainPath, const std::string userDataLabel):
 totalData(0),
 detElc(0),
 detJet(0),
+dataLabel(userDataLabel),
 extraVariables(0){
     hypoChain = new TChain("CollectionTree");
     hypoChain->Add(chainPath.c_str());
@@ -12,26 +13,47 @@ extraVariables(0){
     lvl2_phi  = new std::vector<float>;
     decision  = new std::vector<int>;
     et        = new std::vector<float>;
-    size_t comp = chainPath.find("singlepart");
-    if (comp != std::string::npos){
-        dataLabel = "elc";
-    } else {
-        comp = chainPath.find("jf17");
-        if (comp!= std::string::npos){
-            dataLabel = "jet";
-        }else{
-            std::string input;
-            while( (input != "elc") && (input != "jet") ){
-                cout<<"No ID found. What kind of data should be used?[elc/jet]"<<endl;
-                std::getline(std::cin, input);
-            }
-            cout<<"Data will be treated as "<<input<<endl;
-            dataLabel = input;
-        }
+    if (dataLabel.find("Electron") != std::string::npos)
+      id = "elc";
+    else if (dataLabel.find("electron") != std::string::npos)
+      id = "elc";
+    else if (dataLabel.find("elc") != std::string::npos)
+      id = "elc";
+    else if (dataLabel.find("Jet") != std::string::npos)
+      id = "jet";
+    else if (dataLabel.find("jet") != std::string::npos)
+      id = "jet";
+    else {
+      std::string input;
+      while( (input != "elc") && (input != "jet") ){
+          cout<<"Could not set by ID. Type elc for electrons, jet for jets:[elc/jet]"<<endl;
+          std::getline(std::cin, input);
+      }
+      id = input;
+      cout<<"ID set to: "<<id<<endl;
     }
 }
 
-//Old Code that would match Eta and Phi that would not consider the -pi and +pi discontinuously 
+HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId)
+totalData(0),
+detElc(0),
+detJet(0),
+dataLabel(userDataLabel),
+extraVariables(0)
+id(userId){
+
+    hypoChain = new TChain("CollectionTree");
+    hypoChain->Add(chainPath.c_str());
+    hypoChain->SetBranchStatus("*", false);
+    lvl2_eta  = new std::vector<float>;
+    lvl2_phi  = new std::vector<float>;
+    decision  = new std::vector<int>;
+    et        = new std::vector<float>;
+
+}
+
+HypoBase::HypoBase(const std::string &chainPath, const std::string userDataLabel):
+//Old Code that would match Eta and Phi and do not consider coordinate pi discontinuously 
 /*HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi){
 
     for(size_t j=0; j<lvl2_eta->size();++j){
@@ -110,11 +132,11 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
 
 HypoBase::CODE HypoBase::fillHypoRate(){
     if (totalData !=0){
-        if (dataLabel == "elc"){
+        if (id  == "elc"){
             detRate = (float)detElc/(float)totalData*100.;
             faDetRate = (float)detJet/(float)totalData*100.;
         }
-        else if (dataLabel == "jet"){
+        else if (id == "jet"){
             detRate = (float)detJet/(float)totalData*100.;
             faDetRate = (float)detJet/(float)totalData*100.;
         }

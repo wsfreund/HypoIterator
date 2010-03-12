@@ -31,7 +31,9 @@ class HypoBase {
     unsigned detJet;
     float detRate;
     float faDetRate;
+
     std::string dataLabel;
+    std::string id;
 
     TChain *hypoChain;
     TTree *extraVariables;
@@ -39,7 +41,8 @@ class HypoBase {
     public:
     enum DECISION {JET = -1, ELECTRON = 1};
 
-    HypoBase(const std::string &chainPath);
+    HypoBase(const std::string &chainPath, const std::string &userDataLabel);
+    HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &id);
 
     virtual void getExtraVariables(TTree*& refExtraVariables) const{refExtraVariables = extraVariables;}
     unsigned getTotalData() const{ return totalData;}
@@ -47,7 +50,7 @@ class HypoBase {
     unsigned getDetJet() const{return detJet;}
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
-    virtual void getDataLabel(std::string &hypoDataLabel) const{hypoDataLabel = dataLabel;}
+    const std::string & getId() const{ return id;}
     virtual CODE exec() = 0;
 
 
