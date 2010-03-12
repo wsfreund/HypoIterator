@@ -94,7 +94,7 @@ int HypoVarCanvas::Draw(bool scaled){
         etPad->Modified();
         TVirtualPad *hadEtPad = hypoVarCanvas->cd(4);
         //HADET
-        float hadEtCutPoint[2] = {m_hadeTthr[0]*.001, m_hadeTthr[0]*.001};
+        float hadEtCutPoint[2] = {m_hadeTthr[0], m_hadeTthr[0]};
         float hadEtCutHeight[2] = {0.};
         if (t2varCommon->getHist("hadet")->GetMaximum()/t2varCommon->getHist("hadet")->GetEntries() > t2varPile->getHist("hadet")->GetMaximum()/t2varPile->getHist("hadet")->GetEntries()){
           t2varCommon->DrawVar("hadet", "", scaled);
