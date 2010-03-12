@@ -118,3 +118,56 @@ int HypoVarCanvas::Draw(bool scaled){
 }
 
 
+int HypoVarCanvas::setRange(const std::string &var, const float x1, const float x2, const std::string &axis){
+  hypoVarPile->setRange(var,x1,x2,axis);
+  hypoVarCommon->setRange(var,x1,x2,axis);
+  if (var == "rcore"){
+    hypoVarCanvas->cd(1)->Modified();
+    hypoVarCanvas->cd(1)->Update();
+  }else if (var == "eratio"){
+    hypoVarCanvas->cd(2)->Modified();
+    hypoVarCanvas->cd(2)->Update();
+  }else if (var == "et"){
+    hypoVarCanvas->cd(3)->Modified();
+    hypoVarCanvas->cd(3)->Update();
+  }else if (var == "hadet"){
+    hypoVarCanvas->cd(4)->Modified();
+    hypoVarCanvas->cd(4)->Update();
+  }
+  return 0;
+}
+
+int HypoVarCanvas::setRange(const int padNumber, const float x1, const float x2, const std::string &axis){
+  hypoVarPile->setRange(padNumber,x1,x2,axis);
+  hypoVarCommon->setRange(padNumber,x1,x2,axis);
+  hypoVarCanvas->cd(padNumber)->Modified();
+  hypoVarCanvas->cd(padNumber)->Update();
+  return 0;
+}
+
+int HypoVarCanvas::setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2){
+  hypoVarPile->setRange(var,x1,x2,y1,y2);
+  hypoVarCommon->setRange(var,x1,x2,y1,y2);
+  if (var == "rcore"){
+    hypoVarCanvas->cd(1)->Modified();
+    hypoVarCanvas->cd(1)->Update();
+  }else if (var == "eratio"){
+    hypoVarCanvas->cd(2)->Modified();
+    hypoVarCanvas->cd(2)->Update();
+  }else if (var == "et"){
+    hypoVarCanvas->cd(3)->Modified();
+    hypoVarCanvas->cd(3)->Update();
+  }else if (var == "hadet"){
+    hypoVarCanvas->cd(4)->Modified();
+    hypoVarCanvas->cd(4)->Update();
+  }
+  return 0;
+}
+
+int HypoVarCanvas::setRange(const int padNumber, const float x1, const float x2, const float y1, const float y2){
+  hypoVarPile->setRange(padNumber,x1,x2,y1,y2);
+  hypoVarCommon->setRange(padNumber,x1,x2,y1,y2);
+  hypoVarCanvas->cd(padNumber)->Modified();
+  hypoVarCanvas->cd(padNumber)->Update();
+  return 0;
+}

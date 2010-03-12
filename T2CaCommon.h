@@ -6,6 +6,7 @@
 #include <vector>
 #include "TChain.h"
 #include "TH1F.h"
+#include "TH1I.h"
 #include "TTree.h"
 #include "TPaveStats.h"
 #include <iostream>

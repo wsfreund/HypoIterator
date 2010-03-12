@@ -4,7 +4,6 @@
 #include<vector>
 #include<cmath>
 #include<TChain.h>
-#include<TH1I.h>
 #include<TTree.h>
 #include<cstring>
 #include<iostream>

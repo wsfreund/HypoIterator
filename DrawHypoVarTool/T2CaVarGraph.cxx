@@ -25,10 +25,19 @@ T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, bool shunt):T2CaCommon(
             dataLabel = "pile " + dataLabel;
     }
 
-    trCore = new HypoVarHist(100, 0.5, 1.02, dataLabel, std::string("rCore"));
-    teRatio = new HypoVarHist(100, -0.02, 1.02, dataLabel, std::string("eRatio"));
-    tEt = new HypoVarHist(100, 0., 50, dataLabel, std::string("E_{T}"));
-    tHadEt = new HypoVarHist(100, -0.01, .1, dataLabel, std::string("HAD E_{T}"));
+    cout<<dataLabel<<endl;
+    if (dataLabel == "elc" || dataLabel == "pile elc" ){
+      trCore = new HypoVarHist(100, 0.9, 1.02, dataLabel, std::string("rCore"));
+      teRatio = new HypoVarHist(100, 0.82, 1., dataLabel, std::string("eRatio"));
+      tEt = new HypoVarHist(100, 5., 85., dataLabel, std::string("E_{T}"));
+      tHadEt = new HypoVarHist(100, -0.01, .01, dataLabel, std::string("HAD E_{T}"));
+    }
+    else {
+      trCore = new HypoVarHist(100, 0.5, 1.02, dataLabel, std::string("rCore"));
+      teRatio = new HypoVarHist(100, -0.02, 1.02, dataLabel, std::string("eRatio"));
+      tEt = new HypoVarHist(100, 0., 50, dataLabel, std::string("E_{T}"));
+      tHadEt = new HypoVarHist(100, -0.02, .1, dataLabel, std::string("HAD E_{T}"));
+    }
 }
 
 HypoBase::CODE T2CaVarGraph::exec(){
@@ -236,6 +245,67 @@ TH1F* T2CaVarGraph::getHist(const std::string &var){
     else if (var == "hadet")
         return tHadEt->getHist();
     return 0;
+}
+
+int T2CaVarGraph::setRange(const int varNumber, const float x1, const float x2, const std::string &axis){
+  if (varNumber == 1){
+    trCore->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (varNumber == 2){
+    teRatio->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (varNumber == 3){
+    tEt->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (varNumber == 4){
+    tHadEt->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }
+  return HypoBase::OK;
+
+}
+
+int T2CaVarGraph::setRange(const int varNumber, const float x1, const float x2, const float y1, const float y2){
+  if (varNumber == 1){
+    trCore->getHist()->SetAxisRange(x1,x2);
+    trCore->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (varNumber == 2){
+    teRatio->getHist()->SetAxisRange(x1,x2);
+    teRatio->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (varNumber == 3){
+    tEt->getHist()->SetAxisRange(x1,x2);
+    tEt->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (varNumber == 4){
+    tHadEt->getHist()->SetAxisRange(x1,x2);
+    tHadEt->getHist()->SetAxisRange(y1,y2,"Y");
+  }
+  return HypoBase::OK;
+}
+
+int T2CaVarGraph::setRange(const std::string &var, const float x1, const float x2, const std::string &axis){
+  if (var == "rcore"){
+    trCore->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (var == "eratio"){
+    teRatio->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (var == "et"){
+    tEt->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }else if (var == "hadet"){
+    tHadEt->getHist()->SetAxisRange(x1,x2,axis.c_str());
+  }
+  return HypoBase::OK;
+}
+
+int T2CaVarGraph::setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2){
+  if (var == "rcore"){
+    trCore->getHist()->SetAxisRange(x1,x2);
+    trCore->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (var == "eratio"){
+    teRatio->getHist()->SetAxisRange(x1,x2);
+    teRatio->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (var == "et"){
+    tEt->getHist()->SetAxisRange(x1,x2);
+    tEt->getHist()->SetAxisRange(y1,y2,"Y");
+  }else if (var == "hadet"){
+    tHadEt->getHist()->SetAxisRange(x1,x2);
+    tHadEt->getHist()->SetAxisRange(y1,y2,"Y");
+  }
+  return HypoBase::OK;
 }
 
 T2CaVarGraph::~T2CaVarGraph(){

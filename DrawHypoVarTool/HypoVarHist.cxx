@@ -14,7 +14,14 @@ dataLabel(userDataLabel){
     else if (dataLabel == "pile elc")
         label = "Jets (Pile-up)";
 
-    hist = new TH1F(label.c_str(), (varName + " Hist;"+varName).c_str(), nBins, xLow, xHi);
+    std::string legend = varName;
+
+    if (varName == "E_{T}")
+      legend = "Transverse Energy (GeV)";
+    if (varName == "HAD E_{T}")
+      legend = "Hadronic Transverse Energy";
+    
+    hist = new TH1F(label.c_str(), (varName + " Hist;"+legend).c_str(), nBins, xLow, xHi);
     if ( dataLabel == "elc" || dataLabel == "jet")
         hist->SetLineColor(kBlue);
     if ( dataLabel == "pile elc" || dataLabel == "pile jet")

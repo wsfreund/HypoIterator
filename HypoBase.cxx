@@ -1,10 +1,10 @@
 #include "HypoBase.h"
 
-HypoBase::HypoBase(const std::string &chainPath){
-    extraVariables = 0;
-    totalData = 0;
-    detElc = 0;
-    detJet = 0;
+HypoBase::HypoBase(const std::string &chainPath):
+totalData(0),
+detElc(0),
+detJet(0),
+extraVariables(0){
     hypoChain = new TChain("CollectionTree");
     hypoChain->Add(chainPath.c_str());
     hypoChain->SetBranchStatus("*", false);
@@ -75,46 +75,28 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
                         matchingPair = j;
                 }
             }
-            /*if (matchingPair == -1){
-                if ( i == (eta->size() -1) ){
-                    cout<<" I = "<<i<<endl;
-                    cout<<"lvl2_eta(i) = "<<lvl2_eta->at(i)<<endl;
-                    cout<<"lvl2_phi(i) = "<<lvl2_phi->at(i)<<endl;
-                    cout<<"eta(i) = "<<eta->at(i)<<endl;
-                    cout<<"phi(i) = "<<phi->at(i)<<endl;
-                    if ( abs(lvl2_eta->at(i) - eta->at(i))< deta )
-                        deta = abs(lvl2_eta->at(i) - eta->at(i));
-                    float fdphi = abs( lvl2_phi->at(i) - phi->at(i) );
-                    float sdphi = abs( lvl2_phi->at(i) + phi->at(i) );
-                    if (sdphi<fdphi)
-                        fdphi = sdphi;
-                    if (fdphi<dphi)
-                        dphi = fdphi;
-                    if ( deta < MAXDETA && dphi < MAXDPHI )
-                        matchingPair = i;
-                }*/ if (matchingPair == -1){
-                    cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
-                    cout<<"T2Calo Cluster : "<<endl;
-                    cout<<"     eta : ";
-                    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-                        cout<<lvl2_eta->at(pos)<<" ";
-                    cout<<endl<<"     phi : ";
-                    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-                        cout<<lvl2_phi->at(pos)<<" ";
-                    cout<<endl<<"Ringer Cluster : "<<endl;
-                    cout<<"     eta : ";
-                    for (size_t pos=0; pos<eta->size(); ++pos)
-                        cout<<eta->at(pos)<<" ";
-                    cout<<endl<<"     phi : ";
-                    for (size_t pos=0; pos<phi->size(); ++pos)
-                        cout<<phi->at(pos)<<" ";
-                    cout<<endl<<"WARNING :: Deleting event!"<<endl;
-                    eraseVectors(0);
-                    break;
+            if (matchingPair == -1){
+                cout<<"WARNING :: T2Calo Cluster doesnt match with any inside Ringer Clusters"<<endl;
+                cout<<"T2Calo Cluster : "<<endl;
+                cout<<"     eta : ";
+                for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
+                    cout<<lvl2_eta->at(pos)<<" ";
+                cout<<endl<<"     phi : ";
+                for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
+                    cout<<lvl2_phi->at(pos)<<" ";
+                cout<<endl<<"Ringer Cluster : "<<endl;
+                cout<<"     eta : ";
+                for (size_t pos=0; pos<eta->size(); ++pos)
+                    cout<<eta->at(pos)<<" ";
+                cout<<endl<<"     phi : ";
+                for (size_t pos=0; pos<phi->size(); ++pos)
+                    cout<<phi->at(pos)<<" ";
+                cout<<endl<<"WARNING :: Deleting event!"<<endl;
+                eraseVectors(0);
+                break;
             }else{ 
                 unsigned uMatching = matchingPair;
                 if ( uMatching != i ){ 
-                    cout<<"Entrou nesse if, i = "<<i<<": uMatching = "<<uMatching<<endl;
                     swapVectors(i,uMatching);
                 }
             }
