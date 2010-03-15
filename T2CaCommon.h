@@ -52,22 +52,23 @@ class T2CaCommon : public HypoBase {
 
     //Functions
     virtual CODE calcTransverseFraction();
-    virtual CODE fillDecision(PCUTS entry);
+    CODE fillDecision(PCUTS entry);
+    CODE fillT2Rate();
     //Cuts
-    virtual PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
-    virtual bool cutEta(const float dEta);
-    virtual bool cutPhi(const float dPhi);
-    virtual bool cutrCore(const float rCore, const size_t etaBin);
-    virtual bool cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin);
-    virtual bool cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin);
-    virtual bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
-    virtual bool cutF1(const float F1);
+    PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
+    bool cutEta(const float dEta);
+    bool cutPhi(const float dPhi);
+    bool cutrCore(const float rCore, const size_t etaBin);
+    bool cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin);
+    bool cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin);
+    bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
+    bool cutF1(const float F1);
 
     public:
     T2CaCommon(const std::string &chainPath);
     CODE exec();
     CODE DrawCutCounter();
-    virtual CODE DrawCutStats();
+    CODE DrawCutStats();
     void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}

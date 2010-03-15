@@ -110,11 +110,11 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
 
 HypoBase::CODE HypoBase::fillHypoRate(){
     if (totalData !=0){
-        if (dataLabel == "elc"){
+        if (dataLabel.find("elc") != std::string::npos){
             detRate = (float)detElc/(float)totalData*100.;
             faDetRate = (float)detJet/(float)totalData*100.;
         }
-        else if (dataLabel == "jet"){
+        else if (dataLabel.find("jet") != std::string::npos){
             detRate = (float)detJet/(float)totalData*100.;
             faDetRate = (float)detJet/(float)totalData*100.;
         }

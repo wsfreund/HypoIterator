@@ -25,7 +25,6 @@ T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, bool shunt):T2CaCommon(
             dataLabel = "pile " + dataLabel;
     }
 
-    cout<<dataLabel<<endl;
     if (dataLabel == "elc" || dataLabel == "pile elc" ){
       trCore = new HypoVarHist(100, 0.9, 1.02, dataLabel, std::string("rCore"));
       teRatio = new HypoVarHist(100, 0.82, 1., dataLabel, std::string("eRatio"));
@@ -56,21 +55,7 @@ HypoBase::CODE T2CaVarGraph::exec(){
         clearVectors();
     }
     fillHypoRate();
-    if (totalData!=0){
-        if (dataLabel == "elc"){
-            detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
-            deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
-            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
-            detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
-        }
-        if (dataLabel == "jet"){
-            detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
-            deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
-            detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
-            detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
-        }
-    }
-    
+    fillT2Rate();
     return HypoBase::OK;
 }
 

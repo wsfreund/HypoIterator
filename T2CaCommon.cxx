@@ -75,18 +75,24 @@ HypoBase::CODE T2CaCommon::exec(){
         clearVectors();
     }
     fillHypoRate();
+    fillT2Rate();
+    return HypoBase::OK;
+
+}
+
+HypoBase::CODE T2CaCommon::fillT2Rate(){
     if (totalData!=0){
-        if (dataLabel == "elc"){
-            detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
-            deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
-            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
-            detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
+        if (dataLabel.find("elc") != std::string::npos){
+            T2CaCommon::detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
+            T2CaCommon::deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
+            T2CaCommon::detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
+            T2CaCommon::detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
         }
-        if (dataLabel == "jet"){
-            detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
-            deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
-            detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
-            detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
+        if (dataLabel.find("jet") != std::string::npos){
+            T2CaCommon::detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
+            T2CaCommon::deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
+            T2CaCommon::detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
+            T2CaCommon::detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
         }
     }
     return HypoBase::OK;
