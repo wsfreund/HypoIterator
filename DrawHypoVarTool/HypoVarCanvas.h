@@ -14,8 +14,8 @@ class HypoVarCanvas {
 
     protected:
     TCanvas *hypoVarCanvas;
-    HypoVarBase *hypoVarCommon;
-    HypoVarBase *hypoVarPile;
+    HypoVarBase *hypoVar1;
+    HypoVarBase *hypoVar2;
 
     TGraph *grCoreCut;
     TGraph *geRatioCut;
@@ -26,7 +26,7 @@ class HypoVarCanvas {
 
     public:
 
-    HypoVarCanvas(HypoVarBase *hypoVar1, HypoVarBase *hypoVar2);
+    HypoVarCanvas(HypoVarBase *userHypoVar1, HypoVarBase *userHypoVar2);
     int Draw(bool scaled = true);
     int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
     int setRange(const int padNumber, const float x1, const float x2, const std::string &axis = "X");

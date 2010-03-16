@@ -51,33 +51,35 @@ class T2CaCommon : public HypoBase {
     float detHadEtRate;
 
     //Functions
-    virtual CODE calcTransverseFraction();
-    virtual CODE fillDecision(PCUTS entry);
+    CODE calcTransverseFraction();
+    CODE fillDecision(PCUTS entry);
+    CODE fillT2CaRate();
+    CODE initialize();
     //Cuts
-    virtual PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
-    virtual bool cutEta(const float dEta);
-    virtual bool cutPhi(const float dPhi);
-    virtual bool cutrCore(const float rCore, const size_t etaBin);
-    virtual bool cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin);
-    virtual bool cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin);
-    virtual bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
-    virtual bool cutF1(const float F1);
+    PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
+    bool cutEta(const float dEta);
+    bool cutPhi(const float dPhi);
+    bool cutrCore(const float rCore, const size_t etaBin);
+    bool cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin);
+    bool cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin);
+    bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
+    bool cutF1(const float F1);
 
     public:
     T2CaCommon(const std::string &chainPath, const std::string &userDataLabel);
     T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id);
     CODE exec();
     CODE DrawCutCounter();
-    virtual CODE DrawCutStats();
+    CODE DrawCutStats();
     void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
-    virtual unsigned getrCoreCuts()const {return rCoreCuts;}
-    virtual unsigned geteRatioCuts()const {return eRatioCuts;}
-    virtual unsigned getEmCuts()const {return etCuts;}
-    virtual unsigned getHadEtCuts()const {return hadEtCuts;}
-    virtual float getDetrCoreRate()const {return detrCoreRate;}
-    virtual float getDeteRatioRate()const {return deteRatioRate;}
-    virtual float getDetEtRate()const {return detEtRate;}
-    virtual float getDetHadEtRate()const {return detHadEtRate;}
+    unsigned getrCoreCuts()const {return rCoreCuts;}
+    unsigned geteRatioCuts()const {return eRatioCuts;}
+    unsigned getEmCuts()const {return etCuts;}
+    unsigned getHadEtCuts()const {return hadEtCuts;}
+    float getDetrCoreRate()const {return detrCoreRate;}
+    float getDeteRatioRate()const {return deteRatioRate;}
+    float getDetEtRate()const {return detEtRate;}
+    float getDetHadEtRate()const {return detHadEtRate;}
     ~T2CaCommon();
 
 };

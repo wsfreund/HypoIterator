@@ -1,15 +1,35 @@
 #include "T2CaCommon.h"
 
-T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userData):
-  HypoBase(chainPath, userData):
-  rCoreCuts(0),
-  eRatioCuts(0),
-  etCUts(0),
-  hadEtCuts(0),
-  detrCoreRate(0.),
-  deteRatioRate(0.),
-  detEtRate(0.)
-  detHadEtRate(0.){
+T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel):
+HypoBase(chainPath, userDataLabel),
+rCoreCuts(0),
+eRatioCuts(0),
+etCuts(0),
+hadEtCuts(0),
+detrCoreRate(0.),
+deteRatioRate(0.),
+detEtRate(0.),
+detHadEtRate(0.)
+{
+    initialize();
+}
+
+T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id):
+HypoBase(chainPath, userDataLabel, id),
+rCoreCuts(0),
+eRatioCuts(0),
+etCuts(0),
+hadEtCuts(0),
+detrCoreRate(0.),
+deteRatioRate(0.),
+detEtRate(0.),
+detHadEtRate(0.)
+{
+  initialize();
+}
+
+inline HypoBase::CODE T2CaCommon::initialize(){
+
 
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
@@ -55,61 +75,7 @@ T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userData
 
     //exec();
 
-}
-
-T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id):
-  HypoBase(chainPath, userDataLabel, id):
-  rCoreCuts(0),
-  eRatioCuts(0),
-  etCUts(0),
-  hadEtCuts(0),
-  detrCoreRate(0.),
-  deteRatioRate(0.),
-  detEtRate(0.)
-  detHadEtRate(0.){
-
-    hadET_T2Calo = new std::vector<float>;
-    rCore = new std::vector<float>;
-    energyRatio = new std::vector<float>;
-    F1 = new std::vector<float>;
-    energy = new std::vector<float>;
-    ehad1 = new std::vector<float>;
-    energyS1 = new std::vector<float>;
-    t2CaAns = new std::vector<int>;
-    ringer_eta = new std::vector<float>;
-    ringer_phi = new std::vector<float>;
-
-    hypoChain->SetBranchStatus("T2CaEta",        true);
-    hypoChain->SetBranchStatus("T2CaPhi",        true);
-    hypoChain->SetBranchStatus("T2CaRcore",      true);
-    hypoChain->SetBranchStatus("T2CaEratio",     true);
-    hypoChain->SetBranchStatus("T2CaEmES1",      true);
-    hypoChain->SetBranchStatus("T2CaEmE",        true);
-    hypoChain->SetBranchStatus("T2CaHadES0",     true);
-
-    hypoChain->SetBranchStatus("Ringer_LVL2_Eta",true);
-    hypoChain->SetBranchStatus("Ringer_LVL2_Phi",true);
-
-    hypoChain->SetBranchAddress("T2CaEta",       &lvl2_eta);
-    hypoChain->SetBranchAddress("T2CaPhi",       &lvl2_phi);
-    hypoChain->SetBranchAddress("T2CaRcore",     &rCore);
-    hypoChain->SetBranchAddress("T2CaEratio",    &energyRatio);
-    hypoChain->SetBranchAddress("T2CaEmES1",     &energyS1);
-    hypoChain->SetBranchAddress("T2CaEmE",       &energy);
-    hypoChain->SetBranchAddress("T2CaHadES0",    &ehad1);
-    hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
-    hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
-
-    extraVariables = new TTree("HypoData", "Tree with Hypo data");
-
-    extraVariables->Branch("T2CaEta", &lvl2_eta);
-    extraVariables->Branch("T2CaPhi", &lvl2_phi);
-    extraVariables->Branch("T2CaDec", &decision);
-    extraVariables->Branch("T2CaOut", &t2CaAns);
-    extraVariables->Branch("T2CaEt",  &et);
-    extraVariables->Branch("T2CaF1",  &F1);
-    extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
-
+    return HypoBase::OK;
 }
 
 HypoBase::CODE T2CaCommon::exec(){
@@ -129,35 +95,41 @@ HypoBase::CODE T2CaCommon::exec(){
         clearVectors();
     }
     fillHypoRate();
+    fillT2CaRate();
+    return HypoBase::OK;
+
+}
+
+HypoBase::CODE T2CaCommon::fillT2CaRate(){
     if (totalData!=0){
-        if (dataLabel == "elc"){
+        if ( id.find("elc") != std::string::npos ){
             detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
             deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
             detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
             detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
         }
-        if (dataLabel == "jet"){
+        if ( id.find("jet") != std::string::npos ){
             detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
             deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
             detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
             detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
         }
     }
-    return HypoBase::OK;
 
+    return HypoBase::OK;
 }
 
-inline HypoBase::CODE T2CaCommon::calcTransverseFraction(){
+HypoBase::CODE T2CaCommon::calcTransverseFraction(){
     for(size_t j=0; j<lvl2_eta->size(); ++j){
         et->push_back( ( energy->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) );
-        //          hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); //Antiga implementação no T2Calo
+        //hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) ); // old
         hadET_T2Calo->push_back( ( ehad1->at(j) ) / ( cosh ( fabs ( lvl2_eta->at(j) ) ) ) / (et->at(j)) );
         F1->push_back( ( energyS1->at(j) ) / ( energy->at(j) ) );
     }
     return  HypoBase::OK;
 }
 
-HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS   entry){
+HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS entry){
     ++totalData;
     switch (entry){
         case T2CaCommon::AP:
@@ -393,40 +365,40 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(){
 }
 
 HypoBase::CODE T2CaCommon::DrawCutStats(){
-    TPaveText pt = TPaveText(.05,.05,.95,.95);
+    TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
 
-    if (dataLabel == "elc")
+    if ( id == "elc")
         line1.Form("#scale[1.2]{Total Data : Electrons = %d}", totalData);
-    else if (dataLabel == "jet")
+    else if ( id== "jet")
         line1.Form("#scale[1.2]{Total Data : Jets = %d}", totalData);
     line2.Form("rCore Cuts = %d", rCoreCuts);
     line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
     line4.Form("eRatio Cuts %d", eRatioCuts);
     line5.Form("eRatio Detection Rate = %.4f%%", deteRatioRate);
-    line6.Form("Et_em Cuts = %d", etCuts);
-    line7.Form("Et_em Rate = %.4f%%", detEtRate);
-    line8.Form("Et_had Cuts = %d", hadEtCuts);
-    line9.Form("Et_had Rate = %.4f%%", detHadEtRate);
+    line6.Form("E_{T} Cuts = %d", etCuts);
+    line7.Form("E_{T} Rate = %.4f%%", detEtRate);
+    line8.Form("HAD E_{T} Cuts = %d", hadEtCuts);
+    line9.Form("HAD E_{T} Rate = %.4f%%", detHadEtRate);
 
-    pt.AddText("");
-    pt.AddText(line1);
-    pt.AddText("");
-    pt.AddText(line2);
-    pt.AddText(line3);
-    pt.AddText("");
-    pt.AddText(line4);
-    pt.AddText(line5);
-    pt.AddText("");
-    pt.AddText(line6);
-    pt.AddText(line7);
-    pt.AddText("");
-    pt.AddText(line8);
-    pt.AddText(line9);
-    pt.SetFillColor(30);
-    pt.SetTextAlign(22);
-    pt.SetLabel(dataLabel.c_str());
-    pt.Draw();
+    pt->AddText("");
+    pt->AddText(line1);
+    pt->AddText("");
+    pt->AddText(line2);
+    pt->AddText(line3);
+    pt->AddText("");
+    pt->AddText(line4);
+    pt->AddText(line5);
+    pt->AddText("");
+    pt->AddText(line6);
+    pt->AddText(line7);
+    pt->AddText("");
+    pt->AddText(line8);
+    pt->AddText(line9);
+    pt->SetFillColor(30);
+    pt->SetTextAlign(22);
+    pt->SetLabel(dataLabel.c_str());
+    pt->Draw();
 
     return HypoBase::OK;
 }

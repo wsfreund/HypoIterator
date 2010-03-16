@@ -21,7 +21,6 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     HypoVarHist *tEt;
     HypoVarHist *tHadEt;
 
-
     bool useShunt;
 
     PCUTS applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo);
@@ -32,9 +31,11 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
     bool cutF1(const float F1);
 
+    CODE initialize();
     public:
 
-    T2CaVarGraph(const std::string &chainPath, bool shunt = false);
+    T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, bool shunt = false);
+    T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId, bool shunt = false);
     CODE exec();
     CODE DrawCutStats();
     int DrawVar(const std::string &var, const std::string &mode="", const bool scaled = true);

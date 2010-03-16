@@ -35,6 +35,8 @@ class HypoBase {
     std::string dataLabel;
     std::string id;
 
+    Color_t color;
+
     TChain *hypoChain;
     TTree *extraVariables;
 
@@ -42,7 +44,7 @@ class HypoBase {
     enum DECISION {JET = -1, ELECTRON = 1};
 
     HypoBase(const std::string &chainPath, const std::string &userDataLabel);
-    HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &id);
+    HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
 
     virtual void getExtraVariables(TTree*& refExtraVariables) const{refExtraVariables = extraVariables;}
     unsigned getTotalData() const{ return totalData;}

@@ -1,11 +1,12 @@
 #include "HypoBase.h"
 
-HypoBase::HypoBase(const std::string &chainPath, const std::string userDataLabel):
+HypoBase::HypoBase(const std::string &chainPath, const std::string &userDataLabel):
 totalData(0),
 detElc(0),
 detJet(0),
 dataLabel(userDataLabel),
-extraVariables(0){
+extraVariables(0)
+{
     hypoChain = new TChain("CollectionTree");
     hypoChain->Add(chainPath.c_str());
     hypoChain->SetBranchStatus("*", false);
@@ -13,35 +14,45 @@ extraVariables(0){
     lvl2_phi  = new std::vector<float>;
     decision  = new std::vector<int>;
     et        = new std::vector<float>;
-    if (dataLabel.find("Electron") != std::string::npos)
+    if (dataLabel.find("Electron") != std::string::npos){
       id = "elc";
-    else if (dataLabel.find("electron") != std::string::npos)
+    } else if (dataLabel.find("electron") != std::string::npos){
       id = "elc";
-    else if (dataLabel.find("elc") != std::string::npos)
+    } else if (dataLabel.find("elc") != std::string::npos){
       id = "elc";
-    else if (dataLabel.find("Jet") != std::string::npos)
+    } else if (dataLabel.find("Jet") != std::string::npos){
       id = "jet";
-    else if (dataLabel.find("jet") != std::string::npos)
+    } else if (dataLabel.find("jet") != std::string::npos){
       id = "jet";
-    else {
+    } else {
       std::string input;
       while( (input != "elc") && (input != "jet") ){
           cout<<"Could not set by ID. Type elc for electrons, jet for jets:[elc/jet]"<<endl;
           std::getline(std::cin, input);
       }
       id = input;
-      cout<<"ID set to: "<<id<<endl;
     }
+    cout<<"ID set to: "<<id<<endl;
+    if( id == "elc")
+      color = kBlue;
+    else if ( id == "jet")
+      color = kRed;
 }
 
-HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId)
+HypoBase::HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId):
 totalData(0),
 detElc(0),
 detJet(0),
 dataLabel(userDataLabel),
+id(userId),
 extraVariables(0)
-id(userId){
-
+{
+    if(userId == "elc")
+      color = kBlue;
+    else if (userId == "jet")
+      color = kRed;
+    else if (userId != "pile-elc" && userId != "pile-jet")//TODO Change this stupid way of dealing error
+      throw;
     hypoChain = new TChain("CollectionTree");
     hypoChain->Add(chainPath.c_str());
     hypoChain->SetBranchStatus("*", false);
@@ -49,10 +60,8 @@ id(userId){
     lvl2_phi  = new std::vector<float>;
     decision  = new std::vector<int>;
     et        = new std::vector<float>;
-
 }
 
-HypoBase::HypoBase(const std::string &chainPath, const std::string userDataLabel):
 //Old Code that would match Eta and Phi and do not consider coordinate pi discontinuously 
 /*HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const std::vector<float> *phi){
 

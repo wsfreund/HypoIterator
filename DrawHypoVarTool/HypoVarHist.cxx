@@ -1,31 +1,20 @@
 #include "HypoVarHist.h"
 
-HypoVarHist::HypoVarHist(const unsigned nBins, const float xLow, const float xHi, const std::string &userDataLabel, const std::string varName):
-dataLabel(userDataLabel){
-    
-    std::string label;
-
-    if (dataLabel == "elc")
-        label = "Electrons (NO Pile-up)";
-    else if (dataLabel == "pile elc")
-        label = "Electrons (Pile-up)";
-    else if (dataLabel == "jet")
-        label = "Jets (NO Pile-up)";
-    else if (dataLabel == "pile jet")
-        label = "Jets (Pile-up)";
-
+HypoVarHist::HypoVarHist(const unsigned nBins, const float xLow, const float xHi, const Color_t userColor, const std::string &userDataLabel, const std::string varName, const float userStatsPosBegin, const float userStatsPosEnd):
+dataLabel(userDataLabel),
+color(userColor),
+statsPosBegin(userStatsPosBegin),
+statsPosEnd(userStatsPosEnd)
+{
     std::string legend = varName;
-
     if (varName == "E_{T}")
       legend = "Transverse Energy (GeV)";
     if (varName == "HAD E_{T}")
       legend = "Hadronic Transverse Energy";
     
-    hist = new TH1F(label.c_str(), (varName + " Hist;"+legend).c_str(), nBins, xLow, xHi);
-    if ( dataLabel == "elc" || dataLabel == "jet")
-        hist->SetLineColor(kBlue);
-    if ( dataLabel == "pile elc" || dataLabel == "pile jet")
-        hist->SetLineColor(kRed);
+    hist = new TH1F(dataLabel.c_str(), (varName + " Distribution;"+legend).c_str(), nBins, xLow, xHi);
+    hist->SetLineColor(color);
+    
     hist->SetStats(true);
 }
 
@@ -36,19 +25,10 @@ int HypoVarHist::Draw(const std::string method, bool scaled){
     hist->Draw(method.c_str());
     gPad->Update();
     histStats = (TPaveStats*)hist->GetListOfFunctions()->FindObject("stats");
-    if ( dataLabel == "elc" || dataLabel == "jet"){
-        if (histStats){
-          histStats->SetX1NDC(0.8); histStats->SetX2NDC(0.98);
-          histStats->SetTextColor(kBlue);
-          histStats->Draw();
-        }
-    }
-    else if ( dataLabel == "pile elc" || dataLabel == "pile jet"){
-        if (histStats){
-          histStats->SetX1NDC(0.55); histStats->SetX2NDC(0.75);
-          histStats->SetTextColor(kRed);
-          histStats->Draw();
-        }
+    if (histStats){
+      histStats->SetX1NDC(statsPosBegin); histStats->SetX2NDC(statsPosEnd);
+      histStats->SetTextColor(color);
+      histStats->Draw();
     }
     gPad->Update();
     return 0;

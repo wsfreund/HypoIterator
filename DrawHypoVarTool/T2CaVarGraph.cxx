@@ -1,43 +1,88 @@
 #include "T2CaVarGraph.h"
 
-T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, bool shunt):T2CaCommon(chainPath){
-    /*trCore = new TH1F((dataLabel + " rCore").c_str(), "rCore Cut", 100, 0, .1);
-    teRatio = new TH1F((dataLabel + " eRatio").c_str(), "eRatio Cut", 100, 0, .1);
-    tEt = new TH1F((dataLabel + " Et").c_str(), "Et_em Cut", 100, 0, .1);
-    tHadEt = new TH1F((dataLabel + " HadEt").c_str(),"Et_had Cut", 100, 0, .1);
-    trCore->SetBit(TH1::kCanRebin);
-    teRatio->SetBit(TH1::kCanRebin);
-    tEt->SetBit(TH1::kCanRebin);
-    tHadEt->SetBit(TH1::kCanRebin);*/
+T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, bool shunt):
+T2CaCommon(chainPath, userDataLabel),
+useShunt(shunt)
+{
+  if (dataLabel.find("No") != std::string::npos){
+    //do nothing
+  } else if (dataLabel.find("NO") != std::string::npos){
+    //do nothing
+  } else if (dataLabel.find("no") != std::string::npos){
+    //do nothing
+  } else if (dataLabel.find("pile") != std::string::npos){
+    id = "pile-"+id;
+  } else if (dataLabel.find("Pile") != std::string::npos){
+    id = "pile-"+id;
+  } else {
+    std::string input;
+    while( (input != "yes") && (input != "no") ){
+        cout<<"Could not set by ID for pile-up data. Type yes if this data contain pile-up, or no if it does not contain:[yes/no]"<<endl;
+        std::getline(std::cin, input);
+    }
+    if ( input == "yes")
+      id = input + "-" + id; 
+  }
+  cout<<"ID set to: "<<id<<endl;
+  if (id=="pile-elc")
+    color = kAzure + 1;
+  else if(id=="pile-jet")
+    color = kMagenta;
 
-    useShunt = shunt;
-    
-    size_t comp = chainPath.find("pile");
-    if (comp != std::string::npos){
-        dataLabel = "pile " + dataLabel;
-    } else {
-        std::string input;
-        while( (input != "yes") && (input != "no") ){
-            cout<<"Data input should be treated as pile-up?[yes/no]"<<endl;
-            std::getline(std::cin, input);
-        }
-        if (input == "yes")
-            dataLabel = "pile " + dataLabel;
+  initialize();
+}
+
+T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId, bool shunt):
+T2CaCommon(chainPath, userDataLabel, userId),
+useShunt(shunt)
+{
+  if (id=="pile-elc")
+    color = kAzure + 1;
+  else if(id=="pile-jet")
+    color = kMagenta;
+  else if(id=="elc"){
+    //do nothing
+  }else if(id=="jet"){
+    //do nothing
+  }else throw;
+  initialize();
+}
+
+inline HypoBase::CODE T2CaVarGraph::initialize(){
+
+    if (id == "elc"){
+      trCore = new HypoVarHist(100, 0.9, 1.02, color, dataLabel, std::string("rCore"));
+      teRatio = new HypoVarHist(100, 0.82, 1., color, dataLabel, std::string("eRatio"));
+      tEt = new HypoVarHist(100, 5., 85., color, dataLabel, std::string("E_{T}"));
+      tHadEt = new HypoVarHist(100, -0.01, .01, color, dataLabel, std::string("HAD E_{T}"));
+    }else if (id == "pile-elc"){
+      trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel, std::string("rCore"), .66, .81);
+      teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel, std::string("eRatio"), .66, .81);
+      tEt = new HypoVarHist(100, 0., 50, color, dataLabel, std::string("E_{T}"), .66, .81);
+      tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel, std::string("HAD E_{T}"), .66, .81);
+    }else if (id == "jet"){
+      trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel, std::string("rCore"), .49, .64);
+      teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel, std::string("eRatio"), .49, .64);
+      tEt = new HypoVarHist(100, 0., 50, color, dataLabel, std::string("E_{T}"), .49, .64);
+      tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel, std::string("HAD E_{T}"), .49, .64);
+    }else if (id == "pile-jet"){
+      trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel, std::string("rCore"), .32, .47);
+      teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel, std::string("eRatio"), .32, .47);
+      tEt = new HypoVarHist(100, 0., 50, color, dataLabel, std::string("E_{T}"), .32, .47);
+      tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel, std::string("HAD E_{T}"), .32, .47);
+    }else{
+      trCore = new HypoVarHist(100, .0, .1, color, dataLabel, std::string("rCore"));
+      teRatio = new HypoVarHist(100, .1, .1, color, dataLabel, std::string("eRatio"));
+      tEt = new HypoVarHist(100, .0, 1., color, dataLabel, std::string("E_{T}"));
+      tHadEt = new HypoVarHist(100, .0, .1, color, dataLabel, std::string("HAD E_{T}"));
+      trCore->getHist()->SetBit(TH1::kCanRebin);
+      teRatio->getHist()->SetBit(TH1::kCanRebin);
+      tEt->getHist()->SetBit(TH1::kCanRebin);
+      tHadEt->getHist()->SetBit(TH1::kCanRebin);
     }
 
-    cout<<dataLabel<<endl;
-    if (dataLabel == "elc" || dataLabel == "pile elc" ){
-      trCore = new HypoVarHist(100, 0.9, 1.02, dataLabel, std::string("rCore"));
-      teRatio = new HypoVarHist(100, 0.82, 1., dataLabel, std::string("eRatio"));
-      tEt = new HypoVarHist(100, 5., 85., dataLabel, std::string("E_{T}"));
-      tHadEt = new HypoVarHist(100, -0.01, .01, dataLabel, std::string("HAD E_{T}"));
-    }
-    else {
-      trCore = new HypoVarHist(100, 0.5, 1.02, dataLabel, std::string("rCore"));
-      teRatio = new HypoVarHist(100, -0.02, 1.02, dataLabel, std::string("eRatio"));
-      tEt = new HypoVarHist(100, 0., 50, dataLabel, std::string("E_{T}"));
-      tHadEt = new HypoVarHist(100, -0.02, .1, dataLabel, std::string("HAD E_{T}"));
-    }
+    return HypoBase::OK;
+
 }
 
 HypoBase::CODE T2CaVarGraph::exec(){
@@ -56,21 +101,7 @@ HypoBase::CODE T2CaVarGraph::exec(){
         clearVectors();
     }
     fillHypoRate();
-    if (totalData!=0){
-        if (dataLabel == "elc"){
-            detrCoreRate = (float)(totalData - rCoreCuts)/(float)totalData*100;
-            deteRatioRate = (float)(totalData - eRatioCuts - rCoreCuts)/(float)(totalData -rCoreCuts)*100;
-            detEtRate = (float)(totalData - eRatioCuts - rCoreCuts - etCuts)/(float)(totalData -rCoreCuts - eRatioCuts)*100;
-            detHadEtRate = (float)(totalData - hadEtCuts - eRatioCuts - etCuts - rCoreCuts)/(float)(totalData -rCoreCuts - eRatioCuts - etCuts)*100;
-        }
-        if (dataLabel == "jet"){
-            detrCoreRate = ((float)(rCoreCuts)/(float)totalData)*100;
-            deteRatioRate = ((float)(eRatioCuts)/(float)(totalData - rCoreCuts))*100;
-            detEtRate = ((float)(etCuts)/(float)(totalData - rCoreCuts - eRatioCuts))*100;
-            detHadEtRate = ((float)(hadEtCuts)/(float)(totalData - rCoreCuts - eRatioCuts - etCuts) )*100;
-        }
-    }
-    
+    fillT2CaRate();
     return HypoBase::OK;
 }
 
@@ -182,14 +213,14 @@ HypoBase::CODE T2CaVarGraph::DrawCutStats(){
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
 
-    if (dataLabel == "elc")
-        line1.Form("#scale[1.2]{Total Data : Electrons = %d}", totalData);
-    else if (dataLabel == "jet")
-        line1.Form("#scale[1.2]{Total Data : Jets = %d}", totalData);
-    else if (dataLabel == "pile elc")
-        line1.Form("#scale[1.2]{Total Data : Electrons (pile-up)}= %d", totalData);
-    else if (dataLabel == "pile jet")
-        line1.Form("#scale[1.2]{Total Data : Jets (pile-up)}= %d", totalData);
+    if (id == "elc")
+        line1.Form("#scale[1.2]{Total Data : Electrons (No Pile-up) = %d}", totalData);
+    else if (id == "jet")
+        line1.Form("#scale[1.2]{Total Data : Jets (No Pile-up) = %d}", totalData);
+    else if (id == "pile elc")
+        line1.Form("#scale[1.2]{Total Data : Electrons (Pile-up) = %d}", totalData);
+    else if (id == "pile jet")
+        line1.Form("#scale[1.2]{Total Data : Jets (Pile-up) = %d}", totalData);
     line2.Form("rCore Cuts = %d", rCoreCuts);
     line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
     line4.Form("eRatio Cuts %d", eRatioCuts);
