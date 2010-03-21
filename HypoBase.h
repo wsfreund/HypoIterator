@@ -53,6 +53,7 @@ class HypoBase {
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
     const std::string & getId() const{ return id;}
+    const std::string & getDataLabel() const { return dataLabel; }
     virtual CODE exec() = 0;
 
 

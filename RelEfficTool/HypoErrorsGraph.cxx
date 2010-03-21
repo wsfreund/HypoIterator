@@ -7,6 +7,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     dataHypo = userDataHypo;
+    id = dataHypo->getId();
     dataHypo->getExtraVariables(dataTree);
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
@@ -15,23 +16,21 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
         mev2gev = true;
     else 
         mev2gev = false;
-    HypoBase* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
+    T2CaCommon* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
     if (pHypo){
         dataTree->SetBranchAddress("T2CaDec", &vectorDec);
         title = userTitle;
-    }else{
+    }else if (pHypo){
 //        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
-        if (pHypo){
-            dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
-            title = userTitle;
-        }else{
-            cout<<"Entered wrong type of Hypo"<<endl;
-            delete this;
-        }
+        dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
+        title = userTitle;
+    }else{
+        cout<<"Entered wrong type of Hypo"<<endl;
+        throw;
     }
 }
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userDataLabel, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userId, const std::string &userTitle)
 /*:    NREGIONS(userNREGIONS),
     NPOINTS(userNREGIONS+1),
     LOWEDGE(userLOWEDGE),
@@ -44,8 +43,8 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     HIEDGE = userHIEDGE;
     vectorInput = dataVector;
     vectorDec = inputDec;
+    id = userId;
     dataHypo = 0;
-    dataLabel = userDataLabel;
     title = userTitle;
     mev2gev = false;
 }
@@ -68,46 +67,6 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
     graph->SetFillColor(19);
     //Setting graph parameters:
-    if (dataHypo !=0){
-        std::string hypoLabel;
-        dataHypo->getDataLabel(hypoLabel);
-        if (hypoLabel == "elc"){
-            graph->SetMarkerSize(0.8);
-            graph->SetLineWidth(0.4);
-            graph->SetLineColor(4);
-            graph->SetMarkerColor(4);
-            graph->SetMarkerStyle(20);
-        }
-        else if (hypoLabel == "jet"){
-            graph->SetMarkerSize(0.8);
-            graph->SetLineWidth(0.4);
-            graph->SetMarkerColor(2);
-            graph->SetLineColor(2);
-            graph->SetMarkerStyle(21);
-        }else{
-            cout<<"Data label definined incorrectly"<<endl;
-            graph->SetMarkerColor(4);
-            graph->SetMarkerStyle(21);
-        }
-    }else{
-        size_t comp = dataLabel.find("elc");
-        if (comp != std::string::npos){
-            graph->SetLineColor(4);
-            graph->SetMarkerColor(4);
-            graph->SetMarkerStyle(20);
-        }else{
-            comp = dataLabel.find("jet");
-            if( comp != std::string::npos){
-                graph->SetMarkerColor(2);
-                graph->SetLineColor(2);
-                graph->SetMarkerStyle(21);
-            }else{
-                cout<<"Data label defined incorrectly"<<endl;
-                graph->SetMarkerColor(4);
-                graph->SetMarkerStyle(21);
-            }
-        }
-    }
     graph->SetTitle(title.c_str());
 
     return HypoErrorsGraph::OK;
@@ -149,15 +108,13 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
                     }
                 }
             }   
-            std::string dataLabel;
-            dataHypo->getDataLabel(dataLabel);
             float error =-1;
             if (regData!=0){
                 error = 1/TMath::Sqrt(regData)*100.;
                 *pX = (*edges) + HALF_REGION_SIZE;
-                if (dataLabel == "elc")
+                if ( id.find("elc") != std::string::npos )
                     *effic = (float)regElectrons / (float)regData*100.;
-                else if (dataLabel == "jet")
+                else if ( id.find("jet") != std::string::npos )
                     *effic = (float)regElectrons / (float)regData *100.;
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
@@ -183,9 +140,9 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genEfficErrors(float* edges, float* pX, f
             if (regData!=0){
                 error = 1/TMath::Sqrt(regData)*100.;
                 *pX = (*edges) + HALF_REGION_SIZE;
-                if (dataLabel == "elc")
+                if ( id.find("elc") != std::string::npos )
                     *effic = (float)regElectrons / (float)regData*100.;
-                else if (dataLabel == "jet")
+                else if ( id.find("jet") != std::string::npos)
                     *effic = (float)regElectrons / (float)regData *100.;
                 checkAndGenErrors(*effic, error, *lowEdgeErrors, *hiEdgeErrors);
                 ++pX; ++effic; ++lowEdgeErrors; ++hiEdgeErrors; ++edges;
@@ -238,7 +195,6 @@ HypoErrorsGraph::HypoErrorsGraph &HypoErrorsGraph::operator=(const HypoErrorsGra
      vectorDec = graph2.vectorDec;
      dataHypo = graph2.dataHypo;
      dataTree= graph2.dataTree;
-     dataLabel = graph2.dataLabel;
      title = graph2.title;
 
      return *this;
@@ -253,7 +209,6 @@ HypoErrorsGraph::HypoErrorsGraph* HypoErrorsGraph::operator=(const HypoErrorsGra
      vectorDec = graph2->vectorDec;
      dataHypo = graph2->dataHypo;
      dataTree= graph2->dataTree;
-     dataLabel = graph2->dataLabel;
      title = graph2->title;
 
      return this;

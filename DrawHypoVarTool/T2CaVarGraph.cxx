@@ -1,7 +1,7 @@
 #include "T2CaVarGraph.h"
 
-T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, bool shunt):
-T2CaCommon(chainPath, userDataLabel),
+T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, bool shunt):
+T2CaCommon(chainPath, userL2chain, userDataLabel),
 useShunt(shunt)
 {
   if (dataLabel.find("No") != std::string::npos){
@@ -32,8 +32,8 @@ useShunt(shunt)
   initialize();
 }
 
-T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId, bool shunt):
-T2CaCommon(chainPath, userDataLabel, userId),
+T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &userId, bool shunt):
+T2CaCommon(chainPath, userL2chain, userDataLabel, userId),
 useShunt(shunt)
 {
   if (id=="pile-elc")
@@ -63,7 +63,7 @@ inline HypoBase::CODE T2CaVarGraph::initialize(){
     }else if (id == "jet"){
       trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel, std::string("rCore"), .49, .64);
       teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel, std::string("eRatio"), .49, .64);
-      tEt = new HypoVarHist(100, 0., 50, color, dataLabel, std::string("E_{T}"), .49, .64);
+      tEt = new HypoVarHist(100, 0., 50, color, dataLabel, std::string("E_{T}"), .49, .6);
       tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel, std::string("HAD E_{T}"), .49, .64);
     }else if (id == "pile-jet"){
       trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel, std::string("rCore"), .32, .47);
@@ -109,8 +109,8 @@ T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, co
     T2CaCommon::PCUTS pass = T2CaCommon::AP;
     if (useShunt){
         size_t      etaBin = 0;
-        for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
-            if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
+        for (size_t iBin = 0; iBin < (( sizeof(l2chain.m_etabin) / sizeof(float) ) -1) ; ++iBin) {
+            if ( fabs (eta) > l2chain.m_etabin[iBin] && fabs (eta) < l2chain.m_etabin[iBin+1] ) etaBin = iBin; 
         }
         //if (cutEta(dEta)) return T2CaVarGraph::dETA;
         //if (cutPhi(dPhi)) return T2CaVarGraph::dPHI;
@@ -130,8 +130,8 @@ T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, co
         }
     }else{
         size_t      etaBin = 0;
-        for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
-            if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
+        for (size_t iBin = 0; iBin < (( sizeof(l2chain.m_etabin) / sizeof(float) ) -1) ; ++iBin) {
+            if ( fabs (eta) > l2chain.m_etabin[iBin] && fabs (eta) < l2chain.m_etabin[iBin+1] ) etaBin = iBin; 
         }
         //if (cutEta(dEta)) return T2CaVarGraph::dETA;
         //if (cutPhi(dPhi)) return T2CaVarGraph::dPHI;
@@ -165,7 +165,7 @@ T2CaCommon::PCUTS T2CaVarGraph::applyCuts(const float eta, const float rCore, co
 
 inline bool T2CaVarGraph::cutrCore(const float rCore, const size_t etaBin){
     trCore->Fill(rCore);
-    if ( rCore < m_carcorethr[etaBin] )  {
+    if ( rCore < l2chain.m_carcorethr[etaBin] )  {
         return true;
     }
     return false;
@@ -175,8 +175,8 @@ inline bool T2CaVarGraph::cutrCore(const float rCore, const size_t etaBin){
 inline bool T2CaVarGraph::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
     teRatio->Fill(eRatio);
-    if ( (!inCrack) || ( F1 < m_F1thr) ){
-        if (eRatio < m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
+    if ( (!inCrack) || ( F1 < l2chain.m_F1thr) ){
+        if (eRatio < l2chain.m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
             return true;
         }
     }
@@ -185,7 +185,7 @@ inline bool T2CaVarGraph::cuteRatio(const float eRatio, const float F1, const fl
 
 inline bool T2CaVarGraph::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
     tEt->Fill(eT_T2Calo*.001);//Filling into GeV units
-    if ( eT_T2Calo < m_eTthr[etaBin] ){
+    if ( eT_T2Calo < l2chain.m_eTthr[etaBin] ){
         return true;
     }
     return false;
@@ -194,8 +194,8 @@ inline bool T2CaVarGraph::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBi
 inline bool T2CaVarGraph::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
     tHadEt->Fill(hadET_T2Calo);
     float hadET_cut;
-    if ( eT_T2Calo >  m_eT2thr[etaBin] ) hadET_cut = m_hadeT2thr[etaBin] ;
-    else hadET_cut = m_hadeTthr[etaBin];
+    if ( eT_T2Calo >  l2chain.m_eT2thr[etaBin] ) hadET_cut = l2chain.m_hadeT2thr[etaBin] ;
+    else hadET_cut = l2chain.m_hadeTthr[etaBin];
     if ( hadET_T2Calo > hadET_cut ) {
         return true;
     }
@@ -203,7 +203,7 @@ inline bool T2CaVarGraph::cuthadET_T2Calo(const float hadET_T2Calo, const float 
 }
 
 inline bool T2CaVarGraph::cutF1(const float F1){
-    if ( F1 < m_F1thr){
+    if ( F1 < l2chain.m_F1thr){
         return true;
     }
     return false;

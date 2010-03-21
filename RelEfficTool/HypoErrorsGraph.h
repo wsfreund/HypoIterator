@@ -22,7 +22,7 @@ class HypoErrorsGraph {
     /*const*/ float LOWEDGE;
     /*const*/ float HIEDGE;
     /*const*/ std::string title;
-    /*const*/ std::string dataLabel;
+    /*const*/ std::string id;
     HypoBase *dataHypo;
     TTree *dataTree;
     bool mev2gev;
@@ -51,8 +51,6 @@ class HypoErrorsGraph {
     
     TGraphAsymmErrors *getGraph(){ return graph; }
     CODE Draw(const std::string &input);
-
-    void getGraph(TGraphAsymmErrors *&userGraph)const { userGraph = graph; }
 
     ~HypoErrorsGraph();
 

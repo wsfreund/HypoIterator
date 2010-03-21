@@ -17,6 +17,10 @@ class T2CaCommon : public HypoBase {
 
     protected:
 
+    //Constants:
+
+    const t2ca_00_07_85_conf l2chain;
+
     //Variables
     enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
 
@@ -66,11 +70,13 @@ class T2CaCommon : public HypoBase {
     bool cutF1(const float F1);
 
     public:
-    T2CaCommon(const std::string &chainPath, const std::string &userDataLabel);
-    T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id);
+    T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel);
+    T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id);
     CODE exec();
+    //Draw functions:
     CODE DrawCutCounter();
     CODE DrawCutStats();
+    //Get functions:
     void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}
@@ -80,7 +86,9 @@ class T2CaCommon : public HypoBase {
     float getDeteRatioRate()const {return deteRatioRate;}
     float getDetEtRate()const {return detEtRate;}
     float getDetHadEtRate()const {return detHadEtRate;}
-    ~T2CaCommon();
+    const t2ca_00_07_85_conf& getl2chain()const {return l2chain;}
+
+    virtual ~T2CaCommon();
 
 };
 

@@ -14,11 +14,16 @@ int HypoVarCanvas::Draw(bool scaled){
     T2CaVarGraph *t2Var1 = dynamic_cast<T2CaVarGraph*>(dynamic_cast<HypoBase*>(hypoVar1));
     T2CaVarGraph *t2Var2 = dynamic_cast<T2CaVarGraph*>(dynamic_cast<HypoBase*>(hypoVar2));
 
+
     hypoVarCanvas->Divide(2,2);
 
     if (t2Var1 && t2Var2){
+        if ( t2Var1->getTotalData() == 0)
+          t2Var1->exec();
+        if ( t2Var2->getTotalData() == 0)
+          t2Var2->exec();
         //RCORE
-        float rCoreCutPoint[2] = {m_carcorethr[0], m_carcorethr[0]};
+        float rCoreCutPoint[2] = {t2Var1->getl2chain().m_carcorethr[0], t2Var1->getl2chain().m_carcorethr[0]};
         float rCoreCutHeight[2] = {0.};
         TVirtualPad *rcorePad = hypoVarCanvas->cd(1);
         if (t2Var2->getHist("rcore")->GetMaximum()/ t2Var2->getHist("rcore")->GetEntries()> t2Var1->getHist("rcore")->GetMaximum()/t2Var1->getHist("rcore")->GetEntries()){
@@ -36,7 +41,7 @@ int HypoVarCanvas::Draw(bool scaled){
         rcorePad->SetFillColor(33);
         rcorePad->Modified();
         //ERATIO
-        float eRatioCutPoint[2] = {m_caeratiothr[0], m_caeratiothr[0]};
+        float eRatioCutPoint[2] = {t2Var1->getl2chain().m_caeratiothr[0], t2Var1->getl2chain().m_caeratiothr[0]};
         float eRatioCutHeight[2] = {0.};
         TVirtualPad *eratioPad = hypoVarCanvas->cd(2);
         if (t2Var2->getHist("eratio")->GetMaximum()/t2Var2->getHist("eratio")->GetEntries() > t2Var1->getHist("eratio")->GetMaximum()/t2Var1->getHist("eratio")->GetEntries()){
@@ -55,7 +60,7 @@ int HypoVarCanvas::Draw(bool scaled){
         eratioPad->Modified();
         TVirtualPad *etPad = hypoVarCanvas->cd(3);
         //ET
-        float etCutPoint[2] = {m_eTthr[0]*.001, m_eTthr[0]*.001};
+        float etCutPoint[2] = {t2Var1->getl2chain().m_eTthr[0]*.001, t2Var1->getl2chain().m_eTthr[0]*.001};
         float etCutHeight[2] = {0.};
         if (t2Var2->getHist("et")->GetMaximum()/t2Var2->getHist("et")->GetEntries()> t2Var1->getHist("et")->GetMaximum()/t2Var1->getHist("et")->GetEntries()){
           t2Var2->DrawVar("et");
@@ -73,7 +78,7 @@ int HypoVarCanvas::Draw(bool scaled){
         etPad->Modified();
         TVirtualPad *hadEtPad = hypoVarCanvas->cd(4);
         //HADET
-        float hadEtCutPoint[2] = {m_hadeTthr[0], m_hadeTthr[0]};
+        float hadEtCutPoint[2] = {t2Var1->getl2chain().m_hadeTthr[0], t2Var1->getl2chain().m_hadeTthr[0]};
         float hadEtCutHeight[2] = {0.};
         if (t2Var2->getHist("hadet")->GetMaximum()/t2Var2->getHist("hadet")->GetEntries() > t2Var1->getHist("hadet")->GetMaximum()/t2Var1->getHist("hadet")->GetEntries()){
           t2Var2->DrawVar("hadet", "", scaled);

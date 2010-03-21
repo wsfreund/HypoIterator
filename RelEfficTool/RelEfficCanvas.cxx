@@ -3,15 +3,15 @@
 RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficData){
     relCanvas = 0;
     relEfficData = userRelEfficData;
-    relEfficElc = 0;
-    relEfficJet = 0;
+    relEffic1 = 0;
+    relEffic2 = 0;
 }
 
-RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet){
+RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEffic1, RelEfficBase *userRelEffic2){
     relCanvas = 0;
     relEfficData = 0;
-    relEfficElc = userRelEfficElc;
-    relEfficJet = userRelEfficJet;
+    relEffic1 = userRelEffic1;
+    relEffic2 = userRelEffic2;
 }   
 
 
@@ -19,28 +19,39 @@ int RelEfficCanvas::Draw(const int numPads){
 
     relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
     T2CaRelEffic *t2relEfficData = dynamic_cast<T2CaRelEffic*>(relEfficData);
-    T2CaRelEffic *t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEfficElc);
-    T2CaRelEffic *t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEfficJet);
     
-    std::string dataLabel;
-    if (t2relEfficData){ 
-        t2relEfficData->getDataLabel(dataLabel);
-    }
+    std::string id;
 
+    if (t2relEfficData)
+      id = t2relEfficData->getId(); 
+    
+    T2CaRelEffic *t2relEfficElc = 0; 
+    T2CaRelEffic *t2relEfficJet = 0;
+    if (relEffic1 && relEffic2){
+      if (dynamic_cast<HypoBase*>(relEffic1)->getId().find("elc") != std::string::npos)
+        t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEffic1);
+      else
+        t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEffic1);
+      if (dynamic_cast<HypoBase*>(relEffic2)->getId().find("elc") != std::string::npos)
+        t2relEfficElc = dynamic_cast<T2CaRelEffic*>(relEffic2);
+      else
+        t2relEfficJet = dynamic_cast<T2CaRelEffic*>(relEffic2);
+      if ( !t2relEfficJet || !t2relEfficElc)
+        throw;
+    }
 
     if (numPads ==4){
       relCanvas->Divide(2,2);
 
-      // ETA 
-
+      // ETA  
       TVirtualPad *etaPad = relCanvas->cd(1);
       TH1F *th1EtaPad;
       if (t2relEfficData){
-          i (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos){
               th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
               th1EtaPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos){
               th1EtaPad = etaPad->DrawFrame(-2.5, 10, 2.5, 40);
               th1EtaPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
@@ -83,11 +94,11 @@ int RelEfficCanvas::Draw(const int numPads){
       phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
       phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi");*/ 
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
               th1PhiPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos ){
               th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
               th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
@@ -121,11 +132,11 @@ int RelEfficCanvas::Draw(const int numPads){
       TVirtualPad *etPad = relCanvas->cd(3);
       TH1F *th1EtPad;
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               th1EtPad = etPad->DrawFrame(15, 90, 80, 100);
               th1EtPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          else if (dataLabel == "jet"){
+          else if ( id.find("jet") != std::string::npos ){
               th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
               th1EtPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
@@ -160,10 +171,10 @@ int RelEfficCanvas::Draw(const int numPads){
       TPaveText *pt = new TPaveText(.05,.05,.95,.95);
       TPaveText *ptT2Calo;
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate");
           }
-          else if (dataLabel == "jet"){
+          else if ( id.find("jet") != std::string::npos ){
               ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate");
           }
       }else
@@ -178,22 +189,22 @@ int RelEfficCanvas::Draw(const int numPads){
           TString line1, line2, line3, line4, line5, line6;
           unsigned totalData = t2relEfficData->getTotalData();
           float detRate = t2relEfficData->getDetRate();
-          if (dataLabel == "elc")
+          if ( id.find("elc") != std::string::npos )
               line1.Form("Total Data : Electrons = %d", totalData);
-          if (dataLabel == "jet")
+          if ( id.find("jet") != std::string::npos ) 
               line1.Form("Total Data : Jets = %d", totalData);
           float detrCoreRate = t2relEfficData->getDetrCoreRate();
           float deteRatioRate = t2relEfficData->getDeteRatioRate();
           float detEtRate = t2relEfficData->getDetEtRate();
           float detHadEtRate = t2relEfficData->getDetHadEtRate();
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos){
               line2.Form("#scale[1.2]{T2Calo Detection Rate = %.4f%%}", detRate);
               line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
               line4.Form("eRatio Detection Rate  = %.4f%%", deteRatioRate);
               line5.Form("Et_{Em} Detection Rate = %.4f%%", detEtRate);
               line6.Form("Et_{Had} Detection Rate = %.4f%%", detHadEtRate);
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos ){
               line2.Form("#scale[1.2]{T2Calo False Alarm Rate = %.4f%%}", (100. - detRate));
               line3.Form("rCore False Alarm Rate = %.4f%%", (100. - detrCoreRate));
               line4.Form("eRatio False Alarm Rate = %.4f%%", (100. - deteRatioRate));
@@ -298,19 +309,19 @@ int RelEfficCanvas::Draw(const int numPads){
       TH1F *th1EtPad;
       legend = new TLegend(.90,.83,.995,.98);
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               th1EtPad = etPad->DrawFrame(15, 90, 80, 100);
               th1EtPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          else if (dataLabel == "jet"){
+          else if ( id.find("jet") != std::string::npos ){
               th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
               th1EtPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
           t2relEfficData->DrawEfficVs("et", "LP");
-          if (dataLabel == "elc")
-            legend->AddEntry(t2relEfficData->getGraph("et"),"Electrons");
-          else if (dataLabel == "jet")
-            legend->AddEntry(t2relEfficData->getGraph("et"),"Jet");
+          if ( id.find("elc") != std::string::npos )
+            legend->AddEntry(t2relEfficData->getGraph("et"),t2relEfficData->getDataLabel().c_str());
+          else if ( id.find("jet") != std::string::npos )
+            legend->AddEntry(t2relEfficData->getGraph("et"), t2relEfficData->getDataLabel().c_str());
       }
       else if (t2relEfficElc && t2relEfficJet){
           th1EtPad = etPad->DrawFrame(15, 0, 80, 100);
@@ -318,8 +329,8 @@ int RelEfficCanvas::Draw(const int numPads){
           t2relEfficElc->DrawEfficVs("et", "LP");
           t2relEfficJet->DrawEfficVs("et", "LP,SAME");
           t2relEfficJet->getGraph("et")->SetLineStyle(kDashed);
-          legend->AddEntry(t2relEfficElc->getGraph("et"),"Electrons");
-          legend->AddEntry(t2relEfficJet->getGraph("et"),"Jets");
+          legend->AddEntry(t2relEfficElc->getGraph("et"),t2relEfficData->getDataLabel().c_str());
+          legend->AddEntry(t2relEfficJet->getGraph("et"),t2relEfficData->getDataLabel().c_str());
       } else {
           cout<<"Unknown T2Calo or Ringer Type"<<endl;
           return 1;
@@ -348,11 +359,11 @@ int RelEfficCanvas::Draw(const int numPads){
       TVirtualPad *etaPad = coordPad->cd(1);
       TH1F *th1EtaPad;
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               th1EtaPad = etaPad->DrawFrame(-2.5, 80, 2.5, 100);
               th1EtaPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos ){
               th1EtaPad = etaPad->DrawFrame(-2.5, 10, 2.5, 40);
               th1EtaPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
@@ -395,11 +406,11 @@ int RelEfficCanvas::Draw(const int numPads){
       phiAxisLabel.DrawLatex(TMath::Pi()/2,yl,"#frac{#pi}{2}");
       phiAxisLabel.DrawLatex(TMath::Pi(),yl,"#pi"); */
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 90, TMath::Pi(), 100);
               th1PhiPad->GetYaxis()->SetTitle("Detection (%)");
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos ){
               th1PhiPad = phiPad->DrawFrame(-TMath::Pi(), 10, TMath::Pi(), 30);
               th1PhiPad->GetYaxis()->SetTitle("False Alarm (%)");
           }
@@ -437,10 +448,10 @@ int RelEfficCanvas::Draw(const int numPads){
       TPaveText *pt = new TPaveText(.05,.05,.95,.95);
       TPaveText *ptT2Calo;
       if (t2relEfficData){
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts Detection Rate");
           }
-          else if (dataLabel == "jet"){
+          else if ( id.find("jet") != std::string::npos ){
               ptT2Calo = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts False Alarm Rate");
           }
       }else
@@ -455,22 +466,22 @@ int RelEfficCanvas::Draw(const int numPads){
           TString line1, line2, line3, line4, line5, line6;
           unsigned totalData = t2relEfficData->getTotalData();
           float detRate = t2relEfficData->getDetRate();
-          if (dataLabel == "elc")
+          if ( id.find("elc") != std::string::npos )
               line1.Form("Total Data : Electrons = %d", totalData);
-          if (dataLabel == "jet")
+          if ( id.find("jet") != std::string::npos )
               line1.Form("Total Data : Jets = %d", totalData);
           float detrCoreRate = t2relEfficData->getDetrCoreRate();
           float deteRatioRate = t2relEfficData->getDeteRatioRate();
           float detEtRate = t2relEfficData->getDetEtRate();
           float detHadEtRate = t2relEfficData->getDetHadEtRate();
-          if (dataLabel == "elc"){
+          if ( id.find("elc") != std::string::npos ){
               line2.Form("#scale[1.2]{T2Calo Detection Rate = %.4f%%}", detRate);
               line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
               line4.Form("eRatio Detection Rate  = %.4f%%", deteRatioRate);
               line5.Form("Et_{Em} Detection Rate = %.4f%%", detEtRate);
               line6.Form("Et_{Had} Detection Rate = %.4f%%", detHadEtRate);
           }
-          if (dataLabel == "jet"){
+          if ( id.find("jet") != std::string::npos ){
               line2.Form("#scale[1.2]{T2Calo False Alarm Rate = %.4f%%}", (100. - detRate));
               line3.Form("rCore False Alarm Rate = %.4f%%", (100. - detrCoreRate));
               line4.Form("eRatio False Alarm Rate = %.4f%%", (100. - deteRatioRate));
@@ -564,11 +575,6 @@ int RelEfficCanvas::Draw(const int numPads){
       gPad->SetFillColor(18);
       relCanvas->Modified();
       relCanvas->Update();
-
-
-
-
-
 
     }
 

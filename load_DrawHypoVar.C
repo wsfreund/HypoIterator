@@ -1,5 +1,6 @@
 {
 gROOT->ProcessLine(".L HypoBase.cxx+");
+gROOT->ProcessLine(".L T2CaConfig.h+");
 gROOT->ProcessLine(".L T2CaCommon.cxx+");
 gROOT->ProcessLine(".L DrawHypoVarTool/HypoVarHist.cxx+");
 gROOT->ProcessLine(".L DrawHypoVarTool/HypoVarBase.h+");

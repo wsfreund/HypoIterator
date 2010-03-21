@@ -21,8 +21,8 @@ class RelEfficCanvas {
     TCanvas *infoCanvas;
     TLegend *legend;
     RelEfficBase *relEfficData;
-    RelEfficBase *relEfficElc;
-    RelEfficBase *relEfficJet;
+    RelEfficBase *relEffic1;
+    RelEfficBase *relEffic2;
 
     float calcSP(float detelc, float detjet);
     public:

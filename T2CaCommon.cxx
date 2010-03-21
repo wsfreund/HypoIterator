@@ -1,7 +1,8 @@
 #include "T2CaCommon.h"
 
-T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel):
+T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel):
 HypoBase(chainPath, userDataLabel),
+l2chain(userL2chain),
 rCoreCuts(0),
 eRatioCuts(0),
 etCuts(0),
@@ -11,11 +12,12 @@ deteRatioRate(0.),
 detEtRate(0.),
 detHadEtRate(0.)
 {
-    initialize();
+  initialize();
 }
 
-T2CaCommon::T2CaCommon(const std::string &chainPath, const std::string &userDataLabel, const std::string &id):
+T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id):
 HypoBase(chainPath, userDataLabel, id),
+l2chain(userL2chain),
 rCoreCuts(0),
 eRatioCuts(0),
 etCuts(0),
@@ -154,8 +156,8 @@ HypoBase::CODE T2CaCommon::fillDecision(T2CaCommon::PCUTS entry){
 
 T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, const float F1, const float eRatio, const float eT_T2Calo, const float hadET_T2Calo){
     size_t  etaBin = 0;
-    for (size_t iBin = 0; iBin < (( sizeof(m_etabin) / sizeof(float) ) -1) ; ++iBin) {
-        if ( fabs (eta) > m_etabin[iBin] && fabs (eta) < m_etabin[iBin+1] ) etaBin = iBin; 
+    for (size_t iBin = 0; iBin < (( sizeof(l2chain.m_etabin) / sizeof(float) ) -1) ; ++iBin) {
+        if ( fabs (eta) > l2chain.m_etabin[iBin] && fabs (eta) < l2chain.m_etabin[iBin+1] ) etaBin = iBin; 
     }
     //if (cutEta(dEta)) return T2CaCommon::dETA;
     //if (cutPhi(dPhi)) return T2CaCommon::dPHI;
@@ -181,50 +183,50 @@ T2CaCommon::PCUTS T2CaCommon::applyCuts(const float eta, const float rCore, cons
 }
 
 inline bool T2CaCommon::cutEta(const float dEta){
-    if ( dEta > m_detacluster )
+    if ( dEta > l2chain.m_detacluster )
         return true;
     return false;
 }
 
 
 inline bool T2CaCommon::cutPhi(const float dPhi){
-    if ( dPhi > m_dphicluster )
+    if ( dPhi > l2chain.m_dphicluster )
         return true;
     return false;
 }
 
 inline bool T2CaCommon::cutrCore(const float rCore, const size_t etaBin){
-    if ( rCore < m_carcorethr[etaBin] )
+    if ( rCore < l2chain.m_carcorethr[etaBin] )
         return true;
     return false;
 }
 
 inline bool T2CaCommon::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
-    if ( (!inCrack) || ( F1 < m_F1thr) )
-        if (eRatio < m_caeratiothr[etaBin])// Two ifs just to be simmilar to T2Calo implementation
+    if ( (!inCrack) || ( F1 < l2chain.m_F1thr) )
+        if (eRatio < l2chain.m_caeratiothr[etaBin])// Two ifs just to be simmilar to T2Calo implementation
             return true;
     return false;
 }
 
 inline bool T2CaCommon::cuteT_T2Calo(const float eT_T2Calo, const size_t etaBin){
-    if ( eT_T2Calo < m_eTthr[etaBin] )
+    if ( eT_T2Calo < l2chain.m_eTthr[etaBin] )
         return true;
     return false;
 }
 
 inline bool T2CaCommon::cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin){
     float hadET_cut;
-    if ( eT_T2Calo >  m_eT2thr[etaBin] )
-        hadET_cut = m_hadeT2thr[etaBin] ;
-    else hadET_cut = m_hadeTthr[etaBin];
+    if ( eT_T2Calo >  l2chain.m_eT2thr[etaBin] )
+        hadET_cut = l2chain.m_hadeT2thr[etaBin] ;
+    else hadET_cut = l2chain.m_hadeTthr[etaBin];
     if ( hadET_T2Calo > hadET_cut )
         return true;
     return false;
 }
 
 inline bool T2CaCommon::cutF1(const float F1){
-    if ( F1 < m_F1thr)
+    if ( F1 < l2chain.m_F1thr)
         return true;
     return false;
 }
