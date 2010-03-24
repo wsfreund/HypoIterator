@@ -7,8 +7,9 @@
 #include "TMath.h"
 #include <cstring>
 #include "TGraphAsymmErrors.h"
-#include "../HypoBase.h"
+#include "HypoBase.h"
 #include "../T2CaCommon.h"
+#include "../NeuralCommon.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -49,10 +50,10 @@ class HypoErrorsGraph {
     HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
     HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);
     
-    TGraphAsymmErrors *getGraph(){ return graph; }
+    TGraphAsymmErrors *getGraph(){ cout<<"Returning graph "<<graph<<endl; return graph; }
     CODE Draw(const std::string &input);
 
-    ~HypoErrorsGraph();
+    virtual ~HypoErrorsGraph();
 
 };
 

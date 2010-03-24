@@ -175,7 +175,7 @@ inline bool T2CaVarGraph::cutrCore(const float rCore, const size_t etaBin){
 inline bool T2CaVarGraph::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
     teRatio->Fill(eRatio);
-    if ( (!inCrack) || ( F1 < l2chain.m_F1thr) ){
+    if ( !(inCrack || F1 < l2chain.m_F1thr) ){
         if (eRatio < l2chain.m_caeratiothr[etaBin]) { // Two ifs just to be simmilar to T2Calo implementation
             return true;
         }

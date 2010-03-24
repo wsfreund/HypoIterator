@@ -3,7 +3,7 @@
 
 #include "RelEfficBase.h"
 #include "T2CaRelEffic.h"
-//#include "NeuralRelEffic.h"
+#include "NeuralRelEffic.h"
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TVirtualPad.h"

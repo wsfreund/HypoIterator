@@ -1,7 +1,7 @@
 #ifndef T2CA_COMMON_H
 #define T2CA_COMMON_H
 
-#include "HypoBase.h"
+#include "T2CaBase.h"
 #include "T2CaConfig.h"
 #include <vector>
 #include "TChain.h"
@@ -9,17 +9,14 @@
 #include "TH1I.h"
 #include "TTree.h"
 #include "TPaveStats.h"
-#include <iostream>
-using std::cout;
-using std::endl;
 
-class T2CaCommon : public HypoBase {
+class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here.
 
     protected:
 
     //Constants:
 
-    const t2ca_00_07_85_conf l2chain;
+    t2ca_00_07_85_conf l2chain;
 
     //Variables
     enum PCUTS {LVL2E =-1 , TRIG, dETA, dPHI, rCORE, eRATIO, et_EM, et_HAD, c_F1, AP};
@@ -69,6 +66,10 @@ class T2CaCommon : public HypoBase {
     bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
     bool cutF1(const float F1);
 
+    TTree *getExtraVariables(){ 
+      return extraVariables;
+    } 
+
     public:
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel);
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id);
@@ -77,7 +78,6 @@ class T2CaCommon : public HypoBase {
     CODE DrawCutCounter();
     CODE DrawCutStats();
     //Get functions:
-    void getExtraVariables(TTree*& refExtraVariables)const { refExtraVariables = extraVariables; }
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}
     unsigned getEmCuts()const {return etCuts;}

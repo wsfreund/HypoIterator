@@ -1,65 +1,67 @@
 #include "HypoBase.h"
 
-HypoBase::HypoBase(const std::string &chainPath, const std::string &userDataLabel):
-totalData(0),
-detElc(0),
-detJet(0),
-dataLabel(userDataLabel),
-extraVariables(0)
-{
-    hypoChain = new TChain("CollectionTree");
-    hypoChain->Add(chainPath.c_str());
-    hypoChain->SetBranchStatus("*", false);
-    lvl2_eta  = new std::vector<float>;
-    lvl2_phi  = new std::vector<float>;
-    decision  = new std::vector<int>;
-    et        = new std::vector<float>;
-    if (dataLabel.find("Electron") != std::string::npos){
-      id = "elc";
-    } else if (dataLabel.find("electron") != std::string::npos){
-      id = "elc";
-    } else if (dataLabel.find("elc") != std::string::npos){
-      id = "elc";
-    } else if (dataLabel.find("Jet") != std::string::npos){
-      id = "jet";
-    } else if (dataLabel.find("jet") != std::string::npos){
-      id = "jet";
-    } else {
-      std::string input;
-      while( (input != "elc") && (input != "jet") ){
-          cout<<"Could not set by ID. Type elc for electrons, jet for jets:[elc/jet]"<<endl;
-          std::getline(std::cin, input);
-      }
-      id = input;
+HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::string &userDataLabel){
+  cout<<"Alpha"<<endl;
+  totalData = 0;
+  detElc = 0;
+  detJet = 0;
+  dataLabel = userDataLabel;
+  hypoChain = new TChain("CollectionTree");
+  extraVariables = 0;
+  hypoChain->Add(chainPath.c_str());
+  hypoChain->SetBranchStatus("*", false);
+  lvl2_eta  = new std::vector<float>;
+  lvl2_phi  = new std::vector<float>;
+  decision  = new std::vector<int>;
+  et        = new std::vector<float>;
+  cout<<"Alpha1"<<endl;
+  if (dataLabel.find("Electron") != std::string::npos){
+    id = "elc";
+  } else if (dataLabel.find("electron") != std::string::npos){
+    id = "elc";
+  } else if (dataLabel.find("elc") != std::string::npos){
+    id = "elc";
+  } else if (dataLabel.find("Jet") != std::string::npos){
+    id = "jet";
+  } else if (dataLabel.find("jet") != std::string::npos){
+    id = "jet";
+  } else {
+    std::string input;
+    while( (input != "elc") && (input != "jet") ){
+        cout<<"Could not set by ID. Type elc for electrons, jet for jets:[elc/jet]"<<endl;
+        std::getline(std::cin, input);
     }
-    cout<<"ID set to: "<<id<<endl;
-    if( id == "elc")
-      color = kBlue;
-    else if ( id == "jet")
-      color = kRed;
+    id = input;
+  }
+  cout<<"ID set to: "<<id<<endl;
+  if( id == "elc")
+    color = kBlue;
+  else if ( id == "jet")
+    color = kRed;
+  cout<<"Alpha3"<<endl;
+  return HypoBase::OK;
 }
 
-HypoBase::HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId):
-totalData(0),
-detElc(0),
-detJet(0),
-dataLabel(userDataLabel),
-id(userId),
-extraVariables(0)
-{
-    if(userId == "elc")
-      color = kBlue;
-    else if (userId == "jet")
-      color = kRed;
-    else if (userId != "pile-elc" && userId != "pile-jet")//TODO Change this stupid way of dealing error
-      throw;
-    hypoChain = new TChain("CollectionTree");
-    hypoChain->Add(chainPath.c_str());
-    hypoChain->SetBranchStatus("*", false);
-    lvl2_eta  = new std::vector<float>;
-    lvl2_phi  = new std::vector<float>;
-    decision  = new std::vector<int>;
-    et        = new std::vector<float>;
+HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId){
+  totalData = 0;
+  detElc = 0;
+  detJet = 0,
+  dataLabel = userDataLabel;
+  id = userId;
+  if(userId == "elc")
+    color = kBlue;
+  else if (userId == "jet")
+    color = kRed;
+  else if (userId != "pile-elc" && userId != "pile-jet")//TODO Change this stupid way of dealing error
+    throw;
+  hypoChain = new TChain("CollectionTree");
+  hypoChain->Add(chainPath.c_str());
+  hypoChain->SetBranchStatus("*", false);
+  lvl2_eta  = new std::vector<float>;
+  lvl2_phi  = new std::vector<float>;
+  decision  = new std::vector<int>;
+  et        = new std::vector<float>;
+  return HypoBase::OK;
 }
 
 //Old Code that would match Eta and Phi and do not consider coordinate pi discontinuously 
@@ -95,9 +97,9 @@ HypoBase::CODE HypoBase::matchAndOrdenate(const std::vector<float> *eta, const s
             float dphi = 999999.;
             int matchingPair = -1;
             for(size_t j=i; j<eta->size(); ++j){
-                float tdeta = abs(lvl2_eta->at(j) - eta->at(i));
-                float tfdphi = abs( lvl2_phi->at(j) - phi->at(i) );
-                float tsdphi = abs( lvl2_phi->at(j) + phi->at(i) );
+                float tdeta = std::abs(lvl2_eta->at(j) - eta->at(i));
+                float tfdphi = std::abs( lvl2_phi->at(j) - phi->at(i) );
+                float tsdphi = std::abs( lvl2_phi->at(j) + phi->at(i) );
                 float tdphi = (tfdphi<tsdphi)?tfdphi:tsdphi;
                 if (tdeta < deta && tdphi < dphi){
                     deta = tdeta;
@@ -153,6 +155,7 @@ HypoBase::CODE HypoBase::fillHypoRate(){
     return HypoBase::OK;
 }
 
+
 HypoBase::~HypoBase(){ 
     delete hypoChain;
     if (extraVariables !=0)
@@ -162,4 +165,3 @@ HypoBase::~HypoBase(){
     delete decision;
     delete et;
 }
-

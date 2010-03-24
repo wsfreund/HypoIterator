@@ -7,6 +7,7 @@
 #include<TTree.h>
 #include<cstring>
 #include<iostream>
+#include<typeinfo>
 using std::cout;
 using std::endl;
 
@@ -39,21 +40,24 @@ class HypoBase {
 
     TChain *hypoChain;
     TTree *extraVariables;
+    HypoBase(){}
+    virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel);
+    virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
+
+    virtual TTree *getExtraVariables(){ 
+      return extraVariables;
+    } 
 
     public:
     enum DECISION {JET = -1, ELECTRON = 1};
 
-    HypoBase(const std::string &chainPath, const std::string &userDataLabel);
-    HypoBase(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
-
-    virtual void getExtraVariables(TTree*& refExtraVariables) const{refExtraVariables = extraVariables;}
     unsigned getTotalData() const{ return totalData;}
     unsigned getDetElc() const{return detElc;}
     unsigned getDetJet() const{return detJet;}
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
-    const std::string & getId() const{ return id;}
-    const std::string & getDataLabel() const { return dataLabel; }
+    const std::string & getId() const{ return HypoBase::id;}
+    const std::string & getDataLabel() const { return HypoBase::dataLabel; } 
     virtual CODE exec() = 0;
 
 

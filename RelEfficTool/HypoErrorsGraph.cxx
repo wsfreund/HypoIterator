@@ -7,36 +7,42 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     LOWEDGE = userLOWEDGE;
     HIEDGE = userHIEDGE;
     dataHypo = userDataHypo;
+    title = userTitle;
     id = dataHypo->getId();
-    dataHypo->getExtraVariables(dataTree);
+    cout<<"Alpha 1"<<endl;
+    dataTree = dataHypo->getExtraVariables();
+    cout<<"Alpha 2"<<endl;
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
+    cout<<"Alpha 3"<<endl;
+    cout<<"extraVariables "<<dataTree<<endl;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
     if (branchName == "T2CaEt")
         mev2gev = true;
     else 
         mev2gev = false;
-    T2CaCommon* pHypo = dynamic_cast<T2CaCommon*>(dataHypo);
-    if (pHypo){
-        dataTree->SetBranchAddress("T2CaDec", &vectorDec);
-        title = userTitle;
-    }else if (pHypo){
-//        pHypo = dynamic_cast<const NeuralCommon*>(dataHypo);
-        dataTree->SetBranchAddress("Ringer_Dec", &vectorDec);
-        title = userTitle;
+    cout<<"Alpha 4"<<endl;
+    const char * decBranch;
+    if (dynamic_cast<T2CaCommon*>(dataHypo)){
+        cout<<"Alpha 5"<<endl;
+        decBranch = "T2CaDec";
     }else{
+      cout<<"Alpha 6"<<endl;
+      if (dynamic_cast<NeuralCommon*>(dataHypo)){
+          decBranch = "Ringer_Dec";
+      }
+      else{
         cout<<"Entered wrong type of Hypo"<<endl;
         throw;
+      }
     }
+    cout<<"Alpha 7"<<endl;
+    dataTree->SetBranchAddress(decBranch, &vectorDec);
+    cout<<"Alpha 8"<<endl;
 }
 
 HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userId, const std::string &userTitle)
-/*:    NREGIONS(userNREGIONS),
-    NPOINTS(userNREGIONS+1),
-    LOWEDGE(userLOWEDGE),
-    HIEDGE(userHIEDGE),                  
-    vectorInput(dataVector),
-    dataTree(0)*/{
+{
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
     LOWEDGE = userLOWEDGE;

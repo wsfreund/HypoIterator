@@ -22,7 +22,7 @@ int RelEfficCanvas::Draw(const int numPads){
     
     std::string id;
 
-    if (t2relEfficData)
+    if (relEfficData)
       id = t2relEfficData->getId(); 
     
     T2CaRelEffic *t2relEfficElc = 0; 

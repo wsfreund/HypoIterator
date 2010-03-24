@@ -1,20 +1,19 @@
-#ifndef NEURAL_COMMON
-#define NEURAL_COMMON
+#ifndef NEURAL_COMMON_H
+#define NEURAL_COMMON_H
 
 
-#include "HypoBase.h"
+#include "NeuralBase.h"
 #include "Neural.h"  
 #include "NeuralConfig.h"
 #include <vector>
-#include "TH1F"
+#include "TH1F.h"
 #include "TTree.h"
 #include "TChain.h"
-#include <iostream>
 
 
-class NeuralCommon : public HypoBase {
+class NeuralCommon : public NeuralBase { 
 
-    enum normalizations {sequential = 0};
+    protected:
     std::vector<float> *rings;
     std::vector<float> *neuralAns;
 //    std::vector<int> *lvl1_id;
@@ -23,16 +22,24 @@ class NeuralCommon : public HypoBase {
     Neural *neuralRinger;
     CODE fillDecision(const float);
 
-    CODE clearVectors();
-    CODE swapVectors(const size_t index1, const size_t index2);
-    CODE eraseVectors(const size_t index);
+    float threshold;
+
+    virtual CODE clearVectors();
+    virtual CODE swapVectors(const size_t index1, const size_t index2);
+    virtual CODE eraseVectors(const size_t index);
+    CODE initialize(const neuralConfig &userNeuralConfig);
+
+    TTree *getExtraVariables(){ 
+      return extraVariables;
+    } 
 
     public:
-    NeuralCommon(TChain *NeuralChain);
+    NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
+    NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id);
     CODE exec();
     CODE drawNetAns();
 
-    ~NeuralEfic();
+    virtual ~NeuralCommon();
 
 };
 

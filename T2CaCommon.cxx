@@ -1,37 +1,36 @@
 #include "T2CaCommon.h"
 
 T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel):
-HypoBase(chainPath, userDataLabel),
-l2chain(userL2chain),
-rCoreCuts(0),
-eRatioCuts(0),
-etCuts(0),
-hadEtCuts(0),
-detrCoreRate(0.),
-deteRatioRate(0.),
-detEtRate(0.),
-detHadEtRate(0.)
+T2CaBase(chainPath, userDataLabel)
 {
+  l2chain = userL2chain,
+  rCoreCuts = 0;
+  eRatioCuts = 0;
+  etCuts = 0;
+  hadEtCuts = 0;
+  detrCoreRate = 0;
+  deteRatioRate = 0;
+  detEtRate = 0;
+  detHadEtRate = 0;
   initialize();
 }
 
 T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id):
-HypoBase(chainPath, userDataLabel, id),
-l2chain(userL2chain),
-rCoreCuts(0),
-eRatioCuts(0),
-etCuts(0),
-hadEtCuts(0),
-detrCoreRate(0.),
-deteRatioRate(0.),
-detEtRate(0.),
-detHadEtRate(0.)
+T2CaBase(chainPath, userDataLabel, id)
 {
+  l2chain = userL2chain;
+  rCoreCuts = 0;
+  eRatioCuts = 0;
+  etCuts = 0;
+  hadEtCuts = 0;
+  detrCoreRate = 0;
+  deteRatioRate = 0;
+  detEtRate = 0;
+  detHadEtRate = 0;
   initialize();
 }
 
-inline HypoBase::CODE T2CaCommon::initialize(){
-
+HypoBase::CODE T2CaCommon::initialize(){
 
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
@@ -66,6 +65,7 @@ inline HypoBase::CODE T2CaCommon::initialize(){
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
     extraVariables = new TTree("HypoData", "Tree with Hypo data");
+    cout<<"extraVariables "<<extraVariables<<endl;
 
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
@@ -74,7 +74,6 @@ inline HypoBase::CODE T2CaCommon::initialize(){
     extraVariables->Branch("T2CaEt",  &et);
     extraVariables->Branch("T2CaF1",  &F1);
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
-
     //exec();
 
     return HypoBase::OK;
@@ -203,7 +202,7 @@ inline bool T2CaCommon::cutrCore(const float rCore, const size_t etaBin){
 
 inline bool T2CaCommon::cuteRatio(const float eRatio, const float F1, const float eta, const size_t etaBin){
     bool inCrack = ( fabs (eta) > 2.37 || ( fabs (eta) > 1.37 && fabs (eta) < 1.52 ) );
-    if ( (!inCrack) || ( F1 < l2chain.m_F1thr) )
+    if ( !(inCrack || F1 < l2chain.m_F1thr) )
         if (eRatio < l2chain.m_caeratiothr[etaBin])// Two ifs just to be simmilar to T2Calo implementation
             return true;
     return false;
@@ -260,15 +259,6 @@ HypoBase::CODE T2CaCommon::eraseVectors(const size_t index){
 
 HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2){
 
-    cout<<"Inside swapVectors : "<<endl;
-    cout<<endl<<"     eta : ";
-    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-        cout<<lvl2_eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-        cout<<lvl2_phi->at(pos)<<" ";
-    cout<<endl;
-
     float temp;
     temp=lvl2_eta->at(index1);
     lvl2_eta->at(index1)=lvl2_eta->at(index2);
@@ -277,15 +267,6 @@ HypoBase::CODE T2CaCommon::swapVectors(const size_t index1, const size_t index2)
     temp=lvl2_phi->at(index1);
     lvl2_phi->at(index1)=lvl2_phi->at(index2);
     lvl2_phi->at(index2)=temp;
-
-    cout<<"Ending swapVectors : "<<endl;
-    cout<<endl<<"     eta : ";
-    for (size_t pos=0; pos<lvl2_eta->size(); ++pos)
-        cout<<lvl2_eta->at(pos)<<" ";
-    cout<<endl<<"     phi : ";
-    for (size_t pos=0; pos<lvl2_phi->size(); ++pos)
-        cout<<lvl2_phi->at(pos)<<" ";
-    cout<<endl;
 
     temp=et->at(index1);
     et->at(index1)=et->at(index2);

@@ -1,30 +1,43 @@
 #include "NeuralCommon.h"
 
+//TODO include genROC.
 
-NeuralCommon::NeuralCommon(TChain *NeuralChain):
-    HypoBase(NeuralChain){
+NeuralCommon::NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel):
+NeuralBase(chainPath, userDataLabel){
+    initialize(userNeuralConfig);
+}
+
+NeuralCommon::NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id):
+NeuralBase(chainPath, userDataLabel, id)
+{
+    initialize(userNeuralConfig);
+}
+
+HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
+    threshold = userNeuralConfig.threshold;
+    std::vector<unsigned int> nodesVector;
+    std::vector<float> weightVector;
+    std::vector<float> biasVector;
+    for(unsigned int i=0;i<(userNeuralConfig.sizeNode);++i)
+        nodesVector.push_back(userNeuralConfig.NODESVECTOR[i]);
+    for(unsigned int i=0;i<(userNeuralConfig.sizeWeight);++i)
+        weightVector.push_back(userNeuralConfig.WEIGHTVECTOR[i]);
+    for(unsigned int i=0;i<(userNeuralConfig.sizeBias);++i)
+        biasVector.push_back(userNeuralConfig.BIASVECTOR[i]);
+    neuralRinger = new Neural( nodesVector, weightVector, biasVector);
+
 
     rings = new std::vector<float>;
     neuralAns = new std::vector<float>;
     //  lvl1_id = new vector<int>;
     //  roi_id = new vector<int>;
 
-    std::vector<unsigned int> nodesVector;
-    std::vector<float> weightVector;
-    std::vector<float> biasVector;
-    for(unsigned int i=0;i<(sizeof(NODESVECTOR)/sizeof(unsigned int));++i)
-        nodesVector.push_back(NODESVECTOR[i]);
-    for(unsigned int i=0;i<(sizeof(WEIGHTVECTOR)/sizeof(float));++i)
-        weightVector.push_back(WEIGHTVECTOR[i]);
-    for(unsigned int i=0;i<(sizeof(BIASVECTOR)/sizeof(float));++i)
-        biasVector.push_back(BIASVECTOR[i]);
-    neuralRinger = new Neural( nodesVector, weightVector, biasVector);
 
     hypoChain->SetBranchStatus("Ringer_Rings",       true);
     hypoChain->SetBranchStatus("Ringer_LVL2_Eta",    true);
     hypoChain->SetBranchStatus("Ringer_LVL2_Phi",    true);
     hypoChain->SetBranchStatus("Ringer_LVL2_Et",     true);
-//  hypoChain->SetBranchStatus("Ringer_LVL1_Id",    true);
+//  hypoChain->SetBranchStatus("Ringer_LVL1_Id",     true);
 //  hypoChain->SetBranchStatus("Ringer_Roi_Id",      true);
 
     hypoChain->SetBranchAddress("Ringer_Rings",      &rings);
@@ -42,28 +55,37 @@ NeuralCommon::NeuralCommon(TChain *NeuralChain):
     extraVariables->Branch("Ringer_LVL2_Phi",  &lvl2_phi);
     extraVariables->Branch("Ringer_LVL2_Et",   &et);
 
-    exec();
+    return HypoBase::OK;
 
 }
 
-
 HypoBase::CODE NeuralCommon::exec(){
 
+    cout<<"On exec(): "<<extraVariables<<endl;
     int n_entries = static_cast<int>(hypoChain->GetEntries());
 
     for(int i=0; i<n_entries; ++i){
+        cout<<"on for loop i : "<<i<<endl;
         hypoChain->GetEntry(i);
 
         for(size_t j=0; j<lvl2_eta->size(); ++j){
             std::vector<float> roiInput;
+            cout<<"on for loop j : "<<j<<endl;
 
             for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k)
                 roiInput.push_back(rings->at(k));
+            cout<<"push_back rings ok"<<endl;
             float roiAns = neuralRinger->propagate(roiInput);
+            cout<<"propagate ok"<<endl;
             neuralAns->push_back(roiAns);
+            cout<<"neuralAns ok "<<endl;
             fillDecision(roiAns);          
+            cout<<"decision ok "<<endl;
             roiInput.clear();
         }
+        cout<<"extraVariables : "<<extraVariables<<endl;
+        extraVariables->Fill();
+        clearVectors();
     }
     fillHypoRate();
     return HypoBase::OK;
@@ -75,10 +97,11 @@ HypoBase::CODE NeuralCommon::drawNetAns(){
     hNans->GetXaxis()->SetTitle("OutPut Neuron Value");
     int nEntries = static_cast<int>(extraVariables->GetEntries());
 
+
     for(int i=0; i<nEntries;++i){
         extraVariables->GetEntry(i);
-        for(size_t j=0; j<netAns->size();++j)
-            hNans->Fill(netAns->at(j));
+        for(size_t j=0; j<neuralAns->size();++j)
+            hNans->Fill(neuralAns->at(j));
     }
     hNans->Draw();
     return HypoBase::OK;
@@ -154,8 +177,6 @@ HypoBase::CODE NeuralCommon::clearVectors(){
 }
 
 NeuralCommon::~NeuralCommon(){
-
-    if (neuralFile!=NULL) delete neuralFile;
 
     //    delete lvl1_id;
     //    delete roi_id;
