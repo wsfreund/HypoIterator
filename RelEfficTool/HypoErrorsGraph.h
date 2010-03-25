@@ -5,7 +5,7 @@
 #include <typeinfo>
 #include "TTree.h"
 #include "TMath.h"
-#include <cstring>
+#include <string>
 #include "TGraphAsymmErrors.h"
 #include "HypoBase.h"
 #include "../T2CaCommon.h"
@@ -18,12 +18,14 @@ class HypoErrorsGraph {
 
     protected:
     enum CODE {ERROR = 0, OK};
-    /*const*/ unsigned NREGIONS;
-    /*const*/ unsigned NPOINTS;
-    /*const*/ float LOWEDGE;
-    /*const*/ float HIEDGE;
-    /*const*/ std::string title;
-    /*const*/ std::string id;
+
+    Color_t color;
+    unsigned NREGIONS;
+    unsigned NPOINTS;
+    float LOWEDGE;
+    float HIEDGE;
+    std::string title;
+    std::string id;
     HypoBase *dataHypo;
     TTree *dataTree;
     bool mev2gev;
@@ -45,13 +47,15 @@ class HypoErrorsGraph {
 
     HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, HypoBase *dataHypo, const std::string &branchName, const unsigned userNREGIONS, const std::string &userTitle);
 
-    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &dataLabel, const std::string &userTitle);
+    HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userId, const Color_t userColor, const std::string &userTitle);
 
-    HypoErrorsGraph &operator=(const HypoErrorsGraph &graph2);
-    HypoErrorsGraph* operator=(const HypoErrorsGraph* &graph2);
+    HypoErrorsGraph &operator=(const HypoErrorsGraph& graph2);
+    HypoErrorsGraph* operator=(const HypoErrorsGraph*& graph2);
     
-    TGraphAsymmErrors *getGraph(){ cout<<"Returning graph "<<graph<<endl; return graph; }
+    TGraphAsymmErrors *getGraph(){ return graph; }
     CODE Draw(const std::string &input);
+
+    void SetColor(Color_t userColor) { color = userColor; } 
 
     virtual ~HypoErrorsGraph();
 

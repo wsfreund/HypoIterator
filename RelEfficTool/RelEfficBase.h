@@ -1,11 +1,12 @@
 #ifndef RELEFFICBASE_H
 #define RELEFFICBASE_H
 
-#include <cstring>
+#include <string>
 #include "TGraphAsymmErrors.h"
 #include "HypoErrorsGraph.h"
 #include "TMath.h"
 #include "TCanvas.h"
+#include <cstring>
 #include <iostream>
 
 
@@ -25,8 +26,8 @@ class RelEfficBase : virtual public HypoBase {
       etxEfficGraph = 0;
     }
     virtual int DrawEfficVs(const std::string &vsWho, const std::string &opt = "") = 0;
+    virtual int DrawEfficVs(const std::string &vsWho, const std::string &opt, Color_t color) = 0;
     TGraphAsymmErrors* getGraph(const std::string &dataType){
-        cout<<"on "<<dataType<<" getGraph!"<<endl;
         if(dataType == "eta"){
             return etaxEfficGraph->getGraph();
         }

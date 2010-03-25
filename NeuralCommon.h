@@ -29,9 +29,6 @@ class NeuralCommon : public NeuralBase {
     virtual CODE eraseVectors(const size_t index);
     CODE initialize(const neuralConfig &userNeuralConfig);
 
-    TTree *getExtraVariables(){ 
-      return extraVariables;
-    } 
 
     public:
     NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);

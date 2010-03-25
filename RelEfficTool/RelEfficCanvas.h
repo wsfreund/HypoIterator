@@ -5,6 +5,7 @@
 #include "T2CaRelEffic.h"
 #include "NeuralRelEffic.h"
 #include "TCanvas.h"
+#include <string>
 #include "TPad.h"
 #include "TVirtualPad.h"
 #include "TMath.h"
@@ -16,35 +17,53 @@
 
 class RelEfficCanvas {
 
-    protected:
+    // data:
     TCanvas *relCanvas;
     TCanvas *infoCanvas;
     TLegend *legend;
+    TPaveText *pt;
+    TPaveText *hypoPt;
     RelEfficBase *relEfficData;
     RelEfficBase *relEffic1;
     RelEfficBase *relEffic2;
+    TH1F *th1EtaPad;
+    TH1F *th1PhiPad;
+    TH1F *th1EtPad;
 
+    // Functions:
+    TH1F* drawWithProperties(const std::string &var, RelEfficBase *&relEfficData, const std::string &title, 
+        const float &xLow, const float &xHi, const std::string &xlabel, const std::string &ylabel, const float &xOffSet = .55, 
+        const float &xSize = .08, const float &yOffSet = .6, const float &ySize = 0.06, const float &yLow = 0, const float &yHi = 100);
+    TH1F* drawWithProperties(const std::string &var, RelEfficBase *&relEffic1, RelEfficBase *&relEffic2, 
+        Color_t color1, Color_t color2, const std::string &title, const float &xLow, const float &xHi,  
+        const std::string &xlabel, const std::string &ylabel, const float &xOffSet = .55, const float &xSize = .08,
+        const float &yOffSet = .6, const float &ySize = .06, const float &yLow = 0, const float &yHi = 100);
+    int genInfoPad();
     float calcSP(float detelc, float detjet);
     public:
 
     RelEfficCanvas(RelEfficBase *userRelEfficData);
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
-    int Draw(const int numPads = 4);
+    int Draw(const int numPads = 3);
     ~RelEfficCanvas(){
-        if (legend)
-          delete legend;
-        if (relCanvas){
-            if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
-                relCanvas->Closed();
-                delete relCanvas;
-            }
-        }
-        if (infoCanvas){
-          if (gROOT->GetListOfCanvases()->FindObject("Analysis Information")){
-            infoCanvas->Closed();
-            delete infoCanvas;
+      if (relCanvas){
+          if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
+              relCanvas->Closed();
+              delete relCanvas;
           }
+      }
+      if (infoCanvas){
+        if (gROOT->GetListOfCanvases()->FindObject("Analysis Information")){
+          infoCanvas->Closed();
+          delete infoCanvas;
         }
+      }
+      if (pt)
+        delete pt;
+      if (hypoPt)
+        delete hypoPt;
+      if (legend)
+        delete legend;
     }
 };
 

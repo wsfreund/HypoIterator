@@ -5,7 +5,7 @@
 #include<cmath>
 #include<TChain.h>
 #include<TTree.h>
-#include<cstring>
+#include<string>
 #include<iostream>
 #include<typeinfo>
 using std::cout;
@@ -44,9 +44,6 @@ class HypoBase {
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel);
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
 
-    virtual TTree *getExtraVariables(){ 
-      return extraVariables;
-    } 
 
     public:
     enum DECISION {JET = -1, ELECTRON = 1};
@@ -58,6 +55,11 @@ class HypoBase {
     float    getFARate() const{return faDetRate;}
     const std::string & getId() const{ return HypoBase::id;}
     const std::string & getDataLabel() const { return HypoBase::dataLabel; } 
+    Color_t getColor() const { return color; }
+    TTree *getExtraVariables(){ 
+      return extraVariables;
+    } 
+
     virtual CODE exec() = 0;
 
 

@@ -61,29 +61,21 @@ HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
 
 HypoBase::CODE NeuralCommon::exec(){
 
-    cout<<"On exec(): "<<extraVariables<<endl;
     int n_entries = static_cast<int>(hypoChain->GetEntries());
 
     for(int i=0; i<n_entries; ++i){
-        cout<<"on for loop i : "<<i<<endl;
         hypoChain->GetEntry(i);
 
         for(size_t j=0; j<lvl2_eta->size(); ++j){
             std::vector<float> roiInput;
-            cout<<"on for loop j : "<<j<<endl;
 
             for(size_t k=( ((rings->size()*(j) ) / (lvl2_eta->size())) ); k<( ((rings->size()*(j+1) ) / (lvl2_eta->size())) ); ++k)
                 roiInput.push_back(rings->at(k));
-            cout<<"push_back rings ok"<<endl;
             float roiAns = neuralRinger->propagate(roiInput);
-            cout<<"propagate ok"<<endl;
             neuralAns->push_back(roiAns);
-            cout<<"neuralAns ok "<<endl;
             fillDecision(roiAns);          
-            cout<<"decision ok "<<endl;
             roiInput.clear();
         }
-        cout<<"extraVariables : "<<extraVariables<<endl;
         extraVariables->Fill();
         clearVectors();
     }

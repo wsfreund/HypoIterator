@@ -65,7 +65,6 @@ HypoBase::CODE T2CaCommon::initialize(){
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
     extraVariables = new TTree("HypoData", "Tree with Hypo data");
-    cout<<"extraVariables "<<extraVariables<<endl;
 
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);

@@ -1,7 +1,6 @@
 #include "HypoBase.h"
 
 HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::string &userDataLabel){
-  cout<<"Alpha"<<endl;
   totalData = 0;
   detElc = 0;
   detJet = 0;
@@ -14,7 +13,6 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
   lvl2_phi  = new std::vector<float>;
   decision  = new std::vector<int>;
   et        = new std::vector<float>;
-  cout<<"Alpha1"<<endl;
   if (dataLabel.find("Electron") != std::string::npos){
     id = "elc";
   } else if (dataLabel.find("electron") != std::string::npos){
@@ -38,7 +36,6 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
     color = kBlue;
   else if ( id == "jet")
     color = kRed;
-  cout<<"Alpha3"<<endl;
   return HypoBase::OK;
 }
 

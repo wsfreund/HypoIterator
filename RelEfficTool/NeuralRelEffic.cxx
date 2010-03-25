@@ -16,63 +16,17 @@ int NeuralRelEffic::DrawEfficVs(const std::string &vsWho, const std::string &opt
     if ( vsWho == "eta"){
         if (etaxEfficGraph)
           delete etaxEfficGraph;
-        cout<<"Beta"<<endl;
-        etaxEfficGraph = new HypoErrorsGraph(-2.5, 2.5, static_cast<HypoBase *>(this), std::string("Ringer_LVL2_Eta"),NREGIONS, std::string("NeuralEfic x Eta"));
-        cout<<"Beta1"<<endl;
+        etaxEfficGraph = new HypoErrorsGraph(-2.5, 2.5, this, std::string("Ringer_LVL2_Eta"),NREGIONS, std::string("NeuralRinger x Eta"));
         etaxEfficGraph->Draw(opt);
-        cout<<"Beta2"<<endl;
-        if (id.find("elc") != std::string::npos){
-          cout<<"Beta3"<<endl;
-          etaxEfficGraph->getGraph()->SetMarkerSize(0.8);
-          etaxEfficGraph->getGraph()->SetLineWidth(0.4);
-          etaxEfficGraph->getGraph()->SetLineColor(4);
-          etaxEfficGraph->getGraph()->SetMarkerColor(4);
-          etaxEfficGraph->getGraph()->SetMarkerStyle(20);
-        }
-        if (id.find("jet") != std::string::npos){
-          etaxEfficGraph->getGraph()->SetMarkerSize(0.8);
-          etaxEfficGraph->getGraph()->SetLineWidth(0.4);
-          etaxEfficGraph->getGraph()->SetMarkerColor(2);
-          etaxEfficGraph->getGraph()->SetLineColor(2);
-          etaxEfficGraph->getGraph()->SetMarkerStyle(21);
-        }
     }else if (vsWho == "phi"){
         if (phixEfficGraph)
           delete phixEfficGraph;
-        phixEfficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), static_cast<HypoBase *>(this), std::string("Ringer_LVL2_Phi"), NREGIONS, std::string("NeuralEfic x Phi"));
+        phixEfficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), this, std::string("Ringer_LVL2_Phi"), NREGIONS, std::string("NeuralRinger x Phi"));
         phixEfficGraph->Draw(opt);
-        if (id.find("elc") != std::string::npos){
-          phixEfficGraph->getGraph()->SetMarkerSize(0.8);
-          phixEfficGraph->getGraph()->SetLineWidth(0.4);
-          phixEfficGraph->getGraph()->SetLineColor(4);
-          phixEfficGraph->getGraph()->SetMarkerColor(4);
-          phixEfficGraph->getGraph()->SetMarkerStyle(20);
-        }
-        if (id.find("jet") != std::string::npos){
-          phixEfficGraph->getGraph()->SetMarkerSize(0.8);
-          phixEfficGraph->getGraph()->SetLineWidth(0.4);
-          phixEfficGraph->getGraph()->SetMarkerColor(2);
-          phixEfficGraph->getGraph()->SetLineColor(2);
-          phixEfficGraph->getGraph()->SetMarkerStyle(21);
-        }
     }else if (vsWho == "et"){
         if (etxEfficGraph)
           delete etxEfficGraph;
-        etxEfficGraph = new HypoErrorsGraph(10, 80, static_cast<HypoBase *>(this), std::string("Ringer_LVL2_Et"),NREGIONS, std::string("NeuralEfic x Et"));
-        if (id.find("elc") != std::string::npos){
-          etxEfficGraph->getGraph()->SetMarkerSize(0.8);
-          etxEfficGraph->getGraph()->SetLineWidth(0.4);
-          etxEfficGraph->getGraph()->SetLineColor(4);
-          etxEfficGraph->getGraph()->SetMarkerColor(4);
-          etxEfficGraph->getGraph()->SetMarkerStyle(20);
-        }
-        if (id.find("jet") != std::string::npos){
-          etxEfficGraph->getGraph()->SetMarkerSize(0.8);
-          etxEfficGraph->getGraph()->SetLineWidth(0.4);
-          etxEfficGraph->getGraph()->SetMarkerColor(2);
-          etxEfficGraph->getGraph()->SetLineColor(2);
-          etxEfficGraph->getGraph()->SetMarkerStyle(21);
-        }
+        etxEfficGraph = new HypoErrorsGraph(10, 80, this, std::string("Ringer_LVL2_Et"),NREGIONS, std::string("NeuralRinger x Et"));
         etxEfficGraph->Draw(opt);
     }else{
       std::cout<<"Option "<<opt<<" doesnt exists!"<<std::endl;
@@ -82,7 +36,33 @@ int NeuralRelEffic::DrawEfficVs(const std::string &vsWho, const std::string &opt
 
 }
 
+int NeuralRelEffic::DrawEfficVs(const std::string &vsWho, const std::string &opt, Color_t color){
 
+    if ( vsWho == "eta"){
+        if (etaxEfficGraph)
+          delete etaxEfficGraph;
+        etaxEfficGraph = new HypoErrorsGraph(-2.5, 2.5, this, std::string("Ringer_LVL2_Eta"),NREGIONS, std::string("NeuralRinger x Eta"));
+        etaxEfficGraph->SetColor(color);
+        etaxEfficGraph->Draw(opt);
+    }else if (vsWho == "phi"){
+        if (phixEfficGraph)
+          delete phixEfficGraph;
+        phixEfficGraph = new HypoErrorsGraph(-TMath::Pi(), TMath::Pi(), this, std::string("Ringer_LVL2_Phi"), NREGIONS, std::string("NeuralRinger x Phi"));
+        phixEfficGraph->SetColor(color);
+        phixEfficGraph->Draw(opt);
+    }else if (vsWho == "et"){
+        if (etxEfficGraph)
+          delete etxEfficGraph;
+        etxEfficGraph = new HypoErrorsGraph(10, 80, this, std::string("Ringer_LVL2_Et"),NREGIONS, std::string("NeuralRinger x Et"));
+        etxEfficGraph->SetColor(color);
+        etxEfficGraph->Draw(opt);
+    }else{
+      std::cout<<"Option "<<opt<<" doesnt exists!"<<std::endl;
+    }
+
+    return 0;
+
+}
 
 
 NeuralRelEffic::~NeuralRelEffic(){

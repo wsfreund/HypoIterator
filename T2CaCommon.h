@@ -39,8 +39,6 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     std::vector<float> *ringer_phi;
     //Vector with T2Calo Cuts;
     std::vector<int> *t2CaAns;
-    //Tree holding extraVariables:
-    TTree *extraVariables;
     //Analysis Variables:
     unsigned rCoreCuts;
     unsigned eRatioCuts;
@@ -66,9 +64,6 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
     bool cutF1(const float F1);
 
-    TTree *getExtraVariables(){ 
-      return extraVariables;
-    } 
 
     public:
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel);

@@ -9,25 +9,19 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     dataHypo = userDataHypo;
     title = userTitle;
     id = dataHypo->getId();
-    cout<<"Alpha 1"<<endl;
+    color = dataHypo->getColor(); 
     dataTree = dataHypo->getExtraVariables();
-    cout<<"Alpha 2"<<endl;
     vectorInput = new std::vector<float>;
     vectorDec = new std::vector<int>;
-    cout<<"Alpha 3"<<endl;
-    cout<<"extraVariables "<<dataTree<<endl;
     dataTree->SetBranchAddress(branchName.c_str(), &vectorInput);
-    if (branchName == "T2CaEt")
+    if (branchName == "T2CaEt" || branchName == "Ringer_LVL2_Et")
         mev2gev = true;
     else 
         mev2gev = false;
-    cout<<"Alpha 4"<<endl;
     const char * decBranch;
     if (dynamic_cast<T2CaCommon*>(dataHypo)){
-        cout<<"Alpha 5"<<endl;
         decBranch = "T2CaDec";
     }else{
-      cout<<"Alpha 6"<<endl;
       if (dynamic_cast<NeuralCommon*>(dataHypo)){
           decBranch = "Ringer_Dec";
       }
@@ -36,12 +30,10 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
         throw;
       }
     }
-    cout<<"Alpha 7"<<endl;
     dataTree->SetBranchAddress(decBranch, &vectorDec);
-    cout<<"Alpha 8"<<endl;
 }
 
-HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userId, const std::string &userTitle)
+HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE, std::vector<float> *&dataVector, std::vector<int> *&inputDec, const unsigned userNREGIONS, const std::string &userId, const Color_t userColor, const std::string &userTitle)
 {
     NREGIONS = userNREGIONS;
     NPOINTS = userNREGIONS+1;
@@ -53,6 +45,7 @@ HypoErrorsGraph::HypoErrorsGraph(const float userLOWEDGE, const float userHIEDGE
     dataHypo = 0;
     title = userTitle;
     mev2gev = false;
+    color = userColor;
 }
     
 
@@ -71,8 +64,13 @@ HypoErrorsGraph::CODE HypoErrorsGraph::genGraph(){
     genEfficErrors(pEdges, pX, peffic, pLowErrors, pHiErrors); 
     //Generating Graph
     graph = new TGraphAsymmErrors(NREGIONS, x, effic, exl, exh, lowErrors, hiErrors);
-    graph->SetFillColor(19);
     //Setting graph parameters:
+    graph->SetFillColor(19);
+    graph->SetMarkerSize(0.8);
+    graph->SetLineWidth(0.4);
+    graph->SetLineColor(color);
+    graph->SetMarkerColor(color);
+    graph->SetMarkerStyle(20);
     graph->SetTitle(title.c_str());
 
     return HypoErrorsGraph::OK;

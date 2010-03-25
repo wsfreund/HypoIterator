@@ -13,8 +13,6 @@ class NeuralBase : virtual public HypoBase{
   { 
     HypoBase::baseInit(chainPath, userDataLabel, userId);
   }
-  //const std::string & getId() const{ return id;}
-  //const std::string & getDataLabel() const { return dataLabel; }
 };
 
 #endif
