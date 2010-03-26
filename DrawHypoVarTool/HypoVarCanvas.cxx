@@ -1,23 +1,30 @@
 #include "HypoVarCanvas.h"
 HypoVarCanvas::HypoVarCanvas(HypoVarBase *userHypoVar1, HypoVarBase *userHypoVar2):
-hypoVarCanvas(0),
-hypoVar1(userHypoVar1),
-hypoVar2(userHypoVar2)
+hypoVarCanvas(0)
 {
-
+  if ( !( (t2Var1 = dynamic_cast<T2CaVarGraph*>(userHypoVar1)) && ( t2Var2 = dynamic_cast<T2CaVarGraph*>(userHypoVar2)) )){
+    std::cout<<"Should use same kind of Hypo"<<std::endl;
+    throw;
+  } else if ( !( (neuralVar1 = dynamic_cast<NeuralVarGraph*>(userHypoVar1)) && ( neuralVar2 = dynamic_cast<NeuralVarGraph*>(userHypoVar2)) )){
+    std::cout<<"Should use same kind of Hypo"<<std::endl;
+    throw;
+  }
 }   
 
 
 int HypoVarCanvas::Draw(bool scaled){
 
+    if (!hypoVarCanvas){
+      if (gROOT->GetListOfCanvases()->FindObject("Hypo Variables Analysis")){
+        hypoVarCanvas->Closed();
+        delete hypoVarCanvas;
+        hypoVarCanvas = 0;
+      }
+    }
     hypoVarCanvas = new TCanvas("Hypo Variables Analysis", "Hypo Variables Analysis");
-    T2CaVarGraph *t2Var1 = dynamic_cast<T2CaVarGraph*>(dynamic_cast<HypoBase*>(hypoVar1));
-    T2CaVarGraph *t2Var2 = dynamic_cast<T2CaVarGraph*>(dynamic_cast<HypoBase*>(hypoVar2));
-
-
-    hypoVarCanvas->Divide(2,2);
 
     if (t2Var1 && t2Var2){
+      hypoVarCanvas->Divide(2,2);
         if ( t2Var1->getTotalData() == 0)
           t2Var1->exec();
         if ( t2Var2->getTotalData() == 0)
@@ -103,8 +110,8 @@ int HypoVarCanvas::Draw(bool scaled){
 
 
 int HypoVarCanvas::setRange(const std::string &var, const float x1, const float x2, const std::string &axis){
-  hypoVar1->setRange(var,x1,x2,axis);
-  hypoVar2->setRange(var,x1,x2,axis);
+  t2Var1->setRange(var,x1,x2,axis);
+  t2Var2->setRange(var,x1,x2,axis);
   if (var == "rcore"){
     hypoVarCanvas->cd(1)->Modified();
     hypoVarCanvas->cd(1)->Update();
@@ -123,8 +130,8 @@ int HypoVarCanvas::setRange(const std::string &var, const float x1, const float 
 }
 
 int HypoVarCanvas::setRange(const int padNumber, const float x1, const float x2, const std::string &axis){
-  hypoVar1->setRange(padNumber,x1,x2,axis);
-  hypoVar2->setRange(padNumber,x1,x2,axis);
+  t2Var1->setRange(padNumber,x1,x2,axis);
+  t2Var2->setRange(padNumber,x1,x2,axis);
   hypoVarCanvas->cd(padNumber)->Modified();
   hypoVarCanvas->cd(padNumber)->Update();
   hypoVarCanvas->cd();
@@ -132,8 +139,8 @@ int HypoVarCanvas::setRange(const int padNumber, const float x1, const float x2,
 }
 
 int HypoVarCanvas::setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2){
-  hypoVar1->setRange(var,x1,x2,y1,y2);
-  hypoVar2->setRange(var,x1,x2,y1,y2);
+  t2Var1->setRange(var,x1,x2,y1,y2);
+  t2Var2->setRange(var,x1,x2,y1,y2);
   if (var == "rcore"){
     hypoVarCanvas->cd(1)->Modified();
     hypoVarCanvas->cd(1)->Update();
@@ -152,8 +159,8 @@ int HypoVarCanvas::setRange(const std::string &var, const float x1, const float 
 }
 
 int HypoVarCanvas::setRange(const int padNumber, const float x1, const float x2, const float y1, const float y2){
-  hypoVar1->setRange(padNumber,x1,x2,y1,y2);
-  hypoVar2->setRange(padNumber,x1,x2,y1,y2);
+  t2Var1->setRange(padNumber,x1,x2,y1,y2);
+  t2Var2->setRange(padNumber,x1,x2,y1,y2);
   hypoVarCanvas->cd(padNumber)->Modified();
   hypoVarCanvas->cd(padNumber)->Update();
   hypoVarCanvas->cd();

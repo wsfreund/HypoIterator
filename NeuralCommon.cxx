@@ -86,6 +86,7 @@ HypoBase::CODE NeuralCommon::exec(){
 HypoBase::CODE NeuralCommon::drawNetAns(){
 
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
+    hNans->SetLineColor(color);
     hNans->GetXaxis()->SetTitle("OutPut Neuron Value");
     int nEntries = static_cast<int>(extraVariables->GetEntries());
 

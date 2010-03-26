@@ -1,9 +1,9 @@
 #include "T2CaVarGraph.h"
 
 T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, bool shunt):
-T2CaCommon(chainPath, userL2chain, userDataLabel),
-useShunt(shunt)
+T2CaCommon(chainPath, userL2chain, userDataLabel)
 {
+  useShunt = shunt;
   if (dataLabel.find("No") != std::string::npos){
     //do nothing
   } else if (dataLabel.find("NO") != std::string::npos){
@@ -33,9 +33,9 @@ useShunt(shunt)
 }
 
 T2CaVarGraph::T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &userId, bool shunt):
-T2CaCommon(chainPath, userL2chain, userDataLabel, userId),
-useShunt(shunt)
+T2CaCommon(chainPath, userL2chain, userDataLabel, userId)
 {
+  useShunt = shunt;
   if (id=="pile-elc")
     color = kAzure + 1;
   else if(id=="pile-jet")

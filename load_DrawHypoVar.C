@@ -10,5 +10,6 @@ gROOT->ProcessLine(".L NeuralCommon.cxx+");
 gROOT->ProcessLine(".L DrawHypoVarTool/HypoVarHist.cxx+");
 gROOT->ProcessLine(".L DrawHypoVarTool/HypoVarBase.h+");
 gROOT->ProcessLine(".L DrawHypoVarTool/T2CaVarGraph.cxx+");
+gROOT->ProcessLine(".L DrawHypoVarTool/NeuralVarGraph.cxx+");
 gROOT->ProcessLine(".L DrawHypoVarTool/HypoVarCanvas.cxx+");
 }

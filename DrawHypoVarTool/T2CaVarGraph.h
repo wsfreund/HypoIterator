@@ -5,7 +5,7 @@
 #include "../T2CaCommon.h"
 #include "HypoVarBase.h"
 #include "HypoVarHist.h"
-#include <cstring>
+#include <string>
 #include <iostream>
 #include "TGraph.h"
 #include <TPad.h>
@@ -44,7 +44,7 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
     int setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2);
     TH1F *getHist(const std::string &var);
-    ~T2CaVarGraph();
+    virtual ~T2CaVarGraph();
 
 };
 

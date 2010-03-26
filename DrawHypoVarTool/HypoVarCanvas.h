@@ -3,19 +3,22 @@
 
 #include "HypoVarBase.h"
 #include "T2CaVarGraph.h"
-//#include "NeuralRelEffic.h"
+#include "NeuralVarGraph.h"
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TPaveText.h"
 #include "TString.h"
 #include "TROOT.h"
+#include "iostream"
 
 class HypoVarCanvas {
 
     protected:
     TCanvas *hypoVarCanvas;
-    HypoVarBase *hypoVar1;
-    HypoVarBase *hypoVar2;
+    NeuralVarGraph *neuralVar1;
+    NeuralVarGraph *neuralVar2;
+    T2CaVarGraph *t2Var1;
+    T2CaVarGraph *t2Var2;
 
     TGraph *grCoreCut;
     TGraph *geRatioCut;

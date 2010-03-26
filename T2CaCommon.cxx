@@ -341,6 +341,7 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(){
     hCuts->GetXaxis()->SetBinLabel(8,"E_{T}^{Had}");
     hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
     hCuts->SetEntries(hCuts->GetBinContent(1));
+    hCuts->SetLineColor(color);
     hCuts->Draw();
     return HypoBase::OK;
 
