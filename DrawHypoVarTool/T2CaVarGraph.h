@@ -31,7 +31,7 @@ class T2CaVarGraph : public T2CaCommon, public HypoVarBase {
     bool cuthadET_T2Calo(const float hadET_T2Calo, const float eT_T2Calo, const size_t etaBin);
     bool cutF1(const float F1);
 
-    CODE initialize();
+    CODE initialise();
     public:
 
     T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, bool shunt = false);

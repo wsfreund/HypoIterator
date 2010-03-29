@@ -14,9 +14,17 @@
 
 class NeuralVarGraph : public NeuralCommon, public HypoVarBase {
 
+    HypoVarHist *neuralAnsHist;
+    CODE initialise();
+
     public:
     NeuralVarGraph(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
     NeuralVarGraph(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id);
+    TH1F* getHist();
+
+    CODE exec();
+
+    int DrawOutput(const std::string &mode="", const bool scaled = true);
 
     ~NeuralVarGraph();
 

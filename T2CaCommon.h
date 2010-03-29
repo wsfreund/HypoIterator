@@ -4,6 +4,7 @@
 #include "T2CaBase.h"
 #include "T2CaConfig.h"
 #include <vector>
+#include <string>
 #include "TChain.h"
 #include "TH1F.h"
 #include "TH1I.h"
@@ -70,7 +71,7 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id);
     CODE exec();
     //Draw functions:
-    CODE DrawCutCounter();
+    CODE DrawCutCounter(const std::string &opt = "");
     CODE DrawCutStats();
     //Get functions:
     unsigned getrCoreCuts()const {return rCoreCuts;}

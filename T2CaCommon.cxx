@@ -297,7 +297,8 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
 
 
 //Create T2Calo Graphic for debug comparision
-HypoBase::CODE T2CaCommon::DrawCutCounter(){
+//Create T2Calo Graphic for debug comparision
+HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
 
     TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
@@ -342,7 +343,7 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(){
     hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
     hCuts->SetEntries(hCuts->GetBinContent(1));
     hCuts->SetLineColor(color);
-    hCuts->Draw();
+    hCuts->Draw(opt.c_str());
     return HypoBase::OK;
 
 }

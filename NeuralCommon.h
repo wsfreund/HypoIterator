@@ -34,7 +34,9 @@ class NeuralCommon : public NeuralBase {
     NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
     NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id);
     CODE exec();
-    CODE drawNetAns();
+    CODE drawNetAns(const std::string &opt = "");
+
+    float getThreshold()const {return threshold;}
 
     virtual ~NeuralCommon();
 

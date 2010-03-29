@@ -24,6 +24,7 @@ class HypoVarCanvas {
     TGraph *geRatioCut;
     TGraph *gEtCut;
     TGraph *gHadEtCut;
+    TGraph *gNeural;
 
     bool scaled;
 

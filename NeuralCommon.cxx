@@ -83,7 +83,7 @@ HypoBase::CODE NeuralCommon::exec(){
     return HypoBase::OK;
 }
 
-HypoBase::CODE NeuralCommon::drawNetAns(){
+HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt){
 
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
     hNans->SetLineColor(color);
@@ -96,7 +96,7 @@ HypoBase::CODE NeuralCommon::drawNetAns(){
         for(size_t j=0; j<neuralAns->size();++j)
             hNans->Fill(neuralAns->at(j));
     }
-    hNans->Draw();
+    hNans->Draw(opt.c_str());
     return HypoBase::OK;
 }
 
