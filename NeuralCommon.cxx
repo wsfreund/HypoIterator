@@ -14,7 +14,8 @@ NeuralBase(chainPath, userDataLabel, id)
 }
 
 HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
-    file = new TFile("neuralRinger.root", "recreate");
+    file->cd();
+    file->mkdir(("NeuralRinger Analysis_" + dataLabel).c_str());
     threshold = userNeuralConfig.threshold;
     std::vector<unsigned int> nodesVector;
     std::vector<float> weightVector;
@@ -48,7 +49,16 @@ HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
 //  hypoChain->SetBranchAddress("Ringer_LVL1_Id",    &lvl1_id);
 //  hypoChain->SetBranchAddress("Ringer_Roi_Id",     &roi_id);
 
-    extraVariables = new TTree("HypoData", "Tree with Hypo data");
+    extraVariables = new TTree(("NeuralRinger Tree_" + dataLabel).c_str(), "Tree with NeuralRinger Data");
+
+    ResetBranchAddresses();
+
+    return HypoBase::OK;
+
+}
+HypoBase::CODE NeuralCommon::ResetBranchAddresses(){
+
+    extraVariables->ResetBranchAddresses();
 
     extraVariables->Branch("Ringer_Out",       &neuralAns);
     extraVariables->Branch("Ringer_Dec",       &decision);
@@ -57,7 +67,6 @@ HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
     extraVariables->Branch("Ringer_LVL2_Et",   &et);
 
     return HypoBase::OK;
-
 }
 
 HypoBase::CODE NeuralCommon::exec(){
@@ -86,6 +95,8 @@ HypoBase::CODE NeuralCommon::exec(){
 
 HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt){
 
+    file->cd();
+    file->cd(("NeuralRinger Analysis_" + dataLabel).c_str());
     TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
     hNans->SetLineColor(color);
     hNans->GetXaxis()->SetTitle("OutPut Neuron Value");
@@ -187,6 +198,7 @@ HypoBase::CODE NeuralCommon::clearVectors(){
 
 HypoBase::CODE NeuralCommon::WriteTree(){
 
+    file->cd();
     extraVariables->Write();
     return HypoBase::OK;
 }

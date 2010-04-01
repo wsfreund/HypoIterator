@@ -9,11 +9,11 @@
 #include <TPad.h>
 #include <TTree.h>
 #include <TCanvas.h>
-#include <TList.h>
-#include "TROOT.h"
+#include <TROOT.h>
 #include <TString.h>
 #include <TColor.h>
 #include <TPaveText.h>
+#include <TFile.h>
 #include <iostream>
 
 class HypoCompCanvas {
@@ -41,9 +41,6 @@ class HypoCompCanvas {
   float spProductT2ca;
   float spProductNeural;
   
-  TTree *elcCompTree;
-  TTree *jetCompTree;
-
   TCanvas *hypoCompCanvas; 
   TCanvas *infoCanvas; 
   TPad *th2Pads;
@@ -54,6 +51,8 @@ class HypoCompCanvas {
 
   TH2F *scatterPlot;
   TH2F *spPlot;
+
+  TFile *file;
 
   int exec();
 

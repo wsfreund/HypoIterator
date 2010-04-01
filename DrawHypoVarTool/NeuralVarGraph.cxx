@@ -13,11 +13,17 @@ NeuralCommon(chainPath, userNeuralConfig, userDataLabel)
     //do nothing
   } else if (dataLabel == "Electrons"){
     //do nothing
+  } else if (dataLabel == "electron"){
+    //do nothing
+  } else if (dataLabel == "Electron"){
+    //do nothing
   } else if (dataLabel == "elc"){
     //do nothing
   } else if (dataLabel == "jets"){
     //do nothing
   } else if (dataLabel == "Jets"){
+    //do nothing
+  } else if (dataLabel == "Jet"){
     //do nothing
   } else if (dataLabel == "jet"){
     //do nothing
@@ -85,6 +91,8 @@ HypoBase::CODE NeuralVarGraph::exec(){
 
 
 int NeuralVarGraph::DrawOutput(const std::string &mode, const bool scaled){
+  file->cd();
+  file->cd(("NeuralRinger Analysis" + dataLabel).c_str());
   neuralAnsHist->Draw(mode, scaled);
   return 0;
 }

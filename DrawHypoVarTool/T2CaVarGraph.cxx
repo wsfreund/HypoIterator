@@ -14,11 +14,17 @@ T2CaCommon(chainPath, userL2chain, userDataLabel)
     //do nothing
   } else if (dataLabel == "Electrons"){
     //do nothing
+  } else if (dataLabel == "electron"){
+    //do nothing
+  } else if (dataLabel == "Electron"){
+    //do nothing
   } else if (dataLabel == "elc"){
     //do nothing
   } else if (dataLabel == "jets"){
     //do nothing
   } else if (dataLabel == "Jets"){
+    //do nothing
+  } else if (dataLabel == "Jet"){
     //do nothing
   } else if (dataLabel == "jet"){
     //do nothing
@@ -222,6 +228,8 @@ inline bool T2CaVarGraph::cutF1(const float F1){
 }
 
 HypoBase::CODE T2CaVarGraph::DrawCutStats(){
+    file->cd();
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
 
@@ -265,6 +273,7 @@ HypoBase::CODE T2CaVarGraph::DrawCutStats(){
 }
 
 int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode, const bool scaled){
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     if (var == "rcore"){
         trCore->Draw(mode, scaled);
     }

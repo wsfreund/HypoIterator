@@ -19,6 +19,7 @@ using std::endl;
 float calcSP(float detelc, float detjet);
 int SetPallete(const std::string &name = "default", unsigned int ncontours = 999);
 
+
 class HypoBase {
 
     static const float MAXDPHI = 0.1;
@@ -48,7 +49,10 @@ class HypoBase {
 
     TChain *hypoChain;
     TTree *extraVariables;
-    TFile *file;
+
+    static TFile *file;
+    static unsigned objects;
+
     HypoBase(){}
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel);
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
@@ -62,9 +66,10 @@ class HypoBase {
     unsigned getDetJet() const{return detJet;}
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
-    const std::string & getId() const{ return HypoBase::id;}
+    const std::string & getId() const{ return HypoBase::id;} // TODO Remove HypoBase
     const std::string & getDataLabel() const { return HypoBase::dataLabel; } 
-    Color_t getColor() const { return color; }
+    static TFile* getFile() { return file;}
+    Color_t getColor() const { return color;}
     TTree *getExtraVariables(){ 
       return extraVariables;
     } 
@@ -77,5 +82,7 @@ class HypoBase {
 };
 
 
+TFile* HypoBase::file = 0;
+unsigned HypoBase::objects = 0;
 
 #endif

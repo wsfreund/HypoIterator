@@ -71,6 +71,7 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel);
     T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id);
     CODE exec();
+    CODE ResetBranchAddresses();
     //Draw functions:
     CODE DrawCutCounter(const std::string &opt = "");
     CODE DrawCutStats();

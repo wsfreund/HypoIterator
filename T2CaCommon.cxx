@@ -32,7 +32,8 @@ T2CaBase(chainPath, userDataLabel, id)
 
 HypoBase::CODE T2CaCommon::initialize(){
 
-    file = new TFile("t2calo.root", "recreate");
+    file->cd();
+    file->mkdir(("T2Calo Analysis_" + dataLabel).c_str());
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
     energyRatio = new std::vector<float>;
@@ -65,8 +66,16 @@ HypoBase::CODE T2CaCommon::initialize(){
     hypoChain->SetBranchAddress("Ringer_LVL2_Eta",&ringer_eta);
     hypoChain->SetBranchAddress("Ringer_LVL2_Phi",&ringer_phi);
 
-    extraVariables = new TTree("HypoData", "Tree with Hypo data");
+    extraVariables = new TTree(("T2Calo Tree_" + dataLabel).c_str(), "Tree with T2Calo data");
 
+    ResetBranchAddresses();
+
+    return HypoBase::OK;
+}
+
+HypoBase::CODE T2CaCommon::ResetBranchAddresses(){
+
+    extraVariables->ResetBranchAddresses();
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
     extraVariables->Branch("T2CaDec", &decision);
@@ -74,9 +83,9 @@ HypoBase::CODE T2CaCommon::initialize(){
     extraVariables->Branch("T2CaEt",  &et);
     extraVariables->Branch("T2CaF1",  &F1);
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
-    //exec();
 
     return HypoBase::OK;
+
 }
 
 HypoBase::CODE T2CaCommon::exec(){
@@ -299,6 +308,8 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
 //Create T2Calo Graphic for debug comparision
 HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
 
+    file->cd();
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
     int nEntries = static_cast<int>(extraVariables->GetEntries());
@@ -364,6 +375,9 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
 }
 
 HypoBase::CODE T2CaCommon::DrawCutStats(){
+
+    file->cd();
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9; // TODO fazer ifs dependendo se tem os 2 ou 1 soh
 
@@ -405,6 +419,7 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
 
 HypoBase::CODE T2CaCommon::WriteTree(){
 
+    file->cd();
     extraVariables->Write();
 
     return HypoBase::OK;

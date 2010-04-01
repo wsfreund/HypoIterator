@@ -19,8 +19,6 @@ detRateNeural(0),
 faRateNeural(0),
 spProductT2ca(0),
 spProductNeural(0),
-elcCompTree(0),
-jetCompTree(0),
 hypoCompCanvas(0),
 infoCanvas(0),
 th2Pads(0),
@@ -28,21 +26,31 @@ outGraphs(0),
 useTestOnly(usetestonly),
 testDivisionFactor(testdivisionfactor),
 scatterPlot(0),
-spPlot(0)
+spPlot(0),
+file(0)
 {
 
   if (hypo1->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo1)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo1);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo1);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo1)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo1);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo1);
   }
+
   if (hypo2->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo2)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo2);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo2);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo2)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo2);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo2);
   }
 
@@ -51,29 +59,26 @@ spPlot(0)
     throw;
   }
 
+
+  file = HypoBase::getFile();
+
+  file->cd();
+  file->mkdir("HypoCompTool");
+
   if (elcT2caData){
     if (!elcT2caData->getTotalData())
       elcT2caData->exec();
     if (!elcNeuralData->getTotalData())
       elcNeuralData->exec();
-    TList elcList;
-    elcList.Add(elcT2caData->getExtraVariables());
-    elcList.Add(elcNeuralData->getExtraVariables());
-    elcCompTree = TTree::MergeTrees(&elcList);
-    elcCompTree->SetBranchStatus("*",false);
   }
   else{
     if (!jetT2caData->getTotalData())
       jetT2caData->exec();
     if (!jetNeuralData->getTotalData())
       jetNeuralData->exec();
-    TList jetList;
-    jetList.Add(jetT2caData->getExtraVariables());
-    jetList.Add(jetNeuralData->getExtraVariables());
-    jetCompTree = TTree::MergeTrees(&jetList);
-    jetCompTree->SetBranchStatus("*",false);
   }
 
+  exec();
 
 }
 
@@ -96,8 +101,6 @@ detRateNeural(0),
 faRateNeural(0),
 spProductT2ca(0),
 spProductNeural(0),
-elcCompTree(0),
-jetCompTree(0),
 hypoCompCanvas(0),
 infoCanvas(0),
 th2Pads(0),
@@ -105,35 +108,55 @@ outGraphs(0),
 useTestOnly(usetestonly),
 testDivisionFactor(testdivisionfactor),
 scatterPlot(0),
-spPlot(0)
+spPlot(0),
+file(0)
 {
 
   if (hypo1->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo1)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo1);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo1);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo1)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo1);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo1);
   }
+
   if (hypo2->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo2)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo2);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo2);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo2)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo2);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo2);
   }
+
   if (hypo3->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo3)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo3);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo3);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo3)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo3);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo3);
   }
+
   if (hypo4->getId().find("elc")){
-    if( !(elcT2caData = dynamic_cast<T2CaCommon*>(hypo4)))
+    if( !elcT2caData)
+      elcT2caData = dynamic_cast<T2CaCommon*>(hypo4);
+    else if (!elcNeuralData)
       elcNeuralData = dynamic_cast<NeuralCommon*>(hypo4);
   } else {
-    if( !(jetT2caData = dynamic_cast<T2CaCommon*>(hypo4)))
+    if (!jetT2caData)
+      jetT2caData = dynamic_cast<T2CaCommon*>(hypo4);
+    else if (!jetNeuralData)
       jetNeuralData = dynamic_cast<NeuralCommon*>(hypo4);
   }
 
@@ -142,26 +165,11 @@ spPlot(0)
     throw;
   }
 
-  if (!elcT2caData->getTotalData())
-    elcT2caData->exec();
-  if (!jetT2caData->getTotalData())
-    jetT2caData->exec();
-  if (!elcNeuralData->getTotalData())
-    elcNeuralData->exec();
-  if (!jetNeuralData->getTotalData())
-    jetNeuralData->exec();
+  file = HypoBase::getFile();
 
-  TList elcList;
-  elcList.Add(elcT2caData->getExtraVariables());
-  elcList.Add(elcNeuralData->getExtraVariables());
-  TList jetList;
-  jetList.Add(jetT2caData->getExtraVariables());
-  jetList.Add(jetNeuralData->getExtraVariables());
-  elcCompTree = TTree::MergeTrees(&elcList);
-  jetCompTree = TTree::MergeTrees(&jetList);
+  file->cd();
+  file->mkdir("HypoCompTool");
 
-  elcCompTree->SetBranchStatus("*",false);
-  jetCompTree->SetBranchStatus("*",false);
   exec();
 
 }
@@ -169,10 +177,13 @@ spPlot(0)
 
 int HypoCompCanvas::exec(){
 
-  std::vector<int> ringerDec;
-  std::vector<int> t2CaDec;
-  if ( elcCompTree && jetCompTree ){
+  std::vector<int>* ringerDec = new std::vector<int>;
+  std::vector<int>* t2CaDec = new std::vector<int>;
+  if ( elcT2caData && jetT2caData && elcNeuralData && jetNeuralData ){
     //Jets
+    //T2Calo 
+    TTree *jetCompTree = jetT2caData->getExtraVariables();
+    jetCompTree->ResetBranchAddresses();
     jetCompTree->SetBranchStatus("Ringer_Dec", true);
     jetCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
     jetCompTree->SetBranchStatus("T2CaDec", true);
@@ -181,47 +192,80 @@ int HypoCompCanvas::exec(){
     int pos = 0;
     for( int i = 0; i<nEntries;++i){
       jetCompTree->GetEntry(i);
-      for(size_t j=0; j<ringerDec.size();++j){
-        if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
-          continue; // if using only test data
-        ++noiseNeuralTotal;
-        if ( ringerDec.at(j) == HypoBase::ELECTRON )
-          ++noiseNeural;
-      }
-      for(size_t j=0; j<t2CaDec.size();++j){
+      for(size_t j=0; j<t2CaDec->size();++j){
         if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
           continue; // if using only test data
         ++noiseT2caTotal;
-        if ( t2CaDec.at(j) == HypoBase::ELECTRON )
+        if ( t2CaDec->at(j) == HypoBase::ELECTRON )
           ++noiseT2ca;
       }
     }
     jetCompTree->ResetBranchAddresses();
+    jetT2caData->ResetBranchAddresses();
+    jetCompTree = 0;
+    //Ringer
+    jetCompTree = jetNeuralData->getExtraVariables();
+    jetCompTree->ResetBranchAddresses();
+    jetCompTree->SetBranchStatus("Ringer_Dec", true);
+    jetCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
+    jetCompTree->SetBranchStatus("T2CaDec", true);
+    jetCompTree->SetBranchAddress("T2CaDec", &t2CaDec);
+    nEntries = static_cast<int>(jetCompTree->GetEntries());
+    pos = 0;
+    for( int i = 0; i<nEntries;++i){
+      jetCompTree->GetEntry(i);
+      for(size_t j=0; j<ringerDec->size();++j){
+        if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
+          continue; // if using only test data
+        ++noiseNeuralTotal;
+        if ( ringerDec->at(j) == HypoBase::ELECTRON )
+          ++noiseNeural;
+      }
+    }
+    jetCompTree->ResetBranchAddresses();
+    jetNeuralData->ResetBranchAddresses();
+    jetCompTree = 0;
     //Electrons
+    //T2Calo 
+    TTree *elcCompTree = elcT2caData->getExtraVariables();
+    elcCompTree->ResetBranchAddresses();
     elcCompTree->SetBranchStatus("Ringer_Dec", true);
     elcCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
     elcCompTree->SetBranchStatus("T2CaDec", true);
     elcCompTree->SetBranchAddress("T2CaDec", &t2CaDec);
-    pos = 0;
     nEntries = static_cast<int>(elcCompTree->GetEntries());
+    pos = 0;
     for( int i = 0; i<nEntries;++i){
       elcCompTree->GetEntry(i);
-      for(size_t j=0; j<ringerDec.size();++j){
-        if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
-          continue; // if using only test data
-        ++signalNeuralTotal;
-        if ( ringerDec.at(j) == HypoBase::ELECTRON )
-          ++signalNeural;
-      }
-      for(size_t j=0; j<t2CaDec.size();++j){
+      for(size_t j=0; j<t2CaDec->size();++j){
         if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
           continue; // if using only test data
         ++signalT2caTotal;
-        if ( t2CaDec.at(j) == HypoBase::ELECTRON )
+        if ( t2CaDec->at(j) == HypoBase::ELECTRON )
           ++signalT2ca;
       }
     }
     elcCompTree->ResetBranchAddresses();
+    elcT2caData->ResetBranchAddresses();
+    elcCompTree = 0;
+    //Ringer
+    elcCompTree = elcNeuralData->getExtraVariables();
+    pos = 0;
+    nEntries = static_cast<int>(elcCompTree->GetEntries());
+    for( int i = 0; i<nEntries;++i){
+    elcCompTree->ResetBranchAddresses();
+      for(size_t j=0; j<ringerDec->size();++j){
+        if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
+          continue; // if using only test data
+        ++signalNeuralTotal;
+        if ( ringerDec->at(j) == HypoBase::ELECTRON )
+          ++signalNeural;
+      }
+    }
+    elcCompTree->ResetBranchAddresses();
+    elcNeuralData->ResetBranchAddresses();
+    elcCompTree = 0;
+
     detRateT2ca = static_cast<float>(signalT2ca)/static_cast<float>(signalT2caTotal)*100.;
     detRateNeural = static_cast<float>(signalNeural)/static_cast<float>(signalNeuralTotal)*100.;
     faRateT2ca = static_cast<float>(noiseT2ca)/static_cast<float>(noiseT2caTotal)*100.;
@@ -234,60 +278,102 @@ int HypoCompCanvas::exec(){
     jetCompTree->SetBranchStatus("*", false);
 
   } else {
-    TTree *tree = 0;
-    tree = elcCompTree;
-    if (!tree)
-      tree = jetCompTree;
-    tree->SetBranchStatus("Ringer_Dec", true);
-    tree->SetBranchAddress("Ringer_Dec", &ringerDec);
-    tree->SetBranchStatus("T2CaDec", true);
-    tree->SetBranchAddress("T2CaDec", &t2CaDec);
-    if (tree == elcCompTree){
-      int pos = 0;
+    if ( elcT2caData && elcNeuralData ){
+      //Electrons
+      //T2Calo 
+      TTree *elcCompTree = elcT2caData->getExtraVariables();
+      elcCompTree->ResetBranchAddresses();
+      elcCompTree->SetBranchStatus("Ringer_Dec", true);
+      elcCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
+      elcCompTree->SetBranchStatus("T2CaDec", true);
+      elcCompTree->SetBranchAddress("T2CaDec", &t2CaDec);
       int nEntries = static_cast<int>(elcCompTree->GetEntries());
-      for( int i = 0; i<nEntries;++i){
-        tree->GetEntry(i);
-        for(size_t j=0; j<ringerDec.size();++j){
-          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
-            continue; // if using only test data
-          ++signalNeuralTotal;
-          if ( ringerDec.at(j) == HypoBase::ELECTRON )
-            ++signalNeural;
-        }
-        for(size_t j=0; j<t2CaDec.size();++j){
-          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
-            continue; // if using only test data
-          ++signalT2caTotal;
-          if ( t2CaDec.at(j) == HypoBase::ELECTRON )
-            ++signalT2ca;
-        }
-      }
-    }else{
       int pos = 0;
-      int nEntries = static_cast<int>(jetCompTree->GetEntries());
       for( int i = 0; i<nEntries;++i){
-        tree->GetEntry(i);
-        for(size_t j=0; j<ringerDec.size();++j){
-          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
-            continue; // if using only test data
-          ++signalNeuralTotal;
-          if ( ringerDec.at(j) == HypoBase::JET )
-            ++signalNeural;
-        }
-        for(size_t j=0; j<t2CaDec.size();++j){
+        elcCompTree->GetEntry(i);
+        for(size_t j=0; j<t2CaDec->size();++j){
           if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
             continue; // if using only test data
           ++signalT2caTotal;
-          if ( t2CaDec.at(j) == HypoBase::JET )
+          if ( t2CaDec->at(j) == HypoBase::ELECTRON )
             ++signalT2ca;
         }
       }
+      elcCompTree->ResetBranchAddresses();
+      elcT2caData->ResetBranchAddresses();
+      elcCompTree = 0;
+      //Ringer
+      elcCompTree = elcNeuralData->getExtraVariables();
+      pos = 0;
+      nEntries = static_cast<int>(elcCompTree->GetEntries());
+      for( int i = 0; i<nEntries;++i){
+      elcCompTree->ResetBranchAddresses();
+        for(size_t j=0; j<ringerDec->size();++j){
+          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
+            continue; // if using only test data
+          ++signalNeuralTotal;
+          if ( ringerDec->at(j) == HypoBase::ELECTRON )
+            ++signalNeural;
+        }
+      }
+      elcCompTree->ResetBranchAddresses();
+      elcNeuralData->ResetBranchAddresses();
+      elcCompTree = 0;
+      detRateT2ca = static_cast<float>(signalT2ca)/static_cast<float>(signalT2caTotal)*100.;
+      detRateNeural = static_cast<float>(signalNeural)/static_cast<float>(signalNeuralTotal)*100.;
+    } else {
+      //Jets
+      //T2Calo 
+      TTree *jetCompTree = jetT2caData->getExtraVariables();
+      jetCompTree->ResetBranchAddresses();
+      jetCompTree->SetBranchStatus("Ringer_Dec", true);
+      jetCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
+      jetCompTree->SetBranchStatus("T2CaDec", true);
+      jetCompTree->SetBranchAddress("T2CaDec", &t2CaDec);
+      int nEntries = static_cast<int>(jetCompTree->GetEntries());
+      int pos = 0;
+      for( int i = 0; i<nEntries;++i){
+        jetCompTree->GetEntry(i);
+        for(size_t j=0; j<t2CaDec->size();++j){
+          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
+            continue; // if using only test data
+          ++signalT2caTotal;
+          if ( t2CaDec->at(j) == HypoBase::JET )
+            ++signalT2ca;
+        }
+      }
+      jetCompTree->ResetBranchAddresses();
+      jetT2caData->ResetBranchAddresses();
+      jetCompTree = 0;
+      //Ringer
+      jetCompTree = jetNeuralData->getExtraVariables();
+      jetCompTree->ResetBranchAddresses();
+      jetCompTree->SetBranchStatus("Ringer_Dec", true);
+      jetCompTree->SetBranchAddress("Ringer_Dec", &ringerDec);
+      jetCompTree->SetBranchStatus("T2CaDec", true);
+      jetCompTree->SetBranchAddress("T2CaDec", &t2CaDec);
+      nEntries = static_cast<int>(jetCompTree->GetEntries());
+      pos = 0;
+      for( int i = 0; i<nEntries;++i){
+        jetCompTree->GetEntry(i);
+        for(size_t j=0; j<ringerDec->size();++j){
+          if ( useTestOnly && (pos = (pos +1) % testDivisionFactor ) ) 
+            continue; // if using only test data
+          ++signalNeuralTotal;
+          if ( ringerDec->at(j) == HypoBase::JET )
+            ++signalNeural;
+        }
+      }
+      jetCompTree->ResetBranchAddresses();
+      jetNeuralData->ResetBranchAddresses();
+      jetCompTree = 0;
+      detRateT2ca = static_cast<float>(signalT2ca)/static_cast<float>(signalT2caTotal)*100.;
+      detRateNeural = static_cast<float>(signalNeural)/static_cast<float>(signalNeuralTotal)*100.;
     }
-    tree->ResetBranchAddresses();
-    detRateT2ca = static_cast<float>(signalT2ca)/static_cast<float>(signalT2caTotal)*100.;
-    detRateNeural = static_cast<float>(signalNeural)/static_cast<float>(signalNeuralTotal)*100.;
   }
 
+  delete t2CaDec;
+  delete ringerDec;
   return 0;
 
 }
@@ -295,7 +381,10 @@ int HypoCompCanvas::exec(){
 
 int HypoCompCanvas::ScatterPlot(){
 
-  if ( elcCompTree && jetCompTree ){
+  file->cd();
+  file->cd("HypoCompTool");
+
+  if ( elcT2caData && jetT2caData && elcNeuralData && jetNeuralData ){
     TVirtualPad *hyposComp = gPad->cd();
     hyposComp->Divide(2,1);
     // Detection and False Alarm:
@@ -351,7 +440,7 @@ int HypoCompCanvas::ScatterPlot(){
     scatterPlot->GetXaxis()->SetBinLabel(1,"T2Calo");
     scatterPlot->GetXaxis()->SetBinLabel(2,"Neural Ringer");
     scatterPlot->GetXaxis()->CenterTitle();
-    if (elcCompTree)
+    if ( elcT2caData )
       scatterPlot->GetYaxis()->SetBinLabel(1,"Electrons Detection Rate");
     else
       scatterPlot->GetYaxis()->SetBinLabel(1,"Jets Detection Rate");
@@ -371,8 +460,11 @@ int HypoCompCanvas::ScatterPlot(){
 
 int HypoCompCanvas::InfoPad(){
 
+  file->cd();
+  file->cd("HypoCompTool");
+
   TPaveText *pt = new TPaveText(.05,.05,.95,.95);
-  if (elcCompTree && jetCompTree){
+  if ( elcT2caData && jetT2caData && elcNeuralData && jetNeuralData ){
     TString line1, line2, line3, line4, line5, line6, line7;
     if ( signalT2caTotal == signalNeuralTotal && noiseT2caTotal == noiseNeuralTotal)
       line1.Form("Total Data = %d : #color[4]{Electrons = %d} : #color[2]{Jets = %d}", signalNeuralTotal + noiseNeuralTotal, signalNeuralTotal, noiseNeuralTotal );
@@ -405,17 +497,17 @@ int HypoCompCanvas::InfoPad(){
   } else {
     TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
     if ( signalT2caTotal == signalNeuralTotal ){
-      if (elcCompTree)
+      if ( elcT2caData)
         line1.Form("#color[4]{Electrons = %d} ", signalT2caTotal);
       else
         line1.Form("#color[2]{Jets = %d}", signalNeuralTotal);
     } else {
-      if (elcCompTree)
+      if (elcT2caData)
         line1.Form("#color[4]{T2Calo Electrons = %d : NeuralRinger Electrons = %d } ", signalT2caTotal, signalNeuralTotal);
       else
         line1.Form("#color[2]{T2Calo Jets = %d : NeuralRinger Jets = %d } ", signalT2caTotal, signalNeuralTotal);
     }
-    if (elcCompTree){
+    if (elcT2caData){
       line2.Form("#color[4]{#scale[1.05]{T2Calo Electrons Detection Rate = %.4f%%}}", detRateT2ca);
       line3.Form("#color[4]{#scale[1.05]{NeuralRinger Electrons Detection Rate = %.4f%%}", detRateNeural );
     } else {
@@ -441,7 +533,10 @@ int HypoCompCanvas::InfoPad(){
 
 int HypoCompCanvas::HypoOutGraphs(){
 
-  if (elcCompTree && jetCompTree){
+  file->cd();
+  file->cd("HypoCompTool");
+
+  if ( elcT2caData && jetT2caData && elcNeuralData && jetNeuralData ){
     TVirtualPad* outGraphs = gPad->cd();
     outGraphs->Divide(2,1);
     // T2Calo Out:
@@ -472,6 +567,8 @@ int HypoCompCanvas::HypoOutGraphs(){
 
 int HypoCompCanvas::Draw(){
 
+  file->cd();
+  file->cd("HypoCompTool");
   hypoCompCanvas = new TCanvas("Hypotesys Comparision Analysis", "Hypotesis Comparision Analyisis");
   th2Pads = new TPad("TH2Pads", "Hypotesys Comparision", 0.2, 0.26, .98, .99, 18);
   th2Pads->cd();
@@ -512,5 +609,6 @@ HypoCompCanvas::~HypoCompCanvas(){
     delete th2Pads;
   if (outGraphs)
     delete outGraphs;
+
 
 }

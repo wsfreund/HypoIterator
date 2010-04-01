@@ -4,7 +4,10 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
   totalData = 0;
   detElc = 0;
   detJet = 0;
-  file = 0;
+  ++objects;
+  if (!file)
+    file = new TFile("hypoItr.root", "recreate");
+  file->cd();
   dataLabel = userDataLabel;
   hypoChain = new TChain("CollectionTree");
   extraVariables = 0;
@@ -44,7 +47,10 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
   totalData = 0;
   detElc = 0;
   detJet = 0;
-  file = 0;
+  ++objects;
+  if (!file)
+    file = new TFile("hypoItr.root", "recreate");
+  file->cd();
   dataLabel = userDataLabel;
   id = userId;
   if(userId == "elc")
@@ -159,9 +165,12 @@ HypoBase::~HypoBase(){
     delete hypoChain;
     if (extraVariables !=0)
         delete extraVariables;
-    if (file){ //delete all remaining hist, files, etc
-      file->DeleteAll();
-      delete file;
+    --objects;
+    if (!objects){ // delete file only on last object delection
+      if (file){ // delete all remaining hist, files, etc
+        file->DeleteAll();
+        delete file;
+      }
     }
     delete lvl2_eta;
     delete lvl2_phi;
