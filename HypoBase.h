@@ -6,10 +6,18 @@
 #include<TChain.h>
 #include<TTree.h>
 #include<string>
-#include<iostream>
 #include<typeinfo>
+#include<TFile.h>
+#include<TColor.h>
+#include<TMath.h>
+#include<TStyle.h>
+#include<iostream>
 using std::cout;
 using std::endl;
+
+// List of functions:
+float calcSP(float detelc, float detjet);
+int SetPallete(const std::string &name = "default", unsigned int ncontours = 999);
 
 class HypoBase {
 
@@ -40,6 +48,7 @@ class HypoBase {
 
     TChain *hypoChain;
     TTree *extraVariables;
+    TFile *file;
     HypoBase(){}
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel);
     virtual CODE baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId);
@@ -62,8 +71,11 @@ class HypoBase {
 
     virtual CODE exec() = 0;
 
+    virtual CODE WriteTree() = 0;
 
     virtual ~HypoBase();
 };
+
+
 
 #endif

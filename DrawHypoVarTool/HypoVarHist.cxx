@@ -20,7 +20,7 @@ statsPosEnd(userStatsPosEnd)
 
 int HypoVarHist::Draw(const std::string method, bool scaled){
     if(scaled){  
-        hist->Scale(1/hist->Integral());
+        hist->Scale(1/hist->Integral()*100);
     }
     hist->Draw(method.c_str());
     gPad->Update();

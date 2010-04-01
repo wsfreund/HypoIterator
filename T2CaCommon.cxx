@@ -32,6 +32,7 @@ T2CaBase(chainPath, userDataLabel, id)
 
 HypoBase::CODE T2CaCommon::initialize(){
 
+    file = new TFile("t2calo.root", "recreate");
     hadET_T2Calo = new std::vector<float>;
     rCore = new std::vector<float>;
     energyRatio = new std::vector<float>;
@@ -295,8 +296,6 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
 }
 
 
-
-//Create T2Calo Graphic for debug comparision
 //Create T2Calo Graphic for debug comparision
 HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
 
@@ -344,13 +343,29 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
     hCuts->SetEntries(hCuts->GetBinContent(1));
     hCuts->SetLineColor(color);
     hCuts->Draw(opt.c_str());
+    gPad->Update();
+    TPaveStats *histStats = (TPaveStats*)hCuts->GetListOfFunctions()->FindObject("stats");
+    float statsPosBegin = 0, statsPosEnd = 0;
+    if( id.find("elc") != std::string::npos ){
+      statsPosBegin = .83;
+      statsPosEnd = .98;
+    }else if (id.find("jet") != std::string::npos ){
+      statsPosBegin = .63;
+      statsPosEnd = .78;
+    }
+    if (histStats){
+      histStats->SetX1NDC(statsPosBegin); histStats->SetX2NDC(statsPosEnd);
+      histStats->SetTextColor(color);
+      histStats->Draw();
+    }
+
     return HypoBase::OK;
 
 }
 
 HypoBase::CODE T2CaCommon::DrawCutStats(){
     TPaveText *pt = new TPaveText(.05,.05,.95,.95);
-    TString line1, line2, line3, line4, line5, line6, line7, line8, line9;
+    TString line1, line2, line3, line4, line5, line6, line7, line8, line9; // TODO fazer ifs dependendo se tem os 2 ou 1 soh
 
     if ( id == "elc")
         line1.Form("#scale[1.2]{Total Data : Electrons = %d}", totalData);
@@ -360,10 +375,10 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
     line3.Form("rCore Detection Rate = %.4f%%", detrCoreRate);
     line4.Form("eRatio Cuts %d", eRatioCuts);
     line5.Form("eRatio Detection Rate = %.4f%%", deteRatioRate);
-    line6.Form("E_{T} Cuts = %d", etCuts);
-    line7.Form("E_{T} Rate = %.4f%%", detEtRate);
-    line8.Form("HAD E_{T} Cuts = %d", hadEtCuts);
-    line9.Form("HAD E_{T} Rate = %.4f%%", detHadEtRate);
+    line6.Form("E_{T}^{EM} Cuts = %d", etCuts);
+    line7.Form("E_{T}^{EM} Rate = %.4f%%", detEtRate);
+    line8.Form("E_{T}^{HAD} Cuts = %d", hadEtCuts);
+    line9.Form("E_{T}^{HAD} Rate = %.4f%%", detHadEtRate);
 
     pt->AddText("");
     pt->AddText(line1);
@@ -386,6 +401,17 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
 
     return HypoBase::OK;
 }
+
+
+HypoBase::CODE T2CaCommon::WriteTree(){
+
+    extraVariables->Write();
+
+    return HypoBase::OK;
+
+}
+
+
 T2CaCommon::~T2CaCommon(){
 
     delete  hadET_T2Calo;

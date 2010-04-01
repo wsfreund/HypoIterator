@@ -7,6 +7,8 @@
 #include "NeuralConfig.h"
 #include <vector>
 #include "TH1F.h"
+#include "TPad.h"
+#include "TPaveStats.h"
 #include "TTree.h"
 #include "TChain.h"
 
@@ -37,6 +39,8 @@ class NeuralCommon : public NeuralBase {
     CODE drawNetAns(const std::string &opt = "");
 
     float getThreshold()const {return threshold;}
+
+    CODE WriteTree();
 
     virtual ~NeuralCommon();
 

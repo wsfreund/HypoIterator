@@ -131,17 +131,16 @@ inline TH1F* RelEfficCanvas::drawWithProperties(const std::string &var, RelEffic
   gPad->SetGrid();
   T2CaRelEffic* t2CaRel = 0;
   NeuralRelEffic* neuralRel = 0;
-  const std::string &rvar = var;
   if ( (t2CaRel = dynamic_cast<T2CaRelEffic*>(relEffic1) ) ){
-    t2CaRel->DrawEfficVs(rvar,"LP",color1);
+    t2CaRel->DrawEfficVs(var,"LP",color1);
   }else if ( (neuralRel = dynamic_cast<NeuralRelEffic*>(relEffic1))){
-    neuralRel->DrawEfficVs(rvar,"LP",color1);
+    neuralRel->DrawEfficVs(var,"LP",color1);
   }if ( (t2CaRel = dynamic_cast<T2CaRelEffic*>(relEffic2))){
-    t2CaRel->DrawEfficVs(rvar,"LP,SAME", color2);
-    t2CaRel->getGraph(rvar)->SetLineStyle(kDashed);
+    t2CaRel->DrawEfficVs(var,"LP,SAME", color2);
+    t2CaRel->getGraph(var)->SetLineStyle(kDashed);
   } else if ( (neuralRel = dynamic_cast<NeuralRelEffic*>(relEffic2))){
-    neuralRel->DrawEfficVs(rvar,"LP,SAME",color2);
-    neuralRel->getGraph(rvar)->SetLineStyle(kDashed);
+    neuralRel->DrawEfficVs(var,"LP,SAME",color2);
+    neuralRel->getGraph(var)->SetLineStyle(kDashed);
   }
   gPad->Modified();
   return th1axis;
@@ -547,7 +546,41 @@ int RelEfficCanvas::Draw(const int numPads){
 
 }
 
-inline float RelEfficCanvas::calcSP(float detelc, float detjet){
-    return TMath::Sqrt(TMath::Sqrt(detelc*detjet)*((detelc+detjet)/2));
+int RelEfficCanvas::setRange(const std::string &var, const float x1, const float x2, const std::string &axis){
+  if ( var == "eta"){
+    th1EtaPad->SetAxisRange(x1,x2,axis.c_str());
+  } else if ( var == "phi"){
+    th1PhiPad->SetAxisRange(x1,x2,axis.c_str());
+  } else if ( var == "et"){
+    th1EtPad->SetAxisRange(x1,x2,axis.c_str());
+  } else {
+    th1EtaPad->SetAxisRange(x1,x2,axis.c_str());
+    th1PhiPad->SetAxisRange(x1,x2,axis.c_str());
+    th1EtPad->SetAxisRange(x1,x2,axis.c_str());
+  }
+
+  return 0;
+}
+
+int RelEfficCanvas::setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2){
+  if ( var == "eta"){
+    th1EtaPad->SetAxisRange(x1,x2);
+    th1EtaPad->SetAxisRange(y1,y2,"Y");
+  } else if ( var == "phi"){
+    th1PhiPad->SetAxisRange(x1,x2);
+    th1PhiPad->SetAxisRange(y1,y2,"Y");
+  } else if ( var == "et"){
+    th1EtPad->SetAxisRange(x1,x2);
+    th1EtPad->SetAxisRange(y1,y2,"Y");
+  } else {
+    th1EtaPad->SetAxisRange(x1,x2);
+    th1EtaPad->SetAxisRange(y1,y2,"Y");
+    th1PhiPad->SetAxisRange(x1,x2);
+    th1PhiPad->SetAxisRange(y1,y2,"Y");
+    th1EtPad->SetAxisRange(x1,x2);
+    th1EtPad->SetAxisRange(y1,y2,"Y");
+  }
+
+  return 0;
 }
 

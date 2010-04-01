@@ -14,6 +14,7 @@ NeuralBase(chainPath, userDataLabel, id)
 }
 
 HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
+    file = new TFile("neuralRinger.root", "recreate");
     threshold = userNeuralConfig.threshold;
     std::vector<unsigned int> nodesVector;
     std::vector<float> weightVector;
@@ -97,6 +98,21 @@ HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt){
             hNans->Fill(neuralAns->at(j));
     }
     hNans->Draw(opt.c_str());
+    gPad->Update();
+    TPaveStats *histStats = (TPaveStats*)hNans->GetListOfFunctions()->FindObject("stats");
+    float statsPosBegin = 0, statsPosEnd = 0;
+    if( id.find("elc") != std::string::npos ){
+      statsPosBegin = .83;
+      statsPosEnd = .98;
+    }else if (id.find("jet") != std::string::npos ){
+      statsPosBegin = .63;
+      statsPosEnd = .78;
+    }
+    if (histStats){
+      histStats->SetX1NDC(statsPosBegin); histStats->SetX2NDC(statsPosEnd);
+      histStats->SetTextColor(color);
+      histStats->Draw();
+    }
     return HypoBase::OK;
 }
 
@@ -168,6 +184,14 @@ HypoBase::CODE NeuralCommon::clearVectors(){
     return HypoBase::OK;
 
 }
+
+HypoBase::CODE NeuralCommon::WriteTree(){
+
+    extraVariables->Write();
+    return HypoBase::OK;
+}
+
+
 
 NeuralCommon::~NeuralCommon(){
 

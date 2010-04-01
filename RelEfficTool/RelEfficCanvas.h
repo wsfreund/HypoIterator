@@ -39,12 +39,14 @@ class RelEfficCanvas {
         const std::string &xlabel, const std::string &ylabel, const float &xOffSet = .55, const float &xSize = .08,
         const float &yOffSet = .6, const float &ySize = .06, const float &yLow = 0, const float &yHi = 100);
     int genInfoPad();
-    float calcSP(float detelc, float detjet);
     public:
 
     RelEfficCanvas(RelEfficBase *userRelEfficData);
     RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
     int Draw(const int numPads = 3);
+    int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
+    int setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2);
+
     ~RelEfficCanvas(){
       if (relCanvas){
           if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){

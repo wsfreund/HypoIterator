@@ -4,6 +4,7 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
   totalData = 0;
   detElc = 0;
   detJet = 0;
+  file = 0;
   dataLabel = userDataLabel;
   hypoChain = new TChain("CollectionTree");
   extraVariables = 0;
@@ -42,7 +43,8 @@ HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::strin
 HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::string &userDataLabel, const std::string &userId){
   totalData = 0;
   detElc = 0;
-  detJet = 0,
+  detJet = 0;
+  file = 0;
   dataLabel = userDataLabel;
   id = userId;
   if(userId == "elc")
@@ -157,8 +159,45 @@ HypoBase::~HypoBase(){
     delete hypoChain;
     if (extraVariables !=0)
         delete extraVariables;
+    if (file){ //delete all remaining hist, files, etc
+      file->DeleteAll();
+      delete file;
+    }
     delete lvl2_eta;
     delete lvl2_phi;
     delete decision;
     delete et;
 }
+
+
+float calcSP(float detelc, float detjet){
+  return TMath::Sqrt(TMath::Sqrt(detelc*detjet)*((detelc+detjet)/2));
+}
+
+int SetPallete(const std::string &name, unsigned int ncontours){
+
+// Taken from http://ultrahigh.org/2007/08/20/making-pretty-root-color-palettes/ 
+
+  if (name == "gray" || name == "grayscale"){
+    std::cout<<"Cinza"<<std::endl;
+    Double_t tstops[] = {0.00, 0.34, 0.61, 0.84, 1.00};
+    Double_t tred[]   = {1.00, 0.84, 0.61, 0.34, 0.00};
+    Double_t tgreen[] = {1.00, 0.84, 0.61, 0.34, 0.00};
+    Double_t tblue[]  = {1.00, 0.84, 0.61, 0.34, 0.00};
+    TColor::CreateGradientColorTable( sizeof(tstops)/sizeof(tstops[0]), tstops, tred, tgreen, tblue, ncontours );
+    gStyle->SetNumberContours(ncontours);
+  } else {
+    std::cout<<"Colorido"<<std::endl;
+    Double_t tstops[] = {0.00, 0.34, 0.61, 0.84, 1.00};
+    Double_t tred[]   = {0.00, 0.00, 0.87, 1.00, 0.51};
+    Double_t tgreen[] = {0.00, 0.81, 1.00, 0.20, 0.00};
+    Double_t tblue[]  = {0.51, 1.00, 0.12, 0.00, 0.00};
+    TColor::CreateGradientColorTable( sizeof(tstops)/sizeof(tstops[0]), tstops, tred, tgreen, tblue, ncontours );
+    gStyle->SetNumberContours(ncontours);
+  }
+
+  return 0;
+
+}
+
+

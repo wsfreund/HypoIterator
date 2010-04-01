@@ -8,6 +8,7 @@
 #include "TChain.h"
 #include "TH1F.h"
 #include "TH1I.h"
+#include "TPad.h"
 #include "TTree.h"
 #include "TPaveStats.h"
 
@@ -73,6 +74,7 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     //Draw functions:
     CODE DrawCutCounter(const std::string &opt = "");
     CODE DrawCutStats();
+    CODE WriteTree();
     //Get functions:
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}
