@@ -187,7 +187,7 @@ int SetPallete(const std::string &name, unsigned int ncontours){
 
 // Taken from http://ultrahigh.org/2007/08/20/making-pretty-root-color-palettes/ 
 
-  if (name == "gray" || name == "grayscale"){
+  if (name == "grey" || name == "greyscale"){
     Double_t tstops[] = {0.00, 0.34, 0.61, 0.84, 1.00};
     Double_t tred[]   = {1.00, 0.84, 0.61, 0.34, 0.00};
     Double_t tgreen[] = {1.00, 0.84, 0.61, 0.34, 0.00};

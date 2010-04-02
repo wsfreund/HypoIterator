@@ -74,11 +74,8 @@ class HypoBase {
       return extraVariables;
     } 
 
-    CODE Write(const bool all = true){
-      if (all)
-        file->Write();
-      else 
-        file->WriteTObject(extraVariables);
+    static CODE Write(){
+      file->Write();
       return OK;
     }
     virtual CODE exec() = 0;

@@ -1,0 +1,237 @@
+HypoIterator v4.0.0
+
+---------------------------------------------------------------------------------------------------------------
+1-Pre-requisits: 
+---------------------------------------------------------------------------------------------------------------
+
+  All this package needs is a root suitable enviroment. 
+  
+---------------------------------------------------------------------------------------------------------------
+2-Seting HypoIterator on root: 
+---------------------------------------------------------------------------------------------------------------
+
+  For the first time you use HypoIterator I recommend you to use .x compile_HypoIterator.C while on root. If you change the code and want to recompile it use .x compile_HypoIterator.C as well.
+  All other sections use .x load_HypoIterator.C.
+
+---------------------------------------------------------------------------------------------------------------
+3-Using HypoIterator:
+---------------------------------------------------------------------------------------------------------------
+
+  HypoIterator was developed to compare T2Calo and NeuralRinger, both from 2LVL ATLAS Trigger. It organizes data dynamically on TDirectory so every data provided by T2Calo analysis will be on its TDirectory. It alsos save the generated graphics on a TDirectory with same name of the tool. After the analysis if you want to save your analysis into disk call HypoBase::Write(), it will write hypoItr.root file into disk on HypoIterator's folder. Since every new analysis this file will be overwritten you will need to move it manually.
+  
+---------------------------------------------------------------------------------------------------------------
+3.1- How to use the basic classes:
+---------------------------------------------------------------------------------------------------------------
+
+  There are two main classes on HypoIterator: T2CaloCommon and NeuralCommon. Their constructors will both need at least 3 variables:
+
+    T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel);
+    T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id);
+
+    NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
+    NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id);
+
+  First: String path to data. It accepts all root files that have TTrees named CollectionTree and the branchs needed for the T2Calo and NeuralRinger implemented.  Wildcards are accepted.
+  Second: Hypo constants. They vary for each Hypo:
+    T2CaCommon will need configurations that inherit from t2ca__00_07_85, there are e5, e10 and e15 Chains implemented by default. 
+    NeuralCommon will need configurations that inherit from neuralConfig, there is only norm1 implemented.
+    Important note: On both cases you can add any configuration you need to the T2CaConfig or NeuralConfig files.
+  Third: Your label for the loaded data. It can be anything and will be used on some graphics to identify your data.
+
+  If the third variable is not enought for the Hypo to decide which kind of data is being treated the user will be asked how it should considered (use elc for electrons and jet for jets).
+  One forth variable is suported so you can set it manually.
+
+  After your class is declared you will need to use exec() method to run the Hypo. It will be used the blue color for electrons and red color for jets. On this version you cant change it.
+
+  Both Hypo basic methods:
+    unsigned getTotalData();
+      Get total data analysed.
+
+    unsigned getDetElc()
+      Get data declared as electrons by the Hypo
+
+    unsigned getDetJet()
+      Get data declared as jets by the Hypo
+
+    float    getDetRate()
+      Get ammount of data correctly interprepted by Hypo
+
+    float    getFARate()
+      Get amount of badly interprepted by Hypo
+
+  T2CaCommon basic methods:
+    unsigned getrCoreCuts()
+      Get rCore variable data considered as jets
+    unsigned geteRatioCuts()
+      Get eRatio variable data considered as jets
+    unsigned getEmCuts()
+      Get EM ET variable data considered as jets
+    unsigned getHadEtCuts()
+      Get HAD ET variable data considered as jets
+    float getDetrCoreRate()
+      Get rCore variable detection rate (%)
+    float getDeteRatioRate()
+      Get eRatio variable detection rate (%)
+    float getDetEtRate()
+      Get EM ET variable detection rate (%)
+    float getDetHadEtRate()
+      Get HAD ET variable detection rate (%)
+    CODE DrawCutCounter(const std::string &opt = "", const bool scaled = false);
+      Draw T2Calo Output. opt is Drawing option, e.g "", "same", etc. Use scaled to see Y axis on (%). 
+    CODE DrawCutStats();
+      Draw T2Calo Variables information on a graphic.
+
+  NeuralCommon basic methods:
+    CODE drawNetAns(const std::string &opt = "", const bool scaled = false);
+      Draw Neural Output. opt is Drawing option, e.g "", "same", etc. Use scaled to see Y axis on (%). 
+
+
+  Examples: 
+    T2CaCommon t2caelc("/data/lvl2/dados-15.5.0/e15i/pile_jf17/*AANT*",e15(),"Electrons");
+    t2caelc.exec();
+    t2caelc.drawCutCounter();   
+
+    NeuralCommon neuralelc("/data/lvl2/dados-15.5.0/e15i/pile_jf17/*AANT*",norm1(),"Electrons");
+    neuralelc.exec()
+    neuralelc.drawNetAns();
+
+---------------------------------------------------------------------------------------------------------------
+3.2- How to use the HypoCompTool:
+---------------------------------------------------------------------------------------------------------------
+
+    HypoCompCanvas(HypoBase *hypo1, HypoBase *hypo2, const bool usetestonly = true, const int testDivisionFactor = 3);
+    HypoCompCanvas(HypoBase *hypo1, HypoBase *hypo2, HypoBase *hypo3, HypoBase *hypo4, const bool usetestonly = true, const int testDivisionFactor = 3);
+    
+    It will be responsable to help on comparing Hypos. HypoCompTool has only the class HypoCompCanvas that accepts all T2Calo and NeuralRinger objects, it will call exec() method if you didnt do it before, so you dont need to worry about that.
+    You should use HypoCompCanvas on the following 2 ways:
+
+      -Compare both electrons and jets data using both hypo at the same time. For this you should create 4 Hypo objects:
+        1-T2Calo holding electrons
+        2-T2Calo holding jets
+        3-NeuralRinger holding electrons
+        4-NeuralRinger holding jets
+      And pass their pointers to the HypoCompCanvas.
+      -Compare a data set containing electrons or jets. For this you shold create 2 Hypo objects:
+        1-T2Calo holding electrons/jets
+        2-NeuralRinger holding electrons/jets
+
+    By default it will use only the neural test data, which is assumed to be 1/3 of the total portion. You can change this parameters by changing usetestonly and testDivisionFactor values.
+  
+    After initialising you should call the HypoCompCanvas::Draw() method. The following Draw methods are available:
+
+      int DrawScatterPlot();
+        Only detection/false alarm are draw
+      int DrawSpPlot();
+        Only sp product alarm are draw
+      int DrawOutGraphs(int padNumber);
+        Draw Hypo Output. If padNumber is 1 T2Calo Output is returned, if it's 2 NeuralRinger is returned.
+      int DrawInfoPad();
+        Draw Grafical Information about the analysis.
+      int Draw();
+        Draw everything above organized.
+
+  
+---------------------------------------------------------------------------------------------------------------
+3.3- How to use the RelEfficTool:
+---------------------------------------------------------------------------------------------------------------
+
+  RelEfficTool comes with especialized classes, you will need to use those classes to make your analysis. It also have a personalized TGraph called HypoErrorsGraph, that calculates the ammount of data well recognized by the Hypos and generate statistics errors (1/sqrt(N)), if necessary it can be used on other similar situations. The HypoErrorsGraph is used by RelEfficTool Hypo classes T2RelEffic and NeuralRelEffic. Those classes have only one more optional parameter that is the ammount of bins on error graphs, it is set 50 by default which should be a good number in most cases.
+
+    T2CaRelEffic(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, unsigned user_nRegions = 50);
+    T2CaRelEffic(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &id, unsigned user_nRegions = 50);
+
+    NeuralRelEffic(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, unsigned user_nRegions = 50);
+    NeuralRelEffic(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id, unsigned user_nRegions = 50);
+
+  After initialize you will need to execute if you dont want to use RelEfficCanvas.
+
+  The following methods that can be called by those classes:
+    int DrawEfficVs(const std::string &vsWho, const std::string &opt = "")
+      Draw Efficiency against the variable vsWho. vsWho can be "eta", "phi", "et". The opt is the drawing option. You should use "AL" to draw it with axis or "L,SAME" when suporposing, see root manual for more details.
+    int DrawEfficVs(const std::string &vsWho, const std::string &opt, Color_t color)
+      Overloaded method. Allows you to choose to drawing color.
+
+  The main RelEfficTool class is the RelEfficCanvas. 
+
+    RelEfficCanvas(RelEfficBase *userRelEfficData);
+    RelEfficCanvas(RelEfficBase *userRelEfficElc, RelEfficBase *userRelEfficJet);
+
+  You should use it like this:
+    -One set of data containing any element and a object from the RelEfficTool Hypo classes.
+    -Two data comparision from the following list:
+      o Same Hypo (from RelEfficTool!) containing different data;
+      o Different Hypo (from RelEfficTool!) containing the same kind of data.
+    Although this tool were developed to analyse only one Hypo and see its comportament over the variables it was expended so you can compare their comportament over the variables. Because of this there will be some limitations on the extra grafical information draw.
+
+  RelEfficCanvas methods:
+    int Draw(const int numPads = 3);
+      Main draw method. If numPads is set to 3 (default) the grafical information is Draw separeted, if numPads is set to 4 the information is drawn on the same canvas.
+    int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
+      Modify var axis range. Axis should be "X" (default) or "Y". X1 is the botton value and x2 the top value
+    int setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2);
+      Modify var both axis range. x1 is the botton value and x2 the top value for axis "X", y1 and y2 for "Y" axis. 
+
+---------------------------------------------------------------------------------------------------------------
+3.4- How to use the DrawHypoVarTool:
+---------------------------------------------------------------------------------------------------------------
+
+  Using the same idea of RelEfficTool you will only be able to use this Tool with their associated Hypo classes: T2CaVarGraph and NeuralVarGraph. It was developed to compare data with and without pile-up, but it was extended so that it could be used with diferent data, but always for the same hypo. It contains an specialized Hypo TH1F called HypoVarHist. As the other packs the main class will call the exec() method if you havent done so far. 
+  The DrawHypoVarTool Hypo Classes should be used as following:
+
+    T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, bool shunt = false);
+    T2CaVarGraph(const std::string &chainPath, const t2ca_00_07_85_conf userL2chain, const std::string &userDataLabel, const std::string &userId, bool shunt = false);
+
+    int DrawVar(const std::string &var, const std::string &mode="", const bool scaled = true);
+      Draw variables var ("rcore","eratio","et","hadet") with mode as option ("","sames") and scaled if true.
+    int setRange(const int varNumber, const float x1, const float x2, const std::string &axis = "X");
+      Change varNumber (1 for "rcore", 2 for "eratio",...) axis range to [x1, x2].
+    int setRange(const int varNumber, const float x1, const float x2, const float y1, const float y2);
+      Change varNumber (1 for "rcore", 2 for "eratio",...) both axis range to [x1, x2] [y1, y2].
+    int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
+      Change var axis range to [x1, x2].
+    int setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2);
+      Change var both axis range to [x1, x2] [y1, y2].
+
+  Here shunt refers if the T2Calo variables should be considered on shunt or on serie, it will use serie as default.
+
+    NeuralVarGraph(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
+    NeuralVarGraph(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel, const std::string &id);
+
+    int DrawOutput(const std::string &mode="", const bool scaled = true);
+      This method will draw neural output with mode as draw option("","sames") and scaled if true.
+
+  The main DrawHypoVarTool class is HypoVarCanvas which need 2 DrawHypoVarTool Hypo classes, it should be used as follows:
+
+    HypoVarCanvas(HypoVarBase *userHypoVar1, HypoVarBase *userHypoVar2);
+      -Always use same hypo containing all combinations of data:
+        o T2VarGraph holding pile-elc and elc;
+        o T2VarGraph holding pile-elc and pile-jet;
+        o NeuralVraGraph holding pile-elc and elc...
+
+  HypoVarCanvas has the following methods:
+
+    int Draw(bool scaled = true);
+      Main draw option. Set scaled to false if you dont want it normalized.
+
+    The following methods only work when HypoVarCanvas is holding T2CaVarGraph objects, you should use them if the axis default limits are not appropriate for your analysis:
+      int setRange(const std::string &var, const float x1, const float x2, const std::string &axis = "X");
+      int setRange(const int padNumber, const float x1, const float x2, const std::string &axis = "X");
+      int setRange(const std::string &var, const float x1, const float x2, const float y1, const float y2);
+      int setRange(const int padNumber, const float x1, const float x2, const float y1, const float y2);
+
+---------------------------------------------------------------------------------------------------------------
+3.5- Extra Functions:
+---------------------------------------------------------------------------------------------------------------
+
+  HypoIterator comes with 2 extra functions:
+
+    float calcSP(float detelc, float detjet);
+      Function to calculate Product SP.
+
+    int SetPallete(const std::string &name = "default", unsigned int ncontours = 999);
+      Function to boost root TH2 graphics. It will create a really nice color pallete. Use name as grey or greyscale to have the pallete on grey scale. ncontours are set to 999 by default, but it is too high for lego and surf drawing options, on those cases use 99 ncontours.
+      Taken from http://ultrahigh.org/2007/08/20/making-pretty-root-color-palettes/
+
+
+  One last word of advice:
+    DONT FORGET TO WRITE THE FILE ON THE END AND TO MOVE IT SO YOU DONT LOOSE YOUR ANALYSIS!

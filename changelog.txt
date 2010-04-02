@@ -1,0 +1,12 @@
+Version 4.0.0
+
+-Added new algorythm to match T2Calo and NeuralRinger clusters that deals with phi discontinuously.
+-Completely remolded, now 100% object oriented.
+-Fixed T2Calo error on eratio variable.
+-Added DrawHypoOutTool.
+-Added RelEfficTool.
+-Changed HypoCompTool.
+-T2Calo and NeuralRinger dont need anymore to be recompiled while changing their configuration.
+-Added file write option and organized data into folders.
+
+
