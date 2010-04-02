@@ -10,6 +10,7 @@
 #include <TTree.h>
 #include <TCanvas.h>
 #include <TROOT.h>
+#include <TObject.h>
 #include <TString.h>
 #include <TColor.h>
 #include <TPaveText.h>
@@ -43,8 +44,10 @@ class HypoCompCanvas {
   
   TCanvas *hypoCompCanvas; 
   TCanvas *infoCanvas; 
-  TPad *th2Pads;
-  TPad *outGraphs;
+  TPad *scatterPlotPad;
+  TPad *spPlotPad;
+  TPad *outGraphs1;
+  TPad *outGraphs2;
   
   const bool useTestOnly;
   const int testDivisionFactor;
@@ -58,13 +61,29 @@ class HypoCompCanvas {
 
   public:  
 
-  int ScatterPlot();
-  int HypoOutGraphs();
-  int InfoPad();
+  int DrawScatterPlot();
+  int DrawSpPlot();
+  int DrawOutGraphs(int padNumber);
+  int DrawInfoPad();
   int Draw();
 
   HypoCompCanvas(HypoBase *hypo1, HypoBase *hypo2, const bool usetestonly = true, const int testDivisionFactor = 3);
   HypoCompCanvas(HypoBase *hypo1, HypoBase *hypo2, HypoBase *hypo3, HypoBase *hypo4, const bool usetestonly = true, const int testDivisionFactor = 3);
+
+  unsigned getSignalT2caTotal() const { return signalT2caTotal;}
+  unsigned getNoiseT2caTotal()const { return noiseT2caTotal;}
+  unsigned getSignalNeuralTotal()const { return signalNeuralTotal;}
+  unsigned getNoiseNeuralTotal() const { return noiseNeuralTotal;}
+
+  unsigned getSignalT2ca() const { return signalT2ca;}
+  unsigned getNoiseT2ca() const { return noiseT2ca;}
+  unsigned getSignalNeural() const { return signalNeural;} 
+  unsigned getNoiseNeural() const { return noiseNeural;}
+
+  float getDetRateT2ca() const { return detRateT2ca;}
+  float getFaRateT2ca() const { return faRateT2ca;}
+  float getDetRateNeural() const { return detRateNeural;}
+  float getFaRateNeural() const { return faRateNeural;}
 
   ~HypoCompCanvas();
 

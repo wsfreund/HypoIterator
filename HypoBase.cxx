@@ -188,7 +188,6 @@ int SetPallete(const std::string &name, unsigned int ncontours){
 // Taken from http://ultrahigh.org/2007/08/20/making-pretty-root-color-palettes/ 
 
   if (name == "gray" || name == "grayscale"){
-    std::cout<<"Cinza"<<std::endl;
     Double_t tstops[] = {0.00, 0.34, 0.61, 0.84, 1.00};
     Double_t tred[]   = {1.00, 0.84, 0.61, 0.34, 0.00};
     Double_t tgreen[] = {1.00, 0.84, 0.61, 0.34, 0.00};
@@ -196,7 +195,6 @@ int SetPallete(const std::string &name, unsigned int ncontours){
     TColor::CreateGradientColorTable( sizeof(tstops)/sizeof(tstops[0]), tstops, tred, tgreen, tblue, ncontours );
     gStyle->SetNumberContours(ncontours);
   } else {
-    std::cout<<"Colorido"<<std::endl;
     Double_t tstops[] = {0.00, 0.34, 0.61, 0.84, 1.00};
     Double_t tred[]   = {0.00, 0.00, 0.87, 1.00, 0.51};
     Double_t tgreen[] = {0.00, 0.81, 1.00, 0.20, 0.00};

@@ -16,6 +16,7 @@ NeuralBase(chainPath, userDataLabel, id)
 HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
     file->cd();
     file->mkdir(("NeuralRinger Analysis_" + dataLabel).c_str());
+    hNans = 0;
     threshold = userNeuralConfig.threshold;
     std::vector<unsigned int> nodesVector;
     std::vector<float> weightVector;
@@ -51,7 +52,11 @@ HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
 
     extraVariables = new TTree(("NeuralRinger Tree_" + dataLabel).c_str(), "Tree with NeuralRinger Data");
 
-    ResetBranchAddresses();
+    extraVariables->Branch("Ringer_Out",       &neuralAns);
+    extraVariables->Branch("Ringer_Dec",       &decision);
+    extraVariables->Branch("Ringer_LVL2_Eta",  &lvl2_eta);
+    extraVariables->Branch("Ringer_LVL2_Phi",  &lvl2_phi);
+    extraVariables->Branch("Ringer_LVL2_Et",   &et);
 
     return HypoBase::OK;
 
@@ -59,13 +64,12 @@ HypoBase::CODE NeuralCommon::initialize(const neuralConfig &userNeuralConfig){
 HypoBase::CODE NeuralCommon::ResetBranchAddresses(){
 
     extraVariables->ResetBranchAddresses();
-
-    extraVariables->Branch("Ringer_Out",       &neuralAns);
-    extraVariables->Branch("Ringer_Dec",       &decision);
-    extraVariables->Branch("Ringer_LVL2_Eta",  &lvl2_eta);
-    extraVariables->Branch("Ringer_LVL2_Phi",  &lvl2_phi);
-    extraVariables->Branch("Ringer_LVL2_Et",   &et);
-
+    extraVariables->SetBranchStatus("*",true);
+    extraVariables->SetBranchAddress("Ringer_Out",       &neuralAns);
+    extraVariables->SetBranchAddress("Ringer_Dec",       &decision);
+    extraVariables->SetBranchAddress("Ringer_LVL2_Eta",  &lvl2_eta);
+    extraVariables->SetBranchAddress("Ringer_LVL2_Phi",  &lvl2_phi);
+    extraVariables->SetBranchAddress("Ringer_LVL2_Et",   &et);
     return HypoBase::OK;
 }
 
@@ -93,11 +97,11 @@ HypoBase::CODE NeuralCommon::exec(){
     return HypoBase::OK;
 }
 
-HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt){
+HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt, const bool scaled){
 
     file->cd();
     file->cd(("NeuralRinger Analysis_" + dataLabel).c_str());
-    TH1F *hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
+    hNans = new TH1F("NeuralNetworkOutput", "L2 Calo Neural Network Output", 220, -1.1, 1.1);
     hNans->SetLineColor(color);
     hNans->GetXaxis()->SetTitle("OutPut Neuron Value");
     int nEntries = static_cast<int>(extraVariables->GetEntries());
@@ -108,6 +112,8 @@ HypoBase::CODE NeuralCommon::drawNetAns(const std::string &opt){
         for(size_t j=0; j<neuralAns->size();++j)
             hNans->Fill(neuralAns->at(j));
     }
+    if (scaled)
+      hNans->Scale(1/hNans->Integral()*100);
     hNans->Draw(opt.c_str());
     gPad->Update();
     TPaveStats *histStats = (TPaveStats*)hNans->GetListOfFunctions()->FindObject("stats");
@@ -196,19 +202,14 @@ HypoBase::CODE NeuralCommon::clearVectors(){
 
 }
 
-HypoBase::CODE NeuralCommon::WriteTree(){
-
-    file->cd();
-    extraVariables->Write();
-    return HypoBase::OK;
-}
-
 
 
 NeuralCommon::~NeuralCommon(){
 
     //    delete lvl1_id;
     //    delete roi_id;
+    if (hNans)
+      delete hNans;
     delete rings;
     delete neuralAns;
     delete neuralRinger;

@@ -28,6 +28,8 @@ class HypoVarCanvas {
 
     bool scaled;
 
+    TFile *file;
+
     public:
 
     HypoVarCanvas(HypoVarBase *userHypoVar1, HypoVarBase *userHypoVar2);
@@ -46,7 +48,7 @@ class HypoVarCanvas {
         if (gHadEtCut)
           delete gHadEtCut;
         if (hypoVarCanvas){
-            if (gROOT->GetListOfCanvases()->FindObject("Hypo Variables Analysis")){
+            if (( hypoVarCanvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("Hypo Variables Analysis")))){
                 hypoVarCanvas->Closed();
                 delete hypoVarCanvas;
             }

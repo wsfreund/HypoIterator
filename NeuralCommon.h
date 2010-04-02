@@ -31,6 +31,7 @@ class NeuralCommon : public NeuralBase {
     virtual CODE eraseVectors(const size_t index);
     CODE initialize(const neuralConfig &userNeuralConfig);
 
+    TH1F *hNans;
 
     public:
     NeuralCommon(const std::string &chainPath, const neuralConfig &userNeuralConfig, const std::string &userDataLabel);
@@ -38,10 +39,10 @@ class NeuralCommon : public NeuralBase {
     CODE exec();
     CODE ResetBranchAddresses();
 
-    CODE drawNetAns(const std::string &opt = "");
+    CODE drawNetAns(const std::string &opt = "", const bool scaled = false);
 
     float getThreshold()const {return threshold;}
-    CODE WriteTree();
+    TH1F* getNetAns()const {return hNans;}
 
     virtual ~NeuralCommon();
 

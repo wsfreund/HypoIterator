@@ -92,7 +92,7 @@ HypoBase::CODE NeuralVarGraph::exec(){
 
 int NeuralVarGraph::DrawOutput(const std::string &mode, const bool scaled){
   file->cd();
-  file->cd(("NeuralRinger Analysis" + dataLabel).c_str());
+  file->cd(("NeuralRinger Analysis_" + dataLabel).c_str());
   neuralAnsHist->Draw(mode, scaled);
   return 0;
 }
@@ -102,6 +102,8 @@ TH1F* NeuralVarGraph::getHist(){
 }
 
 inline HypoBase::CODE NeuralVarGraph::initialise(){
+  file->cd();
+  file->cd(("NeuralRinger Analysis_" + dataLabel).c_str());
   if (id == "elc")
     neuralAnsHist = new HypoVarHist(100, -1.1, 1.1, color, dataLabel, std::string("Neural Answer"));
   else if(id == "pile-elc")

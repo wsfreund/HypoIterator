@@ -66,17 +66,22 @@ class HypoBase {
     unsigned getDetJet() const{return detJet;}
     float    getDetRate() const{return detRate;}
     float    getFARate() const{return faDetRate;}
-    const std::string & getId() const{ return HypoBase::id;} // TODO Remove HypoBase
-    const std::string & getDataLabel() const { return HypoBase::dataLabel; } 
+    const std::string & getId() const{ return id;} 
+    const std::string & getDataLabel() const { return dataLabel; } 
     static TFile* getFile() { return file;}
     Color_t getColor() const { return color;}
     TTree *getExtraVariables(){ 
       return extraVariables;
     } 
 
+    CODE Write(const bool all = true){
+      if (all)
+        file->Write();
+      else 
+        file->WriteTObject(extraVariables);
+      return OK;
+    }
     virtual CODE exec() = 0;
-
-    virtual CODE WriteTree() = 0;
 
     virtual ~HypoBase();
 };

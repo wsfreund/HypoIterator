@@ -30,6 +30,8 @@ class RelEfficCanvas {
     TH1F *th1PhiPad;
     TH1F *th1EtPad;
 
+    TFile *file;
+
     // Functions:
     TH1F* drawWithProperties(const std::string &var, RelEfficBase *&relEfficData, const std::string &title, 
         const float &xLow, const float &xHi, const std::string &xlabel, const std::string &ylabel, const float &xOffSet = .55, 
@@ -49,13 +51,13 @@ class RelEfficCanvas {
 
     ~RelEfficCanvas(){
       if (relCanvas){
-          if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
+          if ( (relCanvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")))){
               relCanvas->Closed();
               delete relCanvas;
           }
       }
       if (infoCanvas){
-        if (gROOT->GetListOfCanvases()->FindObject("Analysis Information")){
+        if ( ( infoCanvas = static_cast<TCanvas*>(gROOT->GetListOfCanvases()->FindObject("Analysis Information")))){
           infoCanvas->Closed();
           delete infoCanvas;
         }

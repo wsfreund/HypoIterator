@@ -4,6 +4,7 @@ T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf us
 T2CaBase(chainPath, userDataLabel)
 {
   l2chain = userL2chain,
+  hCuts = 0;
   rCoreCuts = 0;
   eRatioCuts = 0;
   etCuts = 0;
@@ -19,6 +20,7 @@ T2CaCommon::T2CaCommon(const std::string &chainPath, const t2ca_00_07_85_conf us
 T2CaBase(chainPath, userDataLabel, id)
 {
   l2chain = userL2chain;
+  hCuts = 0;
   rCoreCuts = 0;
   eRatioCuts = 0;
   etCuts = 0;
@@ -68,14 +70,6 @@ HypoBase::CODE T2CaCommon::initialize(){
 
     extraVariables = new TTree(("T2Calo Tree_" + dataLabel).c_str(), "Tree with T2Calo data");
 
-    ResetBranchAddresses();
-
-    return HypoBase::OK;
-}
-
-HypoBase::CODE T2CaCommon::ResetBranchAddresses(){
-
-    extraVariables->ResetBranchAddresses();
     extraVariables->Branch("T2CaEta", &lvl2_eta);
     extraVariables->Branch("T2CaPhi", &lvl2_phi);
     extraVariables->Branch("T2CaDec", &decision);
@@ -83,6 +77,21 @@ HypoBase::CODE T2CaCommon::ResetBranchAddresses(){
     extraVariables->Branch("T2CaEt",  &et);
     extraVariables->Branch("T2CaF1",  &F1);
     extraVariables->Branch("T2CaHadEt", &hadET_T2Calo);
+
+    return HypoBase::OK;
+}
+
+HypoBase::CODE T2CaCommon::ResetBranchAddresses(){
+
+    extraVariables->ResetBranchAddresses();
+    extraVariables->SetBranchStatus("*",true);
+    extraVariables->SetBranchAddress("T2CaEta", &lvl2_eta);
+    extraVariables->SetBranchAddress("T2CaPhi", &lvl2_phi);
+    extraVariables->SetBranchAddress("T2CaDec", &decision);
+    extraVariables->SetBranchAddress("T2CaOut", &t2CaAns);
+    extraVariables->SetBranchAddress("T2CaEt",  &et);
+    extraVariables->SetBranchAddress("T2CaF1",  &F1);
+    extraVariables->SetBranchAddress("T2CaHadEt", &hadET_T2Calo);
 
     return HypoBase::OK;
 
@@ -246,7 +255,7 @@ HypoBase::CODE T2CaCommon::eraseVectors(const size_t index){
     std::vector<int>::iterator p2;
     size_t j;
 
-    for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {};
+    for( j=0, p = lvl2_eta->begin(); j<index; ++j, ++p) {}; // FIXME can use p+=index probabily, but I wont change that now.
     lvl2_eta->erase(p,lvl2_eta->end());
 
     for( j=0, p = lvl2_phi->begin(); j<index; ++j, ++p) {};
@@ -306,11 +315,11 @@ inline HypoBase::CODE T2CaCommon::clearVectors(){
 
 
 //Create T2Calo Graphic for debug comparision
-HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
+HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt, const bool scaled){
 
     file->cd();
     file->cd(("T2Calo Analysis_" + dataLabel).c_str());
-    TH1I *hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
+    hCuts = new TH1I("CutCounter", "L2Calo Hypo Passed Cuts; Cut", 11, -1.5, 9.5);
 
     int nEntries = static_cast<int>(extraVariables->GetEntries());
 
@@ -351,8 +360,10 @@ HypoBase::CODE T2CaCommon::DrawCutCounter(const std::string &opt){
     hCuts->GetXaxis()->SetBinLabel(7,"E_{T}^{EM}");
     hCuts->GetXaxis()->SetBinLabel(8,"E_{T}^{Had}");
     hCuts->GetXaxis()->SetBinLabel(9,"f_{1}");
-    hCuts->SetEntries(hCuts->GetBinContent(1));
     hCuts->SetLineColor(color);
+    hCuts->SetEntries(hCuts->GetBinContent(1));
+    if (scaled)
+      hCuts->Scale(1./hCuts->GetBinContent(1)*100);
     hCuts->Draw(opt.c_str());
     gPad->Update();
     TPaveStats *histStats = (TPaveStats*)hCuts->GetListOfFunctions()->FindObject("stats");
@@ -417,18 +428,11 @@ HypoBase::CODE T2CaCommon::DrawCutStats(){
 }
 
 
-HypoBase::CODE T2CaCommon::WriteTree(){
-
-    file->cd();
-    extraVariables->Write();
-
-    return HypoBase::OK;
-
-}
-
-
 T2CaCommon::~T2CaCommon(){
 
+
+    if (hCuts)
+      delete hCuts;
     delete  hadET_T2Calo;
     delete  rCore;
     delete  energyRatio;

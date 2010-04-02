@@ -12,15 +12,21 @@ hypoVarCanvas(0)
   gHadEtCut = 0;
   gNeural = 0;
   if ( ( (t2Var1 = dynamic_cast<T2CaVarGraph*>(userHypoVar1)) && ( t2Var2 = dynamic_cast<T2CaVarGraph*>(userHypoVar2)) ) ){
-    if (!t2Var1->getTotalData() || !t2Var2->getTotalData()){
+    if (!t2Var1->getTotalData())
       t2Var1->exec();
+     if (!t2Var2->getTotalData())
       t2Var2->exec();
-    }
+    file = t2Var1->getFile();
+    file->cd();
+    file->mkdir("HypoVarCanvas");
   } else if (( (neuralVar1 = dynamic_cast<NeuralVarGraph*>(userHypoVar1)) && ( neuralVar2 = dynamic_cast<NeuralVarGraph*>(userHypoVar2)) )){
-    if (!neuralVar1->getTotalData() || !neuralVar2->getTotalData()){
+    if (!neuralVar1->getTotalData())
       neuralVar1->exec();
+    if (!neuralVar2->getTotalData())
       neuralVar2->exec();
-    }
+    file = neuralVar1->getFile();
+    file->cd();
+    file->mkdir("HypoVarCanvas");
   } else {
     std::cout<<"You should use the same kind of data. Terminating!"<<std::endl;
     throw;
@@ -37,13 +43,9 @@ int HypoVarCanvas::Draw(bool scaled){
         hypoVarCanvas = 0;
       }
     }
-    hypoVarCanvas = new TCanvas("Hypo Variables Analysis", "Hypo Variables Analysis");
 
+    hypoVarCanvas = new TCanvas("Hypo Variables Analysis", "Hypo Variables Analysis");
     if (t2Var1 && t2Var2){
-      if (!t2Var1->getTotalData() || !t2Var2->getTotalData()){
-        t2Var1->exec();
-        t2Var2->exec();
-      }
       hypoVarCanvas->Divide(2,2);
         //RCORE
         float rCoreCutPoint[2] = {t2Var1->getl2chain().m_carcorethr[0], t2Var1->getl2chain().m_carcorethr[0]};
@@ -119,6 +121,27 @@ int HypoVarCanvas::Draw(bool scaled){
         hadEtPad->Modified();
         TVirtualPad *t2caVarPad = hypoVarCanvas->cd();
         t2caVarPad->SetFillColor(18);
+        if ( (t2Var1->getId().find("elc")!= std::string::npos) && (t2Var2->getId().find("jet")!=std::string::npos) ){
+          setRange(1,0.,1.,0.,rCoreCutHeight[1]*1.1);
+          setRange(2,0.,1.,0.,eRatioCutHeight[1]*1.1);
+          setRange(3,10.,80.,0.,etCutHeight[1]*1.1);
+          setRange(4,-.02,0.1,1,hadEtCutHeight[1]*1.1);
+        }
+        if ( (t2Var1->getId().find("elc")!= std::string::npos) && (t2Var2->getId().find("elc")!=std::string::npos) ){
+          setRange(1,0.9,1.02,0.,rCoreCutHeight[1]*1.1);
+          setRange(2,0.82,1.,0.,eRatioCutHeight[1]*1.1);
+          setRange(3,5.,85.,0.,etCutHeight[1]*1.1);
+          setRange(4,-.01,0.01,1,hadEtCutHeight[1]*1.1);
+        }
+        if ( (t2Var1->getId().find("jet")!= std::string::npos) && (t2Var2->getId().find("jet")!=std::string::npos) ){
+          setRange(1,0.5,1.02,0.,rCoreCutHeight[1]*1.1);
+          setRange(2,-0.02,1.,0.,eRatioCutHeight[1]*1.1);
+          setRange(3,5.,50.,0.,etCutHeight[1]*1.1);
+          setRange(4,-.02,0.1,1,hadEtCutHeight[1]*1.1);
+        }
+        file->cd();
+        file->cd("HypoVarCanvas");
+        hypoVarCanvas->Write("Hypo Variables Analysis_T2Calo", TObject::kOverwrite);
     } else if (neuralVar2 && neuralVar1){
         float neuralThreshold[2] = {neuralVar1->getThreshold(), neuralVar2->getThreshold()};
         float neuralHeight[2] = {0.};
@@ -135,7 +158,11 @@ int HypoVarCanvas::Draw(bool scaled){
       gNeural->Draw();
       gNeural->SetLineStyle(kDashed);
       gPad->SetFillColor(33);
+      file->cd();
+      file->cd("HypoVarCanvas");
+      hypoVarCanvas->Write("Hypo Variables Analysis_NeuralRinger", TObject::kOverwrite);
     }
+
     return 0;
 }
 

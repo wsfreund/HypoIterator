@@ -9,6 +9,11 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEfficData){
     pt = 0;
     hypoPt = 0;
     legend = 0;
+    if ( !relEfficData->getTotalData() )
+      relEfficData->exec();
+    file = relEfficData->getFile();
+    file->cd();
+    file->mkdir("RelEfficTool");
     if (!dynamic_cast<T2CaRelEffic*>(relEfficData) && (!dynamic_cast<NeuralRelEffic*>(relEfficData)))
       std::cout<<"Cannot use type entered "<< typeid(userRelEfficData).name()<<std::endl;
 
@@ -23,6 +28,13 @@ RelEfficCanvas::RelEfficCanvas(RelEfficBase *userRelEffic1, RelEfficBase *userRe
     pt = 0;
     hypoPt = 0;
     legend = 0;
+    file = relEfficData->getFile();
+    file->cd();
+    file->mkdir("RelEfficTool");
+    if ( !relEffic1->getTotalData() )
+      relEffic1->exec();
+    if ( !relEffic2->getTotalData() )
+      relEffic2->exec();
     if (dynamic_cast<T2CaRelEffic*>(relEffic1)){
       if (dynamic_cast<NeuralRelEffic*>(relEffic2)){
         if (relEffic1->getId().find("elc")!=std::string::npos){
@@ -133,14 +145,20 @@ inline TH1F* RelEfficCanvas::drawWithProperties(const std::string &var, RelEffic
   NeuralRelEffic* neuralRel = 0;
   if ( (t2CaRel = dynamic_cast<T2CaRelEffic*>(relEffic1) ) ){
     t2CaRel->DrawEfficVs(var,"LP",color1);
+    if (t2CaRel->getId().find("jet")!= std::string::npos)
+      t2CaRel->getGraph(var)->SetLineStyle(kDashed);
   }else if ( (neuralRel = dynamic_cast<NeuralRelEffic*>(relEffic1))){
     neuralRel->DrawEfficVs(var,"LP",color1);
+    if (neuralRel->getId().find("jet")!= std::string::npos)
+      neuralRel->getGraph(var)->SetLineStyle(kDashed);
   }if ( (t2CaRel = dynamic_cast<T2CaRelEffic*>(relEffic2))){
     t2CaRel->DrawEfficVs(var,"LP,SAME", color2);
-    t2CaRel->getGraph(var)->SetLineStyle(kDashed);
+    if (t2CaRel->getId().find("jet")!= std::string::npos)
+      t2CaRel->getGraph(var)->SetLineStyle(kDashed);
   } else if ( (neuralRel = dynamic_cast<NeuralRelEffic*>(relEffic2))){
     neuralRel->DrawEfficVs(var,"LP,SAME",color2);
-    neuralRel->getGraph(var)->SetLineStyle(kDashed);
+    if (neuralRel->getId().find("jet")!= std::string::npos)
+      neuralRel->getGraph(var)->SetLineStyle(kDashed);
   }
   gPad->Modified();
   return th1axis;
@@ -150,7 +168,7 @@ inline TH1F* RelEfficCanvas::drawWithProperties(const std::string &var, RelEffic
 int RelEfficCanvas::genInfoPad(){
   gPad->SetFillColor(33);
   TPaveText *pt = new TPaveText(.05,.05,.95,.95);
-  pt->SetLabel("HypoIterator v4.0.0");
+  pt->SetLabel("Relative Efficiency Analysis");
   pt->SetFillColor(18);
   // ONE DATA:
   if (relEfficData){
@@ -173,7 +191,7 @@ int RelEfficCanvas::genInfoPad(){
             }
         }else
             hypoPt = new TPaveText(.06,.12,.94,.60,"T2Calo Cuts");
-        hypoPt->SetTextAlign(12);
+        hypoPt->SetTextAlign(22);
         hypoPt->SetFillColor(18);
         hypoPt->SetLabel("T2Calo Efficiency");
         float detrCoreRate = t2CaData->getDetrCoreRate();
@@ -194,7 +212,7 @@ int RelEfficCanvas::genInfoPad(){
             line5.Form("Et_{Em} False Alarm = %.4f%%", (100. - detEtRate));
             line6.Form("Et_{Had} False Alarm = %.4f%%", (100. -detHadEtRate));
         }
-        pt->SetTextAlign(12);
+        pt->SetTextAlign(22);
         pt->AddText("");
         pt->AddText(line1);
         pt->AddText("");
@@ -206,7 +224,7 @@ int RelEfficCanvas::genInfoPad(){
         hypoPt->AddText(line5);
         hypoPt->AddText(line6);
         TString line666("Signal Processing Laboratory - COPPE/UFRJ");
-        TText *p1 = pt->AddText(0.30, 0.02, line666);
+        TText *p1 = pt->AddText(0.50, 0.02, line666);
         p1->SetTextSize(0.04);
         pt->Draw();
         hypoPt->Draw();
@@ -239,7 +257,7 @@ int RelEfficCanvas::genInfoPad(){
     T2CaRelEffic *t2Ca1 = 0;
     T2CaRelEffic *t2Ca2 = 0;
     if ( (t2Ca1 = dynamic_cast<T2CaRelEffic *>(relEffic1)) && (t2Ca2 = dynamic_cast<T2CaRelEffic *>(relEffic2))){
-      if (relEffic1->getId().find("elc")==std::string::npos){ 
+      if (relEffic1->getId().find("elc")==std::string::npos){ // if not electron than lets change it x) 
         t2Ca1 = t2Ca2;
         t2Ca2 = dynamic_cast<T2CaRelEffic *>(relEffic1);
       }
@@ -249,7 +267,6 @@ int RelEfficCanvas::genInfoPad(){
       }
       hypoPt = new TPaveText(.06,.12,.94,.60,"T2Calo Efficiency");
       hypoPt->SetLabel("T2Calo Efficiency");
-      hypoPt->SetTextAlign(12);
       hypoPt->SetFillColor(18);
       TString line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16;
       unsigned totalDataElc = t2Ca1->getTotalData();
@@ -291,7 +308,8 @@ int RelEfficCanvas::genInfoPad(){
       pt->AddText(0.3,0.70,line3);
       pt->AddText(0.7,0.70,line4);
       pt->SetTextAlign(22);
-      float y = 0.90; const float yDecrement = (.95 - .05)/8; float x1 = 0.2; float x2 = 0.4; float x3 = 0.6; 
+      hypoPt->SetTextAlign(22);
+      float y = 0.90; const float yDecrement = (.95 - .05)/8; float x1 = 0.3; float x2 = 0.5; float x3 = 0.7; 
       hypoPt->AddText(x2, y, line5);  y-=yDecrement;
       hypoPt->AddText(x1, y, line6);
       hypoPt->AddText(x3, y, line7);  y-=yDecrement;
@@ -305,7 +323,7 @@ int RelEfficCanvas::genInfoPad(){
       hypoPt->AddText(x1, y, line15);
       hypoPt->AddText(x3, y, line16);
       TString line666("Signal Processing Laboratory - COPPE/UFRJ");
-      TText *p1 = pt->AddText(0.7, 0.02, line666);
+      TText *p1 = pt->AddText(0.5, 0.02, line666);
       p1->SetTextSize(0.04);
       pt->Draw();
       hypoPt->Draw();
@@ -327,13 +345,14 @@ int RelEfficCanvas::genInfoPad(){
       line2.Form("#scale[1.05]{NeuralRinger Efficience = %.4f%%}", effic);
       line3.Form("#color[4]{#scale[1]{Det Rate = %.4f%%}}", detRateElc);
       line4.Form("#color[2]{#scale[1]{FA = %.4f%%}}", (100. - detRateJet ));
+      pt->SetTextAlign(22);
       pt->AddText(""); pt->AddText(line1);
       pt->AddText(""); pt->AddText(line2);
       pt->AddText(""); pt->AddText(line3);
       pt->AddText(""); pt->AddText(line4);
       pt->AddText("");
       TString line666("Signal Processing Laboratory - COPPE/UFRJ");
-      TText *p1 = pt->AddText(0.7, 0.02, line666);
+      TText *p1 = pt->AddText(0.5, 0.02, line666);
       p1->SetTextSize(0.04);
       pt->Draw();
       gPad->Modified();
@@ -361,6 +380,7 @@ int RelEfficCanvas::genInfoPad(){
         line3.Form("#scale[1.05]{#color[4]{NeuralRinger} False Alarm = %.4f%%}", (100.-detRateNe));
         line4.Form("#scale[1.05]{#color[2]{T2Calo} False Alarm  = %.4f%%}", (100.-detRateT2));
       }
+      pt->SetTextAlign(22);
       pt->AddText(""); pt->AddText(line1);
       pt->AddText(""); pt->AddText(line2);
       pt->AddText(""); pt->AddText(line3);
@@ -379,22 +399,11 @@ int RelEfficCanvas::genInfoPad(){
 
 int RelEfficCanvas::Draw(const int numPads){
 
-  if(relCanvas){
-    if (gROOT->GetListOfCanvases()->FindObject("Relative Efficiency")){
-      relCanvas->Closed();
-      delete relCanvas;
-      relCanvas = 0;
-    }
-  }
-  if(infoCanvas){
-    if (gROOT->GetListOfCanvases()->FindObject("Analysis Information")){
-      infoCanvas->Closed();
-      delete infoCanvas;
-      infoCanvas = 0;
-    }
-  }
   relCanvas = new TCanvas("Relative Efficiency", "Relative Efficiency");
   
+  file->cd();
+  file->cd("RelEfficTool");
+
   if (relEfficData){
     std::string title;
     std::string ylabel;
@@ -419,11 +428,14 @@ int RelEfficCanvas::Draw(const int numPads){
          15,80,"Transverse Energy (GeV)", ylabel, .6, 0.045);
       relCanvas->cd(4);
       genInfoPad();
+      file->cd();
+      file->cd("RelEfficTool");
+      relCanvas->Write("Relative Efficiency_1T2Calo_4Pads", TObject::kOverwrite);
     } else if (numPads==3){
       relCanvas->Divide(1,2);
       relCanvas->cd(1);
       th1EtPad = drawWithProperties("et", relEfficData, title+" x E_{T}", 
-         15,80,"Transverse Energy (GeV)", ylabel, .75);
+         15,80,"Transverse Energy (GeV)", ylabel, .75, 0.045);
       TVirtualPad *coordPad = relCanvas->cd(2);
       coordPad->SetFillColor(18);
       coordPad->Divide(2,1);
@@ -437,6 +449,9 @@ int RelEfficCanvas::Draw(const int numPads){
       infoCanvas->cd();
       infoCanvas->SetFillColor(33);
       genInfoPad();
+      file->cd();
+      file->cd("RelEfficTool");
+      relCanvas->Write("Relative Efficiency_1T2Calo_3Pads", TObject::kOverwrite);
     }
     relCanvas->cd();
   } else if (relEffic1 && relEffic2){
@@ -509,6 +524,9 @@ int RelEfficCanvas::Draw(const int numPads){
          15,80,"Transverse Energy (GeV)", ylabel, .75, 0.045);
       relCanvas->cd(4);
       genInfoPad();
+      file->cd();
+      file->cd("RelEfficTool");
+      relCanvas->Write("Relative Efficiency_2Hypos_4Pads", TObject::kOverwrite);
     } else if (numPads==3){
       relCanvas->Divide(1,2);
       relCanvas->cd(1);
@@ -535,6 +553,9 @@ int RelEfficCanvas::Draw(const int numPads){
       infoCanvas->cd();
       infoCanvas->SetFillColor(33);
       genInfoPad();
+      file->cd();
+      file->cd("RelEfficTool");
+      relCanvas->Write("Relative Efficiency_2Hypos_3Pads", TObject::kOverwrite);
     }
   }
   relCanvas->cd();

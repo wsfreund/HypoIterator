@@ -68,31 +68,33 @@ T2CaCommon(chainPath, userL2chain, userDataLabel, userId)
 
 inline HypoBase::CODE T2CaVarGraph::initialise(){
 
+    file->cd();
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     if (id == "elc"){
-      trCore = new HypoVarHist(100, 0.9, 1.02, color, dataLabel+" rCore", std::string("rCore"));
-      teRatio = new HypoVarHist(100, 0.82, 1., color, dataLabel+" eRatio", std::string("eRatio"));
-      tEt = new HypoVarHist(100, 5., 85., color, dataLabel+" E_{T}", std::string("E_{T}"));
-      tHadEt = new HypoVarHist(100, -0.01, .01, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"));
+      trCore = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" rCore", std::string("rCore"));
+      teRatio = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"));
+      tEt = new HypoVarHist(250,5.,85., color, dataLabel+" E_{T}", std::string("E_{T}"));
+      tHadEt = new HypoVarHist(250,-0.02,.1, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"));
     }else if (id == "pile-elc"){
-      trCore = new HypoVarHist(100, 0.9, 1.02, color, dataLabel+" rCore", std::string("rCore"), .66, .81);
-      teRatio = new HypoVarHist(100, 0.82, 1., color, dataLabel+" eRatio", std::string("eRatio"), .66, .81);
-      tEt = new HypoVarHist(100, 5., 85., color, dataLabel+" E_{T}", std::string("E_{T}"), .66, .81);
-      tHadEt = new HypoVarHist(100, -0.01, .01, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"), .66, .81);
+      trCore = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" rCore", std::string("rCore"), .66, .81);
+      teRatio = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"), .66, .81);
+      tEt = new HypoVarHist(250, 5., 85., color, dataLabel+" E_{T}", std::string("E_{T}"), .66, .81);
+      tHadEt = new HypoVarHist(250, -0.02, .1, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"), .66, .81);
     }else if (id == "jet"){
-      trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel+" rCore", std::string("rCore"), .49, .64);
-      teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"), .49, .64);
-      tEt = new HypoVarHist(100, 0., 50, color, dataLabel+" E_{T}", std::string("E_{T}"), .49, .6);
-      tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel+"HAD E_{T}", std::string("HAD E_{T}"), .49, .64);
+      trCore = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" rCore", std::string("rCore"), .49, .64);
+      teRatio = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"), .49, .64);
+      tEt = new HypoVarHist(250, 0., 85., color, dataLabel+" E_{T}", std::string("E_{T}"), .49, .6);
+      tHadEt = new HypoVarHist(250, -0.02, .1, color, dataLabel+"HAD E_{T}", std::string("HAD E_{T}"), .49, .64);
     }else if (id == "pile-jet"){
-      trCore = new HypoVarHist(100, 0.5, 1.02, color, dataLabel+" rCore", std::string("rCore"), .32, .47);
-      teRatio = new HypoVarHist(100, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"), .32, .47);
-      tEt = new HypoVarHist(100, 0., 50, color, dataLabel+" E_{T}", std::string("E_{T}"), .32, .47);
-      tHadEt = new HypoVarHist(100, -0.02, .1, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"), .32, .47);
+      trCore = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" rCore", std::string("rCore"), .32, .47);
+      teRatio = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"), .32, .47);
+      tEt = new HypoVarHist(250, 0., 85., color, dataLabel+" E_{T}", std::string("E_{T}"), .32, .47);
+      tHadEt = new HypoVarHist(250, -0.02, .1, color, dataLabel+" HAD E_{T}", std::string("HAD E_{T}"), .32, .47);
     }else{
-      trCore = new HypoVarHist(100, .0, .1, color, dataLabel+" rCore", std::string("rCore"));
-      teRatio = new HypoVarHist(100, .1, .1, color, dataLabel+" eRatio", std::string("eRatio"));
-      tEt = new HypoVarHist(100, .0, 1., color, dataLabel+" E_{T}", std::string("E_{T}"));
-      tHadEt = new HypoVarHist(100, .0, .1, color, dataLabel+" HAD E{T}", std::string("HAD E_{T}"));
+      trCore = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" rCore", std::string("rCore"));
+      teRatio = new HypoVarHist(250, -0.02, 1.02, color, dataLabel+" eRatio", std::string("eRatio"));
+      tEt = new HypoVarHist(250, .5, 85., color, dataLabel+" E_{T}", std::string("E_{T}"));
+      tHadEt = new HypoVarHist(250, -.02, .1, color, dataLabel+" HAD E{T}", std::string("HAD E_{T}"));
       trCore->getHist()->SetBit(TH1::kCanRebin);
       teRatio->getHist()->SetBit(TH1::kCanRebin);
       tEt->getHist()->SetBit(TH1::kCanRebin);
@@ -273,6 +275,7 @@ HypoBase::CODE T2CaVarGraph::DrawCutStats(){
 }
 
 int T2CaVarGraph::DrawVar(const std::string &var, const std::string &mode, const bool scaled){
+    file->cd();
     file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     if (var == "rcore"){
         trCore->Draw(mode, scaled);

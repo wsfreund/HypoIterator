@@ -13,8 +13,8 @@ RelEfficBase(user_nRegions){
 
 int T2CaRelEffic::DrawEfficVs(const std::string &vsWho, const std::string &opt){
 
-  HypoBase::getFile->cd();
-    file->cd(("T2Calo Analysis" + dataLabel).c_str());
+    file->cd();
+    file->cd(("T2Calo Analysis_" + dataLabel).c_str());
     if ( vsWho == "eta"){
         if (etaxEfficGraph)
           delete etaxEfficGraph;

@@ -50,6 +50,7 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     float deteRatioRate;
     float detEtRate;
     float detHadEtRate;
+    TH1I *hCuts;
 
     //Functions
     CODE calcTransverseFraction();
@@ -73,9 +74,8 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     CODE exec();
     CODE ResetBranchAddresses();
     //Draw functions:
-    CODE DrawCutCounter(const std::string &opt = "");
+    CODE DrawCutCounter(const std::string &opt = "", const bool scaled = false);
     CODE DrawCutStats();
-    CODE WriteTree();
     //Get functions:
     unsigned getrCoreCuts()const {return rCoreCuts;}
     unsigned geteRatioCuts()const {return eRatioCuts;}
@@ -85,6 +85,7 @@ class T2CaCommon : public T2CaBase { // FIXME enhiretance should be virtual here
     float getDeteRatioRate()const {return deteRatioRate;}
     float getDetEtRate()const {return detEtRate;}
     float getDetHadEtRate()const {return detHadEtRate;}
+    TH1I *getCutCounter()const {return hCuts;}
     const t2ca_00_07_85_conf& getl2chain()const {return l2chain;}
 
     virtual ~T2CaCommon();
