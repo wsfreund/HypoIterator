@@ -9,7 +9,7 @@ norm1::norm1() {
   sizeWeight = sizeof(weightvector)/sizeof(float);
   sizeBias = sizeof(biasvector)/sizeof(float);
   NODESVECTOR = new unsigned int[sizeNode];
-  memcpy (NODESVECTOR, nodesvector, sizeof(nodesvector));
+  memcpy(NODESVECTOR, nodesvector, sizeof(nodesvector));
   WEIGHTVECTOR = new float[sizeWeight];
   memcpy (WEIGHTVECTOR, weightvector, sizeof(weightvector));
   BIASVECTOR = new float[sizeBias];

@@ -1,5 +1,10 @@
 #include "HypoBase.h"
 
+
+TFile* HypoBase::file = 0;
+unsigned HypoBase::objects = 0;
+
+
 HypoBase::CODE HypoBase::baseInit(const std::string &chainPath, const std::string &userDataLabel){
   totalData = 0;
   detElc = 0;

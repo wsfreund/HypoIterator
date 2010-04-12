@@ -84,7 +84,5 @@ class HypoBase {
 };
 
 
-TFile* HypoBase::file = 0;
-unsigned HypoBase::objects = 0;
 
 #endif

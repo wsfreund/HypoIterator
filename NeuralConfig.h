@@ -1,6 +1,9 @@
 #ifndef NEURALCONFIG_H
 #define NEURALCONFIG_H
 
+
+#include <string.h>
+
 struct neuralConfig {
   int ROISIZE;
   float threshold;

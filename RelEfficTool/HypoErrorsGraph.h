@@ -7,7 +7,7 @@
 #include "TMath.h"
 #include <string>
 #include "TGraphAsymmErrors.h"
-#include "HypoBase.h"
+#include "../HypoBase.h"
 #include "../T2CaCommon.h"
 #include "../NeuralCommon.h"
 #include <iostream>

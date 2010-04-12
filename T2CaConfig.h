@@ -1,6 +1,7 @@
 #ifndef T2CACONFIG_H
 #define T2CACONFIG_H
 
+#include <string.h>
 
 //T2Calo Version : 00-07-85
 struct t2ca_00_07_85_conf{
