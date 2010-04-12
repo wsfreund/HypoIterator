@@ -11,3 +11,5 @@
 *.eps
 *.pdf
 .tm_project2.cache
+.cproject
+.DS_Store
