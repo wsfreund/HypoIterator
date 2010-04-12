@@ -16,13 +16,14 @@ struct t2ca_00_07_85_conf{
   float m_carcorethr[MAXSIZE];
   float m_caeratiothr[MAXSIZE];
   float m_etabin[MAXSIZE+1];
-  static const float m_F1thr = .005;
-  static const float m_detacluster = .1;
-  static const float m_dphicluster = .1;
+  static float m_F1thr;
+  static float m_detacluster;
+  static float m_dphicluster;
 
   t2ca_00_07_85_conf();
 
 };
+
 
 struct e5 : public t2ca_00_07_85_conf{
   e5();

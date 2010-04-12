@@ -1,4 +1,9 @@
 #include "T2CaConfig.h"
+
+float t2ca_00_07_85_conf::m_F1thr = 0.005;
+float t2ca_00_07_85_conf::m_detacluster = .1;
+float t2ca_00_07_85_conf::m_dphicluster = .1;
+
 t2ca_00_07_85_conf::t2ca_00_07_85_conf(){
     float m_etabin2[] = {.0, .6, .8, 1.15, 1.37, 1.52, 1.81, 2.01, 2.37, 2.47}; 
     float m_eT2thr2[] = {90e3, 90.0e3, 90.0e3, 90.0e3, 90.0e3, 90.0e3, 90.0e3, 90.0e3, 90.0e3};
